@@ -1,0 +1,45 @@
+{
+  "name": "time-mgt",
+  "private": true,
+  "scripts": {
+    "start": "umi dev",
+    "analyze": "ANALYZE=1 umi build",
+    "build": "umi build",
+    "postinstall": "umi generate tmp",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "spush": "git subtree push -P src/js-sdk js-sdk master",
+    "spull": "git subtree pull -P src/js-sdk js-sdk master --squash"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "@types/react-color": "^3.0.6",
+    "@types/requestidlecallback": "^0.3.4",
+    "@umijs/test": "^3.5.20",
+    "axios": "^0.24.0",
+    "lint-staged": "^11.2.6",
+    "prettier": "^2.4.1",
+    "react": "^17.x",
+    "react-color": "^2.19.3",
+    "react-dom": "^17.x",
+    "react-query": "^3.x",
+    "react-virtualized": "^9.22.3",
+    "umi": "^3.5.20",
+    "yorkie": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/react-virtualized": "^9.21.15",
+    "@umijs/fabric": "^2.8.1",
+    "@umijs/plugin-qiankun": "^2.35.2",
+    "@umijs/preset-react": "^1.x",
+    "webpack-bundle-analyzer": "^4.5.0"
+  }
+}

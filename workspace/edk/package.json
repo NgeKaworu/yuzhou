@@ -1,0 +1,18 @@
+{
+  "name": "edk",
+  "version": "1.0.0",
+  "description": "ecmascript development kit",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NgeKaworu/edk.git"
+  },
+  "author": "furan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NgeKaworu/edk/issues"
+  },
+  "homepage": "https://github.com/NgeKaworu/edk#readme"
+}

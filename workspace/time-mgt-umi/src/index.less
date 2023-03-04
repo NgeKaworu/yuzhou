@@ -1,0 +1,43 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  height: 100%;
+}
+
+.record-item {
+  height: 110px;
+  margin: 8px 12px;
+  padding: 10px 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 1px 1px 20px 1px rgba(233, 233, 233, 0.85);
+  cursor: pointer;
+
+  &.active,
+  &:hover {
+    border-bottom: 3px solid @primary-color;
+  }
+
+  :active {
+    background: #fff;
+    opacity: 0.85;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.main {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.extra {
+  font-weight: 100;
+  font-size: 16px;
+}

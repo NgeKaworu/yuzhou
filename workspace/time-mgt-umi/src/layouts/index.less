@@ -1,0 +1,47 @@
+.bottom-fix-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fill-scroll-part {
+  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.bottom-menu {
+  display: flex;
+  justify-content: space-around;
+  height: 60px;
+  border-top: 1px solid rgba(233, 233, 233, 05);
+}
+
+.menu-item {
+  :global {
+    .anticon {
+      font-size: 28px;
+    }
+  }
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  color: #000;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.7;
+  :hover {
+    color: @primary-color;
+    opacity: 1;
+  }
+  :active {
+    opacity: 0.5;
+  }
+}
+
+.active {
+  color: @primary-color;
+  opacity: 1;
+}
