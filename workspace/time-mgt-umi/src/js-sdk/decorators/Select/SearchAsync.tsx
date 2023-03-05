@@ -4,7 +4,7 @@ import useThrottle from '../../hooks/useThrottle';
 import type { Select } from 'antd';
 import { Empty, Spin } from 'antd';
 
-import type { useQuery } from 'react-query';
+import type { useQuery } from '@tanstack/react-query';
 
 import { curry } from '../utils';
 

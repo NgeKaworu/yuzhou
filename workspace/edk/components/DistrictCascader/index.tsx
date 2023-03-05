@@ -1,7 +1,7 @@
 import AMap from '@/edk/utils/aMap/singleton/aMap';
 import Plugin from '@/edk/utils/aMap/plugin';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { reject } from 'lodash';
 import type { CascaderProps } from 'antd';
 import { Cascader } from 'antd';

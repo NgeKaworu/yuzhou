@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useInfiniteQuery, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 import { Button, Card, Empty, Form, Input, Skeleton, Tag } from 'antd';
 

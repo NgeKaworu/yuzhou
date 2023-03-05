@@ -4,7 +4,7 @@ import type { FormInstance, FormProps, DescriptionsProps, PaginationProps, Table
 import type { LightColumnProps, LightTableProps } from '../LightTable';
 import type { SearchColumnsProps } from '../Search';
 import Search from '../Search';
-import type { QueryKey, QueryFunction, UseQueryOptions } from 'react-query';
+import type { QueryKey, QueryFunction, UseQueryOptions } from '@tanstack/react-query';
 import useWrap from './hook/useWrap';
 import styles from './index.module.less';
 import getIn from '@/edk/struct/tree/getIn';

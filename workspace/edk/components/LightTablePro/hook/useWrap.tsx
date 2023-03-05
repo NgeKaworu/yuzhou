@@ -4,8 +4,8 @@ import type { FormProps, TableProps, PaginationProps } from 'antd';
 import type React from 'react';
 import { useState, useRef } from 'react';
 import type { LightTableProps } from '../../LightTable';
-import type { QueryKey, QueryFunction, UseQueryOptions } from 'react-query';
-import { useQuery } from 'react-query';
+import type { QueryKey, QueryFunction, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import type { ActionRef } from '..';
 import useURLSearch from '@/edk/hooks/useURLSearch';
 
