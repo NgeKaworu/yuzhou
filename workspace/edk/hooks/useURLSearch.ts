@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'dayjs';
 import { useLayoutEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 

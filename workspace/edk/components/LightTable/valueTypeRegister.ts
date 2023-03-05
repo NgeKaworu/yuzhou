@@ -1,6 +1,16 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-05 16:48:01
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-05 19:42:56
+ * @FilePath: /monorepo-lab/workspace/edk/components/LightTable/valueTypeRegister.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import reverseSplitJoin from '../../struct/string/reverseSplitJoin';
 import type { TableColumnProps } from 'antd';
-import moment from 'moment';
+import moment from 'dayjs';
 import type { ValueType } from '../type';
 
 const dataFormat = 'YYYY-MM-DD';

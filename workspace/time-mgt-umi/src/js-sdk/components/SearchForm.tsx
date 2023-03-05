@@ -9,7 +9,7 @@ import { useHistory } from 'react-router';
 
 import type { FormProps } from 'antd';
 import { Form } from 'antd';
-import moment from 'moment';
+import moment from 'dayjs';
 
 export interface SearchFormProps {
   formProps?: FormProps;

@@ -1,6 +1,6 @@
 import reverseSplitJoin from '../../struct/string/reverseSplitJoin';
 import type { TableColumnProps } from 'antd';
-import moment from 'moment';
+import moment from 'dayjs';
 import type { ValueType } from '../type';
 
 const dataFormat = 'YYYY-MM-DD';

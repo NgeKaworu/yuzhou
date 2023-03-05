@@ -9,7 +9,7 @@ import type { TagSchema } from '@/components/TagMgt/models';
 
 import { nsFormat } from '@/utils/goTime';
 
-import moment from 'moment';
+import moment from 'dayjs';
 import useTagList from '@/components/TagMgt/hooks/useTagList';
 import useStatisticList from './hooks/useStatisticList';
 
