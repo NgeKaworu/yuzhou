@@ -25,6 +25,7 @@
     "@types/requestidlecallback": "^0.3.4",
     "@umijs/test": "^3.5.20",
     "axios": "^0.24.0",
+    "edk": "workspace:^1.0.0",
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
     "react": "^17.x",
