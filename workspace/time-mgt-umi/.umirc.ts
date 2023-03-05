@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 01:55:13
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-05 19:07:36
+ * @LastEditTime: 2023-03-05 20:25:13
  * @FilePath: /monorepo-lab/workspace/time-mgt-umi/.umirc.ts
  * @Description:
  *
@@ -26,7 +26,8 @@ export default defineConfig({
 
   proxy: {
     '/api/time-mgt': {
-      target: 'http://localhost:8050',
+      // target: 'http://localhost:8050,'
+      target: 'https://api.furan.xyz/time-mgt',
       changeOrigin: true,
       pathRewrite: {
         '/api/time-mgt': '',

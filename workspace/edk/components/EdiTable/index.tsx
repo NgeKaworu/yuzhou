@@ -8,7 +8,7 @@ import { useDrag, useDrop } from 'react-dnd';
 
 import styles from './index.module.less';
 import { shouldUpdateManyHOF } from '../../decorators/shouldUpdateHOF';
-import React from 'react';
+
 
 type FormListChildrenParams = Parameters<FormListProps['children']>;
 interface FormListChildrenParamsInterface {

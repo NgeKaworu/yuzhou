@@ -13,7 +13,7 @@ import { _valueTypeRegister } from './valueTypeRegister';
 import prune from '../../struct/tree/prune';
 import trimEndWith from '../../struct/string/trimEndWith';
 import isValidValue from '../../utils/isValidValue';
-import React from 'react';
+
 
 const { Paragraph, Link } = Typography;
 

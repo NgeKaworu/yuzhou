@@ -1,6 +1,6 @@
 import styles from './index.module.less';
 
-import React from 'react';
+
 
 export interface MaskProps {
   disabled?: boolean;
