@@ -32,7 +32,7 @@ export default () => {
   const queryClient = useQueryClient();
 
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery(
-    'records',
+    ['records'],
     ({ pageParam = 0 }) => {
       return page<
         { data: RecordSchema[]; total: number },
