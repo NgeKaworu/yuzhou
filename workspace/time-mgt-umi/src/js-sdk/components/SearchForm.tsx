@@ -1,3 +1,13 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-05 01:55:13
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-05 20:13:17
+ * @FilePath: /monorepo-lab/workspace/time-mgt-umi/src/js-sdk/components/SearchForm.tsx
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 /* eslint-disable react/no-children-prop */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable guard-for-in */
@@ -5,7 +15,7 @@
 
 import type { PropsWithChildren } from 'react';
 import { useLayoutEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import type { FormProps } from 'antd';
 import { Form } from 'antd';
@@ -20,11 +30,11 @@ export interface SearchFormProps {
  * 单一责任, 仅负责Form值和search双向绑定
  */
 export default ({ formProps, children }: PropsWithChildren<SearchFormProps>) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { onFinish, onReset, ...restFormProps } = formProps || {};
   const [form] = Form.useForm(restFormProps?.form);
 
-  const _location = history.location;
+  const _location = useLocation();
   const formName = restFormProps?.name ?? 'search_form';
 
   useLayoutEffect(() => {
@@ -54,7 +64,7 @@ export default ({ formProps, children }: PropsWithChildren<SearchFormProps>) => 
 
     if (par.get(`_${formName}`) !== searchJSON) {
       par.set(`_${formName}`, searchJSON);
-      history.push({
+      navigate({
         pathname: _location.pathname,
         search: `?${par}`,
       });
@@ -65,7 +75,7 @@ export default ({ formProps, children }: PropsWithChildren<SearchFormProps>) => 
   function resetHandler(e: any) {
     const par = new URLSearchParams(_location.search);
     par.delete(`_${formName}`);
-    history.push({
+    navigate({
       pathname: _location.pathname,
       search: `?${par}`,
     });
@@ -88,7 +98,7 @@ export default ({ formProps, children }: PropsWithChildren<SearchFormProps>) => 
 
 export function toSearchForm(obj: Record<string, any>) {
   return JSON.stringify(obj, (_, v) => {
-    if (moment.isMoment(v)) {
+    if (moment.isDayjs(v)) {
       return v?.toISOString();
     }
     return v;

@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 01:55:13
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-05 19:40:07
+ * @LastEditTime: 2023-03-05 20:08:47
  * @FilePath: /monorepo-lab/workspace/time-mgt-umi/src/layouts/index.tsx
  * @Description:
  *
@@ -15,7 +15,7 @@ import type { PropsWithChildren } from 'react';
 import { ConfigProvider } from 'antd';
 
 import { FormOutlined, PieChartOutlined } from '@ant-design/icons';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import zhCN from 'antd/es/locale/zh_CN';
 import styles from './index.less';
@@ -29,7 +29,7 @@ const menu = [
 
 export default (props: PropsWithChildren<any>) => {
   const { pathname } = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <QueryClientProvider client={queyClient}>
       <ConfigProvider locale={zhCN}>
@@ -43,7 +43,7 @@ export default (props: PropsWithChildren<any>) => {
                   i.path.includes(pathname) && styles?.['active'],
                 ]?.join(' ')}
                 key={i.path}
-                onClick={() => history.push(i.path)}
+                onClick={() => navigate(i.path)}
               >
                 {i.icon}
                 {i.title}

@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 16:48:01
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-05 19:53:05
+ * @LastEditTime: 2023-03-05 20:12:55
  * @FilePath: /monorepo-lab/workspace/edk/hooks/useURLSearch.ts
  * @Description: 
  * 
@@ -10,7 +10,7 @@
  */
 import moment from 'dayjs';
 import { useLayoutEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface Param<T extends any = any> {
   key: string;
@@ -28,7 +28,7 @@ const _reviver: Param['reviver'] = (_, v) => {
 };
 
 const _replacer: Param['replacer'] = (_, v) => {
-  if (moment.isMoment(v)) {
+  if (moment.isDayjs(v)) {
     return v?.toISOString();
   }
   return v;
@@ -40,8 +40,8 @@ export default <T extends any = any>({
   replacer = _replacer,
   onURLSearchChange,
 }: Param<T>) => {
-  const history = useHistory();
-  const { search, pathname } = history.location;
+  const navigate = useNavigate();
+  const { search, pathname } = useLocation();
 
   const _key = `_${key}`;
   const pParams = new URLSearchParams(search);
@@ -65,7 +65,7 @@ export default <T extends any = any>({
       const json = JSON.stringify(values, replacer);
       if (pParams.get(_key) !== json) {
         pParams.set(_key, json);
-        history.push({
+        navigate({
           pathname,
           search: `?${pParams}`,
         });
@@ -74,7 +74,7 @@ export default <T extends any = any>({
 
     if (!values && pParams.get(_key)) {
       pParams.delete(_key);
-      history.push({
+      navigate({
         pathname,
         search: `?${pParams}`,
       });
