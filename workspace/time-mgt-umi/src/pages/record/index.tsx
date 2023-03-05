@@ -65,7 +65,7 @@ export default () => {
         await add(values);
       }
 
-      queryClient.invalidateQueries('records');
+      queryClient.invalidateQueries(['records']);
       form.resetFields();
     } catch (e) {
       console.error('create err: ', e);
