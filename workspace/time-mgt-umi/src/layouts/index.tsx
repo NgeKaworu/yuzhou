@@ -15,7 +15,7 @@ import type { PropsWithChildren } from 'react';
 import { ConfigProvider } from 'antd';
 
 import { FormOutlined, PieChartOutlined } from '@ant-design/icons';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import zhCN from 'antd/es/locale/zh_CN';
 import styles from './index.less';

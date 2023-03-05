@@ -5,7 +5,7 @@
 
 import type { PropsWithChildren } from 'react';
 import { useLayoutEffect } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import type { FormProps } from 'antd';
 import { Form } from 'antd';
