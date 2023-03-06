@@ -1,11 +1,10 @@
 import React, { useRef } from 'react';
 
-import { Checkbox, Modal, Spin, Tag, Space } from 'antd';
+import { Checkbox, Modal, Spin, Tag, Space, theme } from 'antd';
 import { CheckCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 
 import { remove } from './services';
 
-import theme from '@/theme';
 import useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
 import { TagSchema } from '@/components/TagMgt/models';
 import { TagModForm } from './components/TagExec';
@@ -15,12 +14,16 @@ interface TagMgtProps {
   onChange?: Function;
 }
 
+const { useToken } = theme;
+
 export default function TagMgt(props?: TagMgtProps) {
   const { data, isFetching: loading, refetch } = useTagList(),
     list = data?.data,
     { value = [], onChange = () => {} } = props || {},
     editor = useModalForm(),
     holdHandler = useRef(0);
+
+  const { token } = useToken();
 
   function holdStart(callback: Function, critical = 3000) {
     holdHandler.current = setTimeout(callback, critical);
@@ -122,9 +125,7 @@ export default function TagMgt(props?: TagMgtProps) {
                 }}
                 onMouseUp={holdEnd}
               >
-                {value.includes(tag.id) && (
-                  <CheckCircleTwoTone twoToneColor={theme['primary-color']} />
-                )}{' '}
+                {value.includes(tag.id) && <CheckCircleTwoTone twoToneColor={token.colorPrimary} />}{' '}
                 {tag.name}
               </Tag>
             ))}

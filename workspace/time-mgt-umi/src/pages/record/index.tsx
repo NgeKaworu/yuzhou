@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
-import { Button, Card, Empty, Form, Input, Skeleton, Tag } from 'antd';
+import { Button, Card, Empty, Form, Input, Skeleton, Tag, theme } from 'antd';
 
 import TagMgt from '@/components/TagMgt';
 
@@ -18,8 +18,10 @@ import { add, update, page } from './services';
 import { WindowScroller, List, InfiniteLoader, ListProps } from 'react-virtualized';
 import isValidValue from '@/js-sdk/utils/isValidValue';
 
-import layoutStyles from '@/layouts/index.less';
-import styles from '@/index.less';
+import classNames from 'classnames';
+import { prefixCls } from '@/theme';
+
+const { useToken } = theme;
 
 export default () => {
   const [form] = Form.useForm();
@@ -30,6 +32,8 @@ export default () => {
     isEdit = isValidValue(curId);
 
   const queryClient = useQueryClient();
+
+  const { hashId } = useToken();
 
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery(
     ['records'],
@@ -105,14 +109,19 @@ export default () => {
           <div
             key={record.id}
             onClick={() => checked(record)}
-            className={[styles['record-item'], record.id === curId && styles['active']].join(' ')}
+            className={classNames(
+              classNames(`${prefixCls}-record-item`, hashId),
+              record.id === curId && classNames(`${prefixCls}-active`, hashId),
+            )}
           >
             <h3 style={{ color: '#333' }}>
               {moment(record.createAt).format('YYYY-MM-DD HH:mm:ss')}
             </h3>
-            <div className={styles['content']}>
-              <div className={styles['main']}>{record.event}</div>
-              <div className={styles['extra']}>{nsFormat(record.deration)}</div>
+            <div className={classNames(`${prefixCls}-content`, hashId)}>
+              <div className={classNames(`${prefixCls}-main`, hashId)}>{record.event}</div>
+              <div className={classNames(`${prefixCls}-extra`, hashId)}>
+                {nsFormat(record.deration)}
+              </div>
             </div>
             <div>
               {record?.tid?.map((oid: string) => {
@@ -136,7 +145,7 @@ export default () => {
   };
 
   return (
-    <div className={layoutStyles['bottom-fix-panel']}>
+    <div className={classNames(`${prefixCls}-bottom-fix-panel`, hashId)}>
       {pages?.length ? (
         <InfiniteLoader isRowLoaded={isItemLoaded} rowCount={total} loadMoreRows={loadMoreItems}>
           {({ onRowsRendered, registerChild }) => (
@@ -160,12 +169,12 @@ export default () => {
           )}
         </InfiniteLoader>
       ) : (
-        <Empty className={styles.empty} />
+        <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
       )}
 
       <Form onFinish={submit} form={form}>
         <div
-          className={layoutStyles['bottom-fix-panel']}
+          className={classNames(`${prefixCls}-bottom-fix-panel`, hashId)}
           style={{
             height: '25vh',
             borderTop: '1px solid rgba(233,233,233, 05)',
@@ -173,7 +182,7 @@ export default () => {
           }}
         >
           <section
-            className={layoutStyles['fill-scroll-part']}
+            className={classNames(`${prefixCls}-fill-scroll-part`, hashId)}
             style={{
               padding: '0 0 6px 6px',
             }}

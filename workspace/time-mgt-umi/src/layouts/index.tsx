@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 01:55:13
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-06 09:34:44
+ * @LastEditTime: 2023-03-06 10:18:26
  * @FilePath: /monorepo-lab/workspace/time-mgt-umi/src/layouts/index.tsx
  * @Description:
  *
@@ -19,7 +19,7 @@ import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
 import zhCN from 'antd/es/locale/zh_CN';
 // import styles from './index.less';
-import defaultTheme from '@/theme';
+import defaultTheme, { prefixCls } from '@/theme';
 
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
 import { DerivativeToken } from 'antd/es/theme/internal';
@@ -48,14 +48,12 @@ function Main() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const prefixCls = 'time-mgt';
-
   // 【自定义】制造样式
   const { theme, token, hashId } = useToken();
 
   // 全局注册，内部会做缓存优化
   const wrapSSR = useStyleRegister({ theme, token, hashId, path: [prefixCls] }, () => [
-    genStyle(prefixCls, token),
+    genStyle(token),
   ]);
 
   return (
@@ -87,7 +85,7 @@ function Main() {
   );
 }
 
-const genStyle = (prefixCls: string, token: DerivativeToken): CSSInterpolation => ({
+const genStyle = (token: DerivativeToken): CSSInterpolation => ({
   [`.${prefixCls}-bottom-fix-panel`]: {
     display: 'flex',
     flexDirection: 'column',
@@ -116,4 +114,29 @@ const genStyle = (prefixCls: string, token: DerivativeToken): CSSInterpolation =
     ':active': { opacity: 0.5 },
   },
   [`.${prefixCls}.active`]: { color: token.colorPrimary, opacity: 1 },
+
+  [`.${prefixCls}-empty`]: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
+  },
+  [`.${prefixCls}-record-item`]: {
+    height: '110px',
+    margin: '8px 12px',
+    padding: '10px 16px',
+    overflow: 'hidden',
+    background: 'rgba(255, 255, 255, 0.85)',
+    boxShadow: '1px 1px 20px 1px rgba(233, 233, 233, 0.85)',
+    cursor: 'pointer',
+    '&.active,\n  &:hover': { borderBottom: `3px solid ${token.colorPrimary}` },
+    ':active': { background: '#fff', opacity: 0.85 },
+  },
+  [`.${prefixCls}-content`]: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+  },
+  [`.${prefixCls}-main`]: { fontWeight: 'bold', fontSize: '20px' },
+  [`.${prefixCls}-extra`]: { fontWeight: 100, fontSize: '16px' },
 });
