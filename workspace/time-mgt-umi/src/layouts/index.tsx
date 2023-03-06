@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 01:55:13
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-06 00:07:07
+ * @LastEditTime: 2023-03-06 09:34:44
  * @FilePath: /monorepo-lab/workspace/time-mgt-umi/src/layouts/index.tsx
  * @Description:
  *
@@ -23,6 +23,7 @@ import defaultTheme from '@/theme';
 
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
 import { DerivativeToken } from 'antd/es/theme/internal';
+import 'dayjs/locale/zh-cn';
 
 const queyClient = new QueryClient();
 
