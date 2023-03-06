@@ -21,14 +21,12 @@
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.2",
-    "react-virtualized": "^9.22.3",
     "umi": "^4.0.55"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
     "@types/react-color": "^3.0.6",
     "@types/react-dom": "^18.0.11",
-    "@types/react-virtualized": "^9.21.15",
     "@umijs/fabric": "^2.8.1",
     "@umijs/plugin-qiankun": "^2.42.0",
     "@umijs/plugins": "^4.0.55",

@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 01:55:13
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-06 10:18:26
+ * @LastEditTime: 2023-03-06 12:27:55
  * @FilePath: /monorepo-lab/workspace/time-mgt-umi/src/layouts/index.tsx
  * @Description:
  *
@@ -129,7 +129,7 @@ const genStyle = (token: DerivativeToken): CSSInterpolation => ({
     background: 'rgba(255, 255, 255, 0.85)',
     boxShadow: '1px 1px 20px 1px rgba(233, 233, 233, 0.85)',
     cursor: 'pointer',
-    '&.active,\n  &:hover': { borderBottom: `3px solid ${token.colorPrimary}` },
+    [`&.${prefixCls}-active,\n  &:hover`]: { borderBottom: `3px solid ${token.colorPrimary}` },
     ':active': { background: '#fff', opacity: 0.85 },
   },
   [`.${prefixCls}-content`]: {

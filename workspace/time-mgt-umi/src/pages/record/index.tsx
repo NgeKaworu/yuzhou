@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
-import { Button, Card, Empty, Form, Input, Skeleton, Tag, theme } from 'antd';
+import { Button, Empty, Form, Input, Tag, theme, List, ListProps } from 'antd';
 
 import TagMgt from '@/components/TagMgt';
 
@@ -15,7 +15,6 @@ import moment from 'dayjs';
 import useTagList from '@/components/TagMgt/hooks/useTagList';
 import { add, update, page } from './services';
 
-import { WindowScroller, List, InfiniteLoader, ListProps } from 'react-virtualized';
 import isValidValue from '@/js-sdk/utils/isValidValue';
 
 import classNames from 'classnames';
@@ -53,12 +52,12 @@ export default () => {
       getNextPageParam: (lastPage, pages) => {
         return lastPage?.data?.length === 10 ? pages?.length : undefined;
       },
+      refetchOnWindowFocus: false,
     },
   );
 
   const list = data?.pages,
-    pages = list?.reduce((acc: RecordSchema[], cur) => acc.concat(cur?.data), []),
-    total = list?.[list?.length - 1]?.total || 0;
+    pages = list?.reduce((acc: RecordSchema[], cur) => acc.concat(cur?.data), []);
 
   async function submit(values: any) {
     try {
@@ -95,82 +94,67 @@ export default () => {
   // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
   const loadMoreItems = () => (isFetching ? Promise.resolve() : fetchNextPage());
 
-  // Every row is loaded except for our loading indicator row.
-  // const isItemLoaded = index => !hasNextPage || index < pages.length;
-  const isItemLoaded = ({ index }: { index: number }) => !hasNextPage || index < pages?.length;
-
   // Render an item or a loading indicator.
-  const renderItem: ListProps['rowRenderer'] = ({ index, style }) => {
-    const record: RecordSchema = pages?.[index];
-
+  const renderItem: ListProps<RecordSchema>['renderItem'] = (record) => {
     return (
-      <div style={style} key={record?.id}>
-        {isItemLoaded({ index }) ? (
-          <div
-            key={record.id}
-            onClick={() => checked(record)}
-            className={classNames(
-              classNames(`${prefixCls}-record-item`, hashId),
-              record.id === curId && classNames(`${prefixCls}-active`, hashId),
-            )}
-          >
-            <h3 style={{ color: '#333' }}>
-              {moment(record.createAt).format('YYYY-MM-DD HH:mm:ss')}
-            </h3>
-            <div className={classNames(`${prefixCls}-content`, hashId)}>
-              <div className={classNames(`${prefixCls}-main`, hashId)}>{record.event}</div>
-              <div className={classNames(`${prefixCls}-extra`, hashId)}>
-                {nsFormat(record.deration)}
-              </div>
-            </div>
-            <div>
-              {record?.tid?.map((oid: string) => {
-                const findTag = tags?.find((t: TagSchema) => t.id === oid);
-
-                return (
-                  <Tag key={oid} color={findTag?.color}>
-                    {findTag?.name}
-                  </Tag>
-                );
-              })}
-            </div>
-          </div>
-        ) : (
-          <Card style={{ margin: '12px' }}>
-            <Skeleton />
-          </Card>
+      <div
+        key={record.id}
+        onClick={() => checked(record)}
+        className={classNames(
+          classNames(`${prefixCls}-record-item`, hashId),
+          record.id === curId && classNames(`${prefixCls}-active`, hashId),
         )}
+      >
+        <h3 style={{ color: '#333' }}>{moment(record.createAt).format('YYYY-MM-DD HH:mm:ss')}</h3>
+        <div className={classNames(`${prefixCls}-content`, hashId)}>
+          <div className={classNames(`${prefixCls}-main`, hashId)}>{record.event}</div>
+          <div className={classNames(`${prefixCls}-extra`, hashId)}>
+            {nsFormat(record.deration)}
+          </div>
+        </div>
+        <div>
+          {record?.tid?.map((oid: string) => {
+            const findTag = tags?.find((t: TagSchema) => t.id === oid);
+
+            return (
+              <Tag key={oid} color={findTag?.color}>
+                {findTag?.name}
+              </Tag>
+            );
+          })}
+        </div>
       </div>
     );
   };
 
+  const loadMore = !isFetching ? (
+    <div
+      style={{
+        textAlign: 'center',
+        margin: '12px auto',
+        height: 32,
+        lineHeight: '32px',
+      }}
+    >
+      {hasNextPage ? <Button onClick={loadMoreItems}>加载更多...</Button> : '没有更多了'}
+    </div>
+  ) : null;
+
   return (
     <div className={classNames(`${prefixCls}-bottom-fix-panel`, hashId)}>
-      {pages?.length ? (
-        <InfiniteLoader isRowLoaded={isItemLoaded} rowCount={total} loadMoreRows={loadMoreItems}>
-          {({ onRowsRendered, registerChild }) => (
-            <WindowScroller>
-              {({ registerChild: winRef, ...winProps }) => (
-                <List
-                  style={{
-                    background: '#f0f2f5',
-                    paddingBottom: '128px',
-                    height: '100%',
-                  }}
-                  {...winProps}
-                  ref={(ref) => registerChild(winRef(ref))}
-                  rowCount={total}
-                  onRowsRendered={onRowsRendered}
-                  rowRenderer={renderItem}
-                  rowHeight={118}
-                />
-              )}
-            </WindowScroller>
-          )}
-        </InfiniteLoader>
-      ) : (
-        <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
-      )}
+      <div style={{ flex: 1, overflowY: 'scroll' }}>
+        {pages?.length ? (
+          <List
+            dataSource={pages}
+            itemLayout="vertical"
+            renderItem={renderItem}
+            loading={isFetching}
+            loadMore={loadMore}
+          />
+        ) : (
+          <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
+        )}
+      </div>
 
       <Form onFinish={submit} form={form}>
         <div
