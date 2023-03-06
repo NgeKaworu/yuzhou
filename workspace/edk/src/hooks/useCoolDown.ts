@@ -30,11 +30,10 @@ export default ({
   onCoolDown,
   depend = window,
 }: CoolDownParams) => {
-
   const onCoolDownRef = useRef(onCoolDown);
   useEffect(() => {
     onCoolDownRef.current = onCoolDown;
-  }, [onCoolDown])
+  }, [onCoolDown]);
 
   let localStorage = depend.localStorage,
     decodeCoolDown: any = null,
@@ -88,7 +87,7 @@ export default ({
   }
 
   const [remaining, setRemaining] = useState(init),
-    timer = useRef<NodeJS.Timeout>(),
+    timer = useRef<ReturnType<typeof setTimeout>>(),
     cooling = remaining !== count;
 
   useEffect(() => {
@@ -153,7 +152,7 @@ export default ({
   }
 
   function reset(c = count) {
-    if (timer.current !== void 0) console.warn('you need stop first')
+    if (timer.current !== void 0) console.warn('you need stop first');
     const safeCount = Number.isNaN(Number(c)) ? count : c;
     setRemaining(() => safeCount);
     if (isPersistence && cooling) {
