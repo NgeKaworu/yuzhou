@@ -1,3 +1,13 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-05 16:48:01
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-10 15:12:43
+ * @FilePath: /yuzhou/workspace/edk/src/struct/tree/setTo/index.ts
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
 export type Key = string | number | symbol;
 export type Pointer<T = any> = T[] | Record<Key, T> | undefined | null;
 export enum VALID_TYPE {
@@ -27,7 +37,7 @@ export function getKeyType(key: Key) {
     case 'symbol':
       return VALID_TYPE.SYMBOL;
     default:
-      throw new Error(`invalid key type: ${key}, except string | number | symbol`);
+      throw new Error(`invalid key type: ${typeof key}, except string | number | symbol`);
   }
 }
 export function getPointersType(pointer?: Pointer) {
@@ -43,7 +53,9 @@ export function getPointersType(pointer?: Pointer) {
     return VALID_TYPE.OBJECT;
   }
 
-  throw new Error(`invalid pointer type: ${pointer}, except array | object | undefined | null`);
+  throw new Error(
+    `invalid pointer type: ${typeof pointer}, except array | object | undefined | null`,
+  );
 }
 
 export default function setTo(pointer: Pointer, path: Key[] | Key, value: any) {
@@ -66,8 +78,6 @@ export default function setTo(pointer: Pointer, path: Key[] | Key, value: any) {
       case VALID_TYPE.SYMBOL:
         origin = {};
         break;
-      default:
-        throw new Error(`invalid key type: ${keyType}, except string | number | symbol`);
     }
   }
 
