@@ -3,7 +3,7 @@
  * @Date: 2023-03-05 01:55:13
  * @LastEditors: fuRan NgeKaworu@gmail.com
  * @LastEditTime: 2023-03-05 20:25:13
- * @FilePath: /monorepo-lab/workspace/time-mgt-umi/.umirc.ts
+ * @FilePath: /yuzhou/workspace/time-mgt-umi/.umirc.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
