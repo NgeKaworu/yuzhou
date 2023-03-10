@@ -1,12 +1,29 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-05 16:48:01
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-11 02:09:11
+ * @FilePath: /yuzhou/workspace/edk/src/struct/chain/index.ts
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
 export interface Node {
   next?: Node;
 }
 
-export default abstract class Chain<N extends { next?: N }> {
+export default class Chain<N extends { next?: N }> {
   protected head: N | undefined;
+  protected last: N | undefined;
+
+  public length = 0;
 
   constructor(...n: (N | undefined)[]) {
-    for (let i = 1; i < n.length; i++) {
+    const l = n.length;
+    if (l <= 0) return this;
+
+    this.length = l;
+    for (let i = 1; i < l; i++) {
       const ptr = n[i - 1];
       if (ptr !== undefined) {
         ptr.next = n[i];
@@ -14,6 +31,7 @@ export default abstract class Chain<N extends { next?: N }> {
     }
 
     this.head = n?.[0];
+    this.last = n?.[l - 1];
   }
 
   [Symbol.iterator] = () => {
@@ -44,17 +62,21 @@ export default abstract class Chain<N extends { next?: N }> {
   public Append = (t: N, ...n: N[]) => {
     if (this.Find((i) => i === t) == null) throw new Error('target node not in this chain');
 
-    const l = n.length;
+    const c = new Chain(...n);
+    this.AppendChain(t, c);
+
+    return this;
+  };
+
+  public AppendChain = (t: N, c: Chain<N>) => {
+    if (this.Find((i) => i === t) == null) throw new Error('target node not in this chain');
+    const l = c.length;
     if (l === 0) return this;
 
-    for (let i = 1; i < l; i++) {
-      n[i - 1].next = n[i];
-    }
+    this.length += l;
 
-    const ln = n[l - 1];
-
-    ln.next = t?.next?.next;
-    t.next = n?.[0];
+    c.last!.next = t.next;
+    t.next = c.head;
 
     return this;
   };
@@ -62,24 +84,26 @@ export default abstract class Chain<N extends { next?: N }> {
   public Prepend = (t: N, ...n: N[]) => {
     if (this.Find((i) => i === t) == null) throw new Error('target node not in this chain');
 
-    const l = n.length;
+    const c = new Chain(...n);
+    this.PrependChain(t, c);
+
+    return this;
+  };
+
+  public PrependChain = (t: N, c: Chain<N>) => {
+    if (this.Find((i) => i === t) == null) throw new Error('target node not in this chain');
+    const l = c.length;
     if (l === 0) return this;
 
-    for (let i = 1; i < l; i++) {
-      n[i - 1].next = n[i];
-    }
-
-    const ln = n[l - 1];
+    this.length += l;
 
     if (t === this.head) {
-      ln.next = this.head;
-      this.head = n?.[0];
+      c.last!.next = t;
+      this.head = c.head;
     } else {
-      const p = this.Find((i) => i?.next === t);
-      if (p == null) throw new Error('unknown error in p');
-
-      p.next = ln;
-      n[0].next = t;
+      const pre = this.Find((i) => i?.next === t);
+      c.last!.next = t;
+      pre!.next = c.head;
     }
 
     return this;
@@ -91,11 +115,27 @@ export default abstract class Chain<N extends { next?: N }> {
     if (t === this.head) {
       this.head = this?.head?.next;
     } else {
-      const p = this.Find((i) => i?.next === t);
-      if (p == null) throw new Error('unknown error in p');
-      p.next = p?.next?.next;
+      const pre = this.Find((i) => i?.next === t);
+      pre!.next = pre?.next?.next;
     }
 
     return this;
   };
+
+  public Reverse() {
+    if (null == this.head || null == this.head.next) return this;
+
+    let p = this.head.next;
+    this.head.next = void 0;
+    let tmp;
+
+    while (p) {
+      tmp = p.next;
+      p.next = this.head;
+      this.head = p;
+      p = tmp!;
+    }
+
+    return this;
+  }
 }
