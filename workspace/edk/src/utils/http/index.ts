@@ -1,64 +1,18 @@
 import { message } from 'antd';
 
-import axios, { AxiosInstance, AxiosPromise } from 'axios';
-
-import type { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 export type Notify = boolean | 'success' | 'fail';
 
-export interface CustomRequestConfig<D = any> extends AxiosRequestConfig<D> {
-  // 是否偷偷摸摸抛异常
-  sneakyThrows?: boolean;
-  // 是否通知
-  notify?: Notify;
-  // 是否重新登录
-  reAuth?: boolean;
-}
-
-export interface CustomResponse extends AxiosResponse {
-  config: CustomRequestConfig;
-}
-
-export interface CustomInstance extends AxiosInstance {
-  (config: CustomRequestConfig): AxiosPromise;
-  (url: string, config?: CustomRequestConfig): AxiosPromise;
-  getUri(config?: CustomRequestConfig): string;
-  request<T = any, R = AxiosResponse<T>, D = any>(config: CustomRequestConfig<D>): Promise<R>;
-  get<T = any, R = AxiosResponse<T>, D = any>(
-    url: string,
-    config?: CustomRequestConfig<D>,
-  ): Promise<R>;
-  delete<T = any, R = AxiosResponse<T>, D = any>(
-    url: string,
-    config?: CustomRequestConfig<D>,
-  ): Promise<R>;
-  head<T = any, R = AxiosResponse<T>, D = any>(
-    url: string,
-    config?: CustomRequestConfig<D>,
-  ): Promise<R>;
-  options<T = any, R = AxiosResponse<T>, D = any>(
-    url: string,
-    config?: CustomRequestConfig<D>,
-  ): Promise<R>;
-  post<T = any, R = AxiosResponse<T>, D = any>(
-    url: string,
-    data?: D,
-    config?: CustomRequestConfig<D>,
-  ): Promise<R>;
-  put<T = any, R = AxiosResponse<T>, D = any>(
-    url: string,
-    data?: D,
-    config?: CustomRequestConfig<D>,
-  ): Promise<R>;
-  patch<T = any, R = AxiosResponse<T>, D = any>(
-    url: string,
-    data?: D,
-    config?: CustomRequestConfig<D>,
-  ): Promise<R>;
-}
-
-export interface CustomError extends AxiosError {
-  config: CustomRequestConfig;
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    // 是否偷偷摸摸抛异常
+    sneakyThrows?: boolean;
+    // 是否通知
+    notify?: Notify;
+    // 是否重新登录
+    reAuth?: boolean;
+  }
 }
 
 // 状态码对映的消息
@@ -81,7 +35,7 @@ const codeMessage: { [key: number]: string } = {
   504: '网关超时。',
 };
 
-export const restful: CustomInstance = axios.create({
+export const restful = axios.create({
   baseURL: '/api/',
   timeout: 10000,
   timeoutErrorMessage: '连接超时，请检查网络后再试',
@@ -89,13 +43,8 @@ export const restful: CustomInstance = axios.create({
 
 // header inject
 restful.interceptors.request.use(function (options) {
-  return {
-    ...options,
-    headers: {
-      ...options?.headers,
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  };
+  options.headers.setAuthorization(`Bearer ${localStorage.getItem('token')}`);
+  return options;
 });
 
 // biz checked
@@ -104,7 +53,7 @@ restful.interceptors.response.use(function (response) {
     return response;
   }
 
-  const bizError: CustomError = {
+  const bizError = {
     config: response.config,
     isAxiosError: false,
     toJSON: () => ({}),
@@ -118,7 +67,7 @@ restful.interceptors.response.use(function (response) {
 });
 
 // success notify
-restful.interceptors.response.use(function (response: CustomResponse) {
+restful.interceptors.response.use(function (response) {
   const { data, config } = response;
   if ([true, 'success']?.includes(config?.notify ?? false)) {
     const content = data?.message || '操作成功';
@@ -128,7 +77,7 @@ restful.interceptors.response.use(function (response: CustomResponse) {
 });
 
 // error handler
-restful.interceptors.response.use(undefined, (error: CustomError) => {
+restful.interceptors.response.use(undefined, (error: AxiosError) => {
   const { response, message: eMsg, config } = error ?? {},
     { reAuth, notify, sneakyThrows } = config ?? {};
   // reAuth标记是用来防止连续401的熔断处理
@@ -140,7 +89,7 @@ restful.interceptors.response.use(undefined, (error: CustomError) => {
           key: response.status,
           content: '请先登录',
           onClose: () => {
-            localStorage.clear();
+            localStorage.removeItem('token');
             if (!location.pathname?.toLocaleLowerCase()?.includes('/user-center/login/')) {
               location.replace(`/user-center/login/`);
             }
@@ -173,14 +122,14 @@ restful.interceptors.response.use(undefined, (error: CustomError) => {
 });
 
 // 重新授权处理
-function reAuthorization(config: CustomRequestConfig) {
+function reAuthorization(config?: AxiosRequestConfig) {
   return restful
     .get('/uc/oauth2/refresh', {
       reAuth: false,
       notify: 'fail',
       params: { token: localStorage.getStorage('refresh_token') },
     })
-    .then((resp: CustomResponse) => {
+    .then((resp) => {
       localStorage.setItem('token', resp.data.token);
       localStorage.setItem('refresh_token', resp.data.refresh_token);
       return restful({ ...config, reAuth: false });
@@ -193,7 +142,7 @@ export const graphql = graphqlMethods.reduce(
   (acc, method) => ({
     ...acc,
     [method]:
-      (url: string, options?: CustomRequestConfig) =>
+      (url: string, options?: AxiosRequestConfig) =>
       (...query: any[]) =>
         restful.post(url, {
           query: `${method} {${query[0].reduce(
@@ -203,5 +152,5 @@ export const graphql = graphqlMethods.reduce(
           ...options,
         }),
   }),
-  {} as Record<typeof graphqlMethods[number], <T = any>(opt?: CustomRequestConfig) => Promise<T>>,
+  {} as Record<(typeof graphqlMethods)[number], <T = any>(opt?: AxiosRequestConfig) => Promise<T>>,
 );
