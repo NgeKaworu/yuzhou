@@ -2,11 +2,11 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 16:48:01
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-05 19:42:56
- * @FilePath: /yuzhou/workspace/edk/components/LightTable/valueTypeRegister.ts
- * @Description: 
- * 
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ * @LastEditTime: 2023-03-11 21:43:37
+ * @FilePath: /yuzhou/workspace/edk/src/components/LightTable/valueTypeRegister.ts
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
 import reverseSplitJoin from '../../struct/string/reverseSplitJoin';
 import type { TableColumnProps } from 'antd';
@@ -16,9 +16,9 @@ import type { ValueType } from '../type';
 const dataFormat = 'YYYY-MM-DD';
 const timeFormat = 'HH:mm:ss';
 
-export const _valueTypeRegister = <RecordType>(
+export function _valueTypeRegister<RecordType>(
   valueType: ValueType,
-): TableColumnProps<RecordType>['render'] => {
+): TableColumnProps<RecordType>['render'] {
   const register: Partial<Record<ValueType, TableColumnProps<RecordType>['render']>> = {
     date: (v) => moment(v)?.format(dataFormat),
     dateTime: (v) => moment(v)?.format(`${dataFormat} ${timeFormat}`),
@@ -37,4 +37,4 @@ export const _valueTypeRegister = <RecordType>(
   };
 
   return register[valueType];
-};
+}

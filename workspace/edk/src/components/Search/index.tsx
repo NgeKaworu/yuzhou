@@ -8,6 +8,7 @@ import SearchForm from '../SearchForm';
 import valueTypeRegister from './valueTypeRegister';
 import SearchSelect from '../SearchSelect';
 import type { ValueEnum, ValueType } from '../type';
+import { renderTitle } from '../LightTable';
 
 const FormItem = Form.Item;
 
@@ -139,13 +140,13 @@ function renderItem<RecordType>(col: SearchColumnsProps<RecordType>, form: FormI
   return (
     <FormItem
       hidden={hideInSearch}
-      label={title}
+      label={renderTitle(title)}
       name={dataIndex}
       tooltip={tooltip}
       noStyle={noStyle}
       {...formItemProps}
     >
-      {renderFormItem?.(col as any, { type: 'form', defaultRender: () => Ele }, form) ?? Ele}
+      {renderFormItem?.(col as any, Ele, form) ?? Ele}
     </FormItem>
   );
 }

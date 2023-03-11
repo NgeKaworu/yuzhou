@@ -1,13 +1,14 @@
 import type { MutableRefObject, ReactNode, Ref } from 'react';
 import { Card, Descriptions, Pagination } from 'antd';
 import type { FormInstance, FormProps, DescriptionsProps, PaginationProps, TableProps } from 'antd';
-import type { LightColumnProps, LightTableProps } from '../LightTable';
+import { LightColumnProps, LightTableProps, renderTitle } from '../LightTable';
 import type { SearchColumnsProps } from '../Search';
 import Search from '../Search';
 import type { QueryKey, QueryFunction, UseQueryOptions } from '@tanstack/react-query';
 import useWrap from './hook/useWrap';
 import styles from './index.module.less';
 import getIn from '../../struct/tree/getIn';
+import { ColumnTitle } from 'antd/es/table/interface';
 
 export { default as useLightTablePro } from './hook/useLightTablePro';
 export { default as useWrap } from './hook/useWrap';
@@ -140,7 +141,11 @@ export default function LightDescriptionsPro<RecordType extends Record<any, any>
                     dom = r?.(v, d, i) ?? v;
                   if (!dom) return acc;
                   return acc.concat(
-                    <Item key={`${c?.dataIndex}`} label={c.title} span={c.colSpan ?? c.colSize}>
+                    <Item
+                      key={`${c?.dataIndex}`}
+                      label={renderTitle(c.title)}
+                      span={c.colSpan ?? c.colSize}
+                    >
                       {dom}
                     </Item>,
                   );

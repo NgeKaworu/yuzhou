@@ -13,6 +13,7 @@ import { _valueTypeRegister } from './valueTypeRegister';
 import prune from '../../struct/tree/prune';
 import trimEndWith from '../../struct/string/trimEndWith';
 import isValidValue from '../../utils/isValidValue';
+import { ColumnTitle } from 'antd/es/table/interface';
 
 const { Paragraph, Link } = Typography;
 
@@ -61,6 +62,10 @@ export const renderKey = [
 
 export const allRenderKey = [...globalRenderKey, ...renderKey] as const;
 
+export function renderTitle(title: ColumnTitle<any>) {
+  return typeof title === 'function' ? title?.({}) : title;
+}
+
 export default <RecordType extends Record<any, any> = any>(props: LightTableProps<RecordType>) => (
   <Table {..._pruneProps(props)} />
 );
@@ -72,7 +77,7 @@ function _pruneProps<RecordType>({
   const extraColumn: LightColumnProps<RecordType> = {};
 
   const pruneProps = Object.keys(props)?.reduce((acc: TableProps<RecordType>, key) => {
-    const k = key as typeof globalRenderKey[number];
+    const k = key as (typeof globalRenderKey)[number];
 
     if (globalRenderKey?.includes(k)) {
       // effect
@@ -100,7 +105,7 @@ function _processColumn<RecordType>(c: LightColumnProps<RecordType>): TableColum
 function _pruneColumn<RecordType>(c: LightColumnProps<RecordType>): TableColumnProps<RecordType> {
   return Object.keys(c)?.reduce(
     (acc: TableColumnProps<RecordType>, key) =>
-      renderKey?.includes(key as typeof renderKey[number])
+      renderKey?.includes(key as (typeof renderKey)[number])
         ? acc
         : { ...acc, [key]: c?.[key as keyof TableColumnProps<RecordType>] },
     {},
@@ -135,7 +140,7 @@ function _tsumugi<RecordType>(
 }
 
 function _pickNode<RecordType>(
-  keys: typeof allRenderKey[number][],
+  keys: (typeof allRenderKey)[number][],
   renders: Partial<LightRenderNode<RecordType>>,
 ) {
   return keys?.reduce((acc: RenderNode<RecordType>[], cur) => {
@@ -169,7 +174,7 @@ function _toLightRenderNode<RecordType>(renders?: Render<RecordType>): LightRend
 }
 
 export type RenderType = `${
-  | Exclude<typeof allRenderKey[number], 'render' | 'ellipsis' | 'copyable' | 'link'>
+  | Exclude<(typeof allRenderKey)[number], 'render' | 'ellipsis' | 'copyable' | 'link'>
   | 'basic'}Render`;
 
 export type Render<RecordType> = AtLeast<
@@ -193,7 +198,7 @@ function _factory<RecordType>(
     paragraph,
     decimal,
   } = allRenderKey?.reduce(
-    (acc: Pick<LightColumnProps<RecordType>, typeof allRenderKey[number]>, cur) =>
+    (acc: Pick<LightColumnProps<RecordType>, (typeof allRenderKey)[number]>, cur) =>
       c[cur] ? { ...acc, [cur]: c[cur] } : acc,
     {},
   );
@@ -212,15 +217,14 @@ function _factory<RecordType>(
             marginBottom: 0,
           }}
           ellipsis={ellipsis}
-          copyable={copyable}
-          {...paragraph}
+          copyable={copyable ?? paragraph}
         >
           {v}
         </Paragraph>
       );
 
       return link ? (
-        <Link href={v} {...link}>
+        <Link href={v} {...(typeof link === 'object' && link)}>
           {children}
         </Link>
       ) : (

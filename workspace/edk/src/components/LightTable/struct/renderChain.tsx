@@ -7,7 +7,7 @@ export type Render<RecordType extends Record<any, any> = any> = (
   record: RecordType,
   index: number,
   value: any,
-) => React.ReactNode;
+) => React.ReactNode | any;
 
 export class RenderNode<RecordType> implements Node {
   render?: Render;

@@ -1,3 +1,13 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-05 16:48:01
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-11 20:44:41
+ * @FilePath: /yuzhou/workspace/edk/src/struct/tree/prune/index.test.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import isValidValue from '../../../utils/isValidValue';
 import prune from '.';
 
@@ -7,7 +17,6 @@ describe('prune test', () => {
   });
 
   it('[{}] === undefined', () => {
-    console.log(prune([{}], isValidValue));
     expect(prune([{}], isValidValue)).toEqual(undefined);
   });
 
