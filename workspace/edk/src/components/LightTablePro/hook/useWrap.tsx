@@ -7,7 +7,7 @@ import type { LightTableProps } from '../../LightTable';
 import type { QueryKey, QueryFunction, UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import type { ActionRef } from '..';
-import useURLSearch from '@/edk/hooks/useURLSearch';
+import useURLSearch from '../../../hooks/useURLSearch';
 
 type RequestParameters<RecordType> = Parameters<
   NonNullable<LightTableProps<RecordType>['onChange']>

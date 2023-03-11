@@ -1,8 +1,17 @@
-import AMap from '@/edk/utils/aMap/singleton/aMap';
-import Plugin from '@/edk/utils/aMap/plugin';
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-05 16:48:01
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-11 02:43:23
+ * @FilePath: /yuzhou/workspace/edk/src/components/DistrictCascader/index.tsx
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
+import AMap, { Config } from '../../utils/aMap/singleton/aMap';
+import Plugin from '../../utils/aMap/plugin';
 
 import { useQuery } from '@tanstack/react-query';
-import { reject } from 'lodash';
 import type { CascaderProps } from 'antd';
 import { Cascader } from 'antd';
 
@@ -32,6 +41,7 @@ interface DistrictConfig {
 
 type Props<T> = CascaderProps<T> & {
   districtConfig?: DistrictConfig;
+  mapConfig: Config;
 };
 
 export default <T extends any = any>({ mapConfig, districtConfig, ...cascaderProps }: Props<T>) => {
@@ -48,7 +58,7 @@ export default <T extends any = any>({ mapConfig, districtConfig, ...cascaderPro
   const district = useQuery(
     ['district', districtConfig],
     () =>
-      new Promise<District>(async (res) => {
+      new Promise<District>(async (res, reject) => {
         const client = await districtSearch.Get();
         client?.search('中国', (status: Status, data: District) => {
           if (status === 'complete') return res(data);

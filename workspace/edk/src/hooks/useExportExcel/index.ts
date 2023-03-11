@@ -4,7 +4,7 @@ import type { ExportColumns } from './util';
 import { JSON2Sheet } from './util';
 import exportExcel from './util';
 
-export interface ExportParams<D> {
+export interface ExportParams<D extends Record<any, any>> {
   fetch: () => Promise<{
     fetchSlice: (params: {
       current: number;

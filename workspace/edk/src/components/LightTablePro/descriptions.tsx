@@ -7,7 +7,7 @@ import Search from '../Search';
 import type { QueryKey, QueryFunction, UseQueryOptions } from '@tanstack/react-query';
 import useWrap from './hook/useWrap';
 import styles from './index.module.less';
-import getIn from '@/edk/struct/tree/getIn';
+import getIn from '../../struct/tree/getIn';
 
 export { default as useLightTablePro } from './hook/useLightTablePro';
 export { default as useWrap } from './hook/useWrap';

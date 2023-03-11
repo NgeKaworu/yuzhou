@@ -1,3 +1,13 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-05 16:48:01
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-11 02:19:24
+ * @FilePath: /yuzhou/workspace/edk/src/hooks/useExportExcel/util/converter/LightCol2Col.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import type { LightTableProColumnProps } from '../../../../components/LightTablePro';
 import type { ExportColumns, ExportColumn } from '..';
 
@@ -7,7 +17,7 @@ export type Exportable<T extends Record<any, any> = any, R = T> = T &
     noConvent?: boolean;
   };
 
-export default <T>(cols?: Exportable<LightTableProColumnProps<T>, T>[]): ExportColumns<T> =>
+export default <T extends Record<any, any>>(cols?: Exportable<LightTableProColumnProps<T>, T>[]): ExportColumns<T> =>
   [...(cols ?? [])]
     // 排序
     // order	查询表单中的权重，权重大排序靠前	number
