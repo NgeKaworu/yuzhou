@@ -5,7 +5,7 @@ import { CheckCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 
 import { remove } from './services';
 
-import useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 import { TagSchema } from '@/components/TagMgt/models';
 import { TagModForm } from './components/TagExec';
 import useTagList from './hooks/useTagList';

@@ -15,7 +15,7 @@ import moment from 'dayjs';
 import useTagList from '@/components/TagMgt/hooks/useTagList';
 import { add, update, page } from './services';
 
-import isValidValue from '@/js-sdk/utils/isValidValue';
+import isValidValue from 'edk/src/utils/isValidValue';
 
 import classNames from 'classnames';
 import { prefixCls } from '@/theme';

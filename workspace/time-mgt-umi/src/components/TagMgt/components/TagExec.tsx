@@ -4,12 +4,12 @@ import { Form, Input } from 'antd';
 
 import { SketchPicker, SketchPickerProps } from 'react-color';
 
-import ModalForm from '@/js-sdk/components/ModalForm';
-import useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import ModalForm from 'edk/src/components/ModalForm';
+import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 import { add, update } from '../services';
-import { compose } from '@/js-sdk/decorators/utils';
-import { IOC } from '@/js-sdk/decorators/hoc';
-import Format from '@/js-sdk/decorators/Format';
+import { compose } from 'edk/src/decorators/utils';
+import { IOC } from 'edk/src/decorators/hoc';
+import Format from 'edk/src/decorators/Format';
 
 const { Item } = Form;
 export function TagModForm({

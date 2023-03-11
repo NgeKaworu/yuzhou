@@ -1,4 +1,4 @@
-import { CustomRequestConfig, restful } from '@/js-sdk/utils/http'
+import { CustomRequestConfig, restful } from 'edk/src/utils/http'
 
 
 export const add = <T, R, D>(...payload: [data?: D, opt?: CustomRequestConfig<D>]) => {

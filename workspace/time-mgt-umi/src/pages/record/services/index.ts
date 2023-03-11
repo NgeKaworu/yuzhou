@@ -1,4 +1,4 @@
-import { restful,CustomRequestConfig } from "@/js-sdk/utils/http";
+import { restful,CustomRequestConfig } from "edk/src/utils/http";
 
 export const add = <T, R, D>(...payload: [data?: D, opt?: CustomRequestConfig<D>]) => {
     return restful.post<T, R, D>('time-mgt/v1/record/create', ...payload);
