@@ -2,10 +2,12 @@ import type { CSSProperties, ReactNode } from 'react';
 import { useState } from 'react';
 import type { MarqueeProps } from '../Marquee';
 import Marquee from '../Marquee';
-import styles from './index.module.less';
-import { Tooltip, Typography } from 'antd';
+import { Tooltip, Typography, theme } from 'antd';
 import trimEndWith from '../../struct/string/trimEndWith';
 import arr from '../../struct/array/arr';
+import { DerivativeToken, useStyleRegister } from 'antd/es/theme/internal';
+import { CSSInterpolation } from '@ant-design/cssinjs';
+import classNames from 'classnames';
 
 const { Link, Paragraph, Text } = Typography;
 
@@ -18,8 +20,11 @@ export interface ScheduleProps {
   colHeadHeight?: number;
   rowHeads?: ReactNode[];
   borderSize?: number;
+  prefixCls?: string;
 }
 const initValue = arr(7, arr(48, false));
+
+const { useToken } = theme;
 
 export default function ({
   value = initValue,
@@ -30,8 +35,17 @@ export default function ({
   colHeadHeight = colHeight * 2,
   rowHeads = ['日', '一', '二', '三', '四', '五', '六'],
   borderSize = 1,
+  prefixCls = 'schedule',
 }: ScheduleProps) {
   const [_value, _setValue] = useState<boolean[][]>(initValue);
+
+  // 【自定义】制造样式
+  const { theme, token, hashId } = useToken();
+
+  // 全局注册，内部会做缓存优化
+  const wrapSSR = useStyleRegister({ theme, token, hashId, path: [prefixCls] }, () => [
+    genStyle(prefixCls, token),
+  ]);
 
   const picked = value ?? _value,
     setPicked = onChange ?? _setValue;
@@ -95,9 +109,9 @@ export default function ({
     setPicked(initValue);
   }
 
-  return (
+  return wrapSSR(
     <Marquee onRange={onRange} sticky={{ offsetX: colWidth, offsetY: colHeight }}>
-      <table className={styles.table}>
+      <table className={classNames(`${prefixCls}-table`)}>
         <caption>
           {picked.some((pick) => pick.includes(true)) ? (
             <div>
@@ -174,7 +188,7 @@ export default function ({
               {hours.map((_, halfHour) => (
                 <td
                   key={`day-${day}-${halfHour}`}
-                  className={`${picked[day][halfHour] === true ? styles?.picked : ''}`}
+                  className={classNames(picked[day][halfHour] === true && `${prefixCls}'-picked'`)}
                 >
                   <Tooltip
                     overlay={`${rowHeads[day]} ${time(halfHour)} - ${time(halfHour + 1)}`}
@@ -188,6 +202,19 @@ export default function ({
           ))}
         </tbody>
       </table>
-    </Marquee>
+    </Marquee>,
   );
 }
+
+const genStyle = (prefixCls: string, token: DerivativeToken): CSSInterpolation => ({
+  [`.${prefixCls}-table`]: {
+    userSelect: 'none',
+    'table,\n  td,\n  th,\n  caption': { border: '1px solid #e0e0e0' },
+    caption: { padding: '12px', borderTop: 'unset' },
+    [`.${prefixCls}-picked`]: {
+      backgroundColor: `${token.colorPrimary}`,
+      filter: 'brightness(1.3)',
+      transition: 'background-color 0.2s ease',
+    },
+  },
+});
