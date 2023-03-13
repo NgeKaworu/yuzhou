@@ -1,0 +1,25 @@
+// 没有使用， 但是是无缩紧嵌套表格样式
+.expandable {
+  > td {
+    padding: 0 !important;
+    border-bottom: 0;
+  }
+
+  :global {
+    .ant-table-expanded-row-fixed {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .ant-table {
+      margin: 0 !important;
+    }
+    .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table,
+    .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table {
+      border-top: 0;
+    }
+
+    .ant-table.ant-table-bordered > .ant-table-container {
+      border-left: 0;
+    }
+  }
+}
