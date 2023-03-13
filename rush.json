@@ -124,34 +124,34 @@
    * The approvals are tracked in two config files "browser-approved-packages.json"
    * and "nonbrowser-approved-packages.json".  See the Rush documentation for details.
    */
-  // "approvedPackagesPolicy": {
-  //   /**
-  //    * The review categories allow you to say for example "This library is approved for usage
-  //    * in prototypes, but not in production code."
-  //    *
-  //    * Each project can be associated with one review category, by assigning the "reviewCategory" field
-  //    * in the "projects" section of rush.json.  The approval is then recorded in the files
-  //    * "common/config/rush/browser-approved-packages.json" and "nonbrowser-approved-packages.json"
-  //    * which are automatically generated during "rush update".
-  //    *
-  //    * Designate categories with whatever granularity is appropriate for your review process,
-  //    * or you could just have a single category called "default".
-  //    */
-  //   "reviewCategories": [
-  //     // Some example categories:
-  //     "production", // projects that ship to production
-  //     "tools",      // non-shipping projects that are part of the developer toolchain
-  //     "prototypes"  // experiments that should mostly be ignored by the review process
-  //   ],
-  // 
-  //   /**
-  //    * A list of NPM package scopes that will be excluded from review.
-  //    * We recommend to exclude TypeScript typings (the "@types" scope), because
-  //    * if the underlying package was already approved, this would imply that the typings
-  //    * are also approved.
-  //    */
-  //   // "ignoredNpmScopes": ["@types"]
-  // },
+  "approvedPackagesPolicy": {
+    /**
+     * The review categories allow you to say for example "This library is approved for usage
+     * in prototypes, but not in production code."
+     *
+     * Each project can be associated with one review category, by assigning the "reviewCategory" field
+     * in the "projects" section of rush.json.  The approval is then recorded in the files
+     * "common/config/rush/browser-approved-packages.json" and "nonbrowser-approved-packages.json"
+     * which are automatically generated during "rush update".
+     *
+     * Designate categories with whatever granularity is appropriate for your review process,
+     * or you could just have a single category called "default".
+     */
+    "reviewCategories": [
+      // Some example categories:
+      "production", // projects that ship to production
+      "tools",      // non-shipping projects that are part of the developer toolchain
+      "prototypes"  // experiments that should mostly be ignored by the review process
+    ],
+  
+    /**
+     * A list of NPM package scopes that will be excluded from review.
+     * We recommend to exclude TypeScript typings (the "@types" scope), because
+     * if the underlying package was already approved, this would imply that the typings
+     * are also approved.
+     */
+    "ignoredNpmScopes": ["@types"]
+  },
 
   /**
    * If you use Git as your version control system, this section has some additional
@@ -229,7 +229,7 @@
      * The default branch name. This tells "rush change" which remote branch to compare against.
      * The default value is "main"
      */
-    // "defaultBranch": "main",
+    "defaultBranch": "master"
 
     /**
      * The default remote. This tells "rush change" which remote to compare against if the remote URL is
@@ -332,23 +332,23 @@
    * 3. It's useful to have a centralized inventory of all projects and their important metadata.
    */
   "projects": [
-    // {
+    {
     //   /**
     //    * The NPM package name of the project (must match package.json)
     //    */
-    //   "packageName": "my-app",
+      "packageName": "time-mgt",
     // 
     //   /**
     //    * The path to the project folder, relative to the rush.json config file.
     //    */
-    //   "projectFolder": "apps/my-app",
+      "projectFolder": "app/time-mgt",
     // 
     //   /**
     //    * An optional category for usage in the "browser-approved-packages.json"
     //    * and "nonbrowser-approved-packages.json" files.  The value must be one of the
     //    * strings from the "reviewCategories" defined above.
     //    */
-    //   "reviewCategory": "production",
+      "reviewCategory": "production"
     // 
     //   /**
     //    * A list of Rush project names that are to be installed from NPM
@@ -414,14 +414,14 @@
     //    * ".", and "@" characters.
     //    */
     //   // "tags": [ "1.0.0-release", "frontend-team" ]
-    // },
+    },
     // 
-    // {
-    //   "packageName": "my-controls",
-    //   "projectFolder": "libraries/my-controls",
-    //   "reviewCategory": "production",
-    //   "tags": [ "frontend-team" ]
-    // },
+    {
+      "packageName": "edk",
+      "projectFolder": "util/edk",
+      "reviewCategory": "production"
+      // "tags": [ "frontend-team" ]
+    }
     // 
     // {
     //   "packageName": "my-toolchain",

@@ -2,6 +2,8 @@ import { message } from 'antd';
 
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
+export * as axios from 'axios'
+
 export type Notify = boolean | 'success' | 'fail';
 
 declare module 'axios' {

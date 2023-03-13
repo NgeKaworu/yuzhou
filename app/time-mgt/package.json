@@ -1,5 +1,6 @@
 {
   "name": "time-mgt",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "umi dev",

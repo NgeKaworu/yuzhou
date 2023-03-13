@@ -11,7 +11,7 @@ import { TagModForm } from './components/TagExec';
 import useTagList from './hooks/useTagList';
 interface TagMgtProps {
   value?: string[];
-  onChange?: Function;
+  onChange?: (ids?: string[]) => void;
 }
 
 const { useToken } = theme;
@@ -72,7 +72,7 @@ export default function TagMgt(props?: TagMgtProps) {
           <div style={{ borderBottom: '1px solid #e9e9e9' }}>
             <Checkbox
               checked={list?.length === value.length}
-              indeterminate={value?.length > 0 && value?.length < list?.length}
+              indeterminate={value?.length > 0 && value?.length < (list?.length ?? 0)}
               onChange={() => {
                 if (list?.length === value?.length) {
                   onChange([]);
@@ -85,7 +85,7 @@ export default function TagMgt(props?: TagMgtProps) {
             </Checkbox>
             <a
               onClick={() => {
-                const inverse = list.reduce((acc: string[], cur: TagSchema) => {
+                const inverse = list?.reduce((acc: string[], cur: TagSchema) => {
                   if (!value.includes(cur.id)) {
                     return [...acc, cur.id];
                   }
