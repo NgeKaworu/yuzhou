@@ -1,19 +1,19 @@
 import { useState, Key, createElement } from 'react';
-import { LightTableProColumnProps } from '@/js-sdk/components/LightTablePro';
+import { LightTableProColumnProps } from 'edk/src/components/LightTablePro';
 import Perm from '@/model/Perm';
 import { list, deleteOne, update } from '../api';
 import Editor from './Editor';
-import useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 import { Button, Space, Typography, Popconfirm, Form, Card, FormProps, Switch } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { MENU_TYPE_MAP } from '../model/constant';
-import { useQuery } from 'react-query';
-import LightTable from '@/js-sdk/components/LightTable';
-import style from '@/js-sdk/components/LightTablePro/index.less';
-import Search from '@/js-sdk/components/Search';
+import { useQuery } from '@tanstack/react-query';
+import LightTable from 'edk/src/components/LightTable';
+import style from 'edk/src/components/LightTablePro/index.module.less';
+import Search from 'edk/src/components/Search';
 import perm2Tree, { PermOpt } from '../util/perm2Tree';
-import dfs from '@/js-sdk/struct/tree/dfs';
-import { ignoreCaseIncludes } from '@/js-sdk/struct/string/util';
+import dfs from 'edk/src/struct/tree/dfs';
+import { ignoreCaseIncludes } from 'edk/src/struct/string/util';
 import * as icons from '@ant-design/icons';
 
 const { Link } = Typography;
@@ -143,19 +143,19 @@ export default () => {
   ];
 
   function create() {
-    editor.setModalProps((pre) => ({ ...pre, visible: true, title: '新增' }));
+    editor.setModalProps((pre) => ({ ...pre, open: true, title: '新增' }));
   }
 
   function edit(row: Perm) {
     return () => {
-      editor.setModalProps((pre) => ({ ...pre, visible: true, title: '编辑' }));
+      editor.setModalProps((pre) => ({ ...pre, open: true, title: '编辑' }));
       editor.form.setFieldsValue(row);
     };
   }
 
   function addSubMenu(row: Perm) {
     return () => {
-      editor.setModalProps((pre) => ({ ...pre, visible: true, title: '新增' }));
+      editor.setModalProps((pre) => ({ ...pre, open: true, title: '新增' }));
       editor.form.setFieldsValue({ pID: row.id, url: row.url });
       onExpandedRowsChange((pre) => pre.concat(row.id));
     };

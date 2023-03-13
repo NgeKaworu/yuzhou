@@ -1,6 +1,6 @@
-import { Tail } from '@/js-sdk/decorators/type';
-import { restful } from '@/js-sdk/utils/http';
-import { Res } from '@/js-sdk/utils/http/type';
+import { Tail } from 'edk/src/decorators/type';
+import { restful } from 'edk/src/utils/http';
+import { Res } from 'edk/src/utils/http/type';
 import Role from '@/model/Role';
 
 export const create = (...args: Tail<Parameters<typeof restful.post>>) =>

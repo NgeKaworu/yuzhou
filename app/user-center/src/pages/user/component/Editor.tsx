@@ -1,16 +1,16 @@
 import { Form, Input } from 'antd';
 
-import ModalForm from '@/js-sdk/components/ModalForm';
-import type useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import ModalForm from 'edk/src/components/ModalForm';
+import type useModalForm from 'edk/src/components/ModalForm/useModalForm';
 
 import { list } from '../../role/api';
 import { update, create } from '../api';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
-import SearchSelect from '@/js-sdk/components/SearchSelect';
-import { compose } from '@/js-sdk/decorators/utils';
-import { IOC } from '@/js-sdk/decorators/hoc';
-import SelectAll from '@/js-sdk/decorators/Select/SelectAll';
+import SearchSelect from 'edk/src/components/SearchSelect';
+import { compose } from 'edk/src/decorators/utils';
+import { IOC } from 'edk/src/decorators/hoc';
+import SelectAll from 'edk/src/decorators/Select/SelectAll';
 
 import { Email, Name, Pwd } from './Field';
 
@@ -44,7 +44,7 @@ export default ({
 
       await api(value);
       await onSuccess?.();
-      setModalProps((pre) => ({ ...pre, visible: false }));
+      setModalProps((pre) => ({ ...pre, open: false }));
       form.resetFields();
     } finally {
       setModalProps((pre) => ({ ...pre, confirmLoading: false }));

@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { ConfigProvider, Layout, theme } from 'antd';
+import { App, ConfigProvider, Layout, theme } from 'antd';
 
 import { FormOutlined, SyncOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
@@ -10,9 +10,12 @@ import classNames from 'classnames';
 const { Content, Footer } = Layout;
 
 import zhCN from 'antd/es/locale/zh_CN';
-import { prefixCls } from '@/theme';
+
+import defaultTheme, { prefixCls } from '@/theme';
+
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
 import { DerivativeToken } from 'antd/es/theme/internal';
+import 'dayjs/locale/zh-cn';
 
 const queyClient = new QueryClient();
 
@@ -27,7 +30,17 @@ const menu = [
 
 const { useToken } = theme;
 
-export default (props: PropsWithChildren<any>) => {
+export default () => (
+  <React.StrictMode>
+    <QueryClientProvider client={queyClient}>
+      <ConfigProvider locale={zhCN} theme={defaultTheme}>
+        <Main />
+      </ConfigProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
+);
+
+function Main() {
   const { pathname } = useLocation();
   const history = useNavigate();
 
@@ -48,33 +61,31 @@ export default (props: PropsWithChildren<any>) => {
   ]);
 
   return wrapSSR(
-    <QueryClientProvider client={queyClient}>
-      <ConfigProvider locale={zhCN}>
-        <Layout className={classNames(`${prefixCls}-layout`, hashId)}>
-          <Content className={classNames(`${prefixCls}-content`, hashId)}>
-            <Outlet />
-          </Content>
-          <Footer className={classNames(`${prefixCls}-footer-menu`, hashId)}>
-            {menu.map((i) => (
-              <div
-                className={classNames(
-                  classNames(`${prefixCls}-menu-item`, hashId),
-                  i.path.includes(pathname) && classNames(`${prefixCls}-active`, hashId),
-                )}
-                key={i.path}
-                data-path={i.path}
-                onClick={onMenuClick}
-              >
-                {i.icon}
-                {i.title}
-              </div>
-            ))}
-          </Footer>
-        </Layout>
-      </ConfigProvider>
-    </QueryClientProvider>,
+    <App>
+      <Layout className={classNames(`${prefixCls}-layout`, hashId)}>
+        <Content className={classNames(`${prefixCls}-content`, hashId)}>
+          <Outlet />
+        </Content>
+        <Footer className={classNames(`${prefixCls}-footer-menu`, hashId)}>
+          {menu.map((i) => (
+            <div
+              className={classNames(
+                classNames(`${prefixCls}-menu-item`, hashId),
+                i.path.includes(pathname) && classNames(`${prefixCls}-active`, hashId),
+              )}
+              key={i.path}
+              data-path={i.path}
+              onClick={onMenuClick}
+            >
+              {i.icon}
+              {i.title}
+            </div>
+          ))}
+        </Footer>
+      </Layout>
+    </App>,
   );
-};
+}
 
 const genStyle = (token: DerivativeToken): CSSInterpolation => ({
   [`.${prefixCls}-layout`]: { height: '100%', minHeight: '100%' },

@@ -1,13 +1,13 @@
-import Table, { LightTableProColumnProps } from '@/js-sdk/components/LightTablePro';
-import useLightTablePro from '@/js-sdk/components/LightTablePro/hook/useLightTablePro';
+import Table, { LightTableProColumnProps } from 'edk/src/components/LightTablePro';
+import useLightTablePro from 'edk/src/components/LightTablePro/hook/useLightTablePro';
 import User from '@/model/User';
 import { list as roles } from '../../role/api';
 import { list, deleteOne } from '../api';
 import Editor from './Editor';
-import useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 import { Button, Space, Typography, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { cloneElement } from 'react';
 import Perm from '@/model/Perm';
 const { Link } = Typography;
@@ -69,12 +69,12 @@ export default () => {
   ];
 
   function create() {
-    editor.setModalProps((pre) => ({ ...pre, visible: true, title: '新增' }));
+    editor.setModalProps((pre) => ({ ...pre, open: true, title: '新增' }));
   }
 
   function edit(row: User) {
     return () => {
-      editor.setModalProps((pre) => ({ ...pre, visible: true, title: '编辑' }));
+      editor.setModalProps((pre) => ({ ...pre, open: true, title: '编辑' }));
       editor.form.setFieldsValue(row);
     };
   }

@@ -419,15 +419,21 @@
     {
       "packageName": "edk",
       "projectFolder": "util/edk",
-      "reviewCategory": "production"
+      "reviewCategory": "tools"
       // "tags": [ "frontend-team" ]
     },
     
     {
       "packageName": "todo-list",
       "projectFolder": "app/todo-list",
-      "reviewCategory": "tools"
-      // "tags": [ "tools" ]
+      "reviewCategory": "production"
+      // "tags": [ "production" ]
+    },
+    {
+      "packageName": "user-center",
+      "projectFolder": "app/user-center",
+      "reviewCategory": "production"
+      // "tags": [ "production" ]
     }
   ]
 }

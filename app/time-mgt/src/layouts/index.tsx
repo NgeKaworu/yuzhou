@@ -2,8 +2,8 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 01:55:13
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-06 12:27:55
- * @FilePath: /yuzhou/workspace/time-mgt-umi/src/layouts/index.tsx
+ * @LastEditTime: 2023-03-14 00:01:44
+ * @FilePath: /yuzhou/app/time-mgt/src/layouts/index.tsx
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -24,6 +24,7 @@ import defaultTheme, { prefixCls } from '@/theme';
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
 import { DerivativeToken } from 'antd/es/theme/internal';
 import 'dayjs/locale/zh-cn';
+import React from 'react';
 
 const queyClient = new QueryClient();
 
@@ -32,15 +33,15 @@ const menu = [
   { title: '统计', path: '/statistic/', icon: <PieChartOutlined /> },
 ];
 
-export default () => {
-  return (
+export default () => (
+  <React.StrictMode>
     <QueryClientProvider client={queyClient}>
       <ConfigProvider locale={zhCN} theme={defaultTheme}>
         <Main />
       </ConfigProvider>
     </QueryClientProvider>
-  );
-};
+  </React.StrictMode>
+);
 
 const { useToken } = theme;
 

@@ -1,5 +1,5 @@
 import { Mail } from '@/constant/email';
-import useCoolDown from '@/js-sdk/hooks/useCoolDown';
+import useCoolDown from 'edk/src/hooks/useCoolDown';
 import { MailOutlined, UserOutlined, RobotOutlined, LockOutlined } from '@ant-design/icons';
 import { AutoComplete, Form, Input, Typography } from 'antd';
 import { FormInstance } from 'rc-field-form';

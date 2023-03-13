@@ -1,21 +1,21 @@
 import { Form, TreeSelect, Input, Space, Typography, TreeSelectProps } from 'antd';
 import type { LinkProps } from 'antd/lib/typography/Link';
 
-import ModalForm from '@/js-sdk/components/ModalForm';
-import type useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import ModalForm from 'edk/src/components/ModalForm';
+import type useModalForm from 'edk/src/components/ModalForm/useModalForm';
 
 import { list } from '../../perm/api';
 import { update, create, validateKey } from '../api';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import perm2Tree, { PermOpt } from '@/pages/perm/util/perm2Tree';
 import permFilter from '@/pages/perm/util/permFilter';
 
-import { compose } from '@/js-sdk/decorators/utils';
-import { IOC } from '@/js-sdk/decorators/hoc';
-import Format from '@/js-sdk/decorators/Format';
+import { compose } from 'edk/src/decorators/utils';
+import { IOC } from 'edk/src/decorators/hoc';
+import Format from 'edk/src/decorators/Format';
 import styles from './Editor.less';
-import ChildrenRender from '@/js-sdk/components/ChildrenRender';
-import dfs, { dfsMap } from '@/js-sdk/struct/tree/dfs';
+import ChildrenRender from 'edk/src/components/ChildrenRender';
+import dfs, { dfsMap } from 'edk/src/struct/tree/dfs';
 
 const { Item } = Form;
 const { Link } = Typography;
@@ -47,7 +47,7 @@ export default ({
 
       await api(value);
       await onSuccess?.();
-      setModalProps((pre) => ({ ...pre, visible: false }));
+      setModalProps((pre) => ({ ...pre, open: false }));
       form.resetFields();
     } finally {
       setModalProps((pre) => ({ ...pre, confirmLoading: false }));

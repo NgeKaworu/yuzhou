@@ -1,5 +1,5 @@
-import { filter } from '@/js-sdk/decorators/Select/Search';
-import dfs from '@/js-sdk/struct/tree/dfs';
+import { filter } from 'edk/src/decorators/Select/Search';
+import dfs from 'edk/src/struct/tree/dfs';
 import Perm from '@/model/Perm';
 import { TreeSelectProps } from 'antd';
 

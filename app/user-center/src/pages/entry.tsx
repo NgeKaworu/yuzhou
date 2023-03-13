@@ -1,8 +1,8 @@
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, Card, FormProps, Typography } from 'antd';
 import { ConfirmPwd, Email, Name, Pwd, Captcha } from './user/component/Field';
-import { restful } from '@/js-sdk/utils/http';
-import { useMutation } from 'react-query';
+import { restful } from 'edk/src/utils/http';
+import { useMutation } from '@tanstack/react-query';
 import styles from './profile.less';
 
 const { Item } = Form;
@@ -36,7 +36,7 @@ const ENTRY_MAP = new Map<ENTRY_TYPE, Entry>([
 
 export default () => {
   const { entry } = useParams() as { entry: ENTRY_TYPE },
-    history = useHistory(),
+    history = useNavigate(),
     [form] = Form.useForm(),
     charon = useMutation((value) => restful.post(`user-center/${entry}`, value));
 

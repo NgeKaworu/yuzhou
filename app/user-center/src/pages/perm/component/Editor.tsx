@@ -2,17 +2,17 @@ import { Form, Input, Tooltip, TreeSelect, Radio, InputNumber } from 'antd';
 import * as icons from '@ant-design/icons';
 
 import { createElement, isValidElement, ReactNode } from 'react';
-import ModalForm from '@/js-sdk/components/ModalForm';
-import type useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import ModalForm from 'edk/src/components/ModalForm';
+import type useModalForm from 'edk/src/components/ModalForm/useModalForm';
 
 import { update, create, list, validateKey } from '../api';
-import { useQuery } from 'react-query';
-import { dfsMap } from '@/js-sdk/struct/tree/dfs';
+import { useQuery } from '@tanstack/react-query';
+import { dfsMap } from 'edk/src/struct/tree/dfs';
 import perm2Tree, { PermOpt } from '../util/perm2Tree';
 import permFilter from '../util/permFilter';
 import { MENU_TYPE_MAP } from '../model/constant';
-import Options from '@/js-sdk/utils/Options';
-import SearchSelect from '@/js-sdk/components/SearchSelect';
+import Options from 'edk/src/utils/Options';
+import SearchSelect from 'edk/src/components/SearchSelect';
 
 const { Item } = Form;
 const { Group: RGroup } = Radio;
@@ -55,7 +55,7 @@ export default ({
       }
 
       await onSuccess?.(await api(value));
-      setModalProps((pre) => ({ ...pre, visible: false }));
+      setModalProps((pre) => ({ ...pre, open: false }));
       perms.refetch();
       form.resetFields();
     } finally {

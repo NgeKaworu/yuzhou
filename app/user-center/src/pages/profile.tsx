@@ -1,7 +1,7 @@
-import { restful } from '@/js-sdk/utils/http';
+import { restful } from 'edk/src/utils/http';
 import User from '@/model/User';
 import { Spin, Card, Typography, Descriptions } from 'antd';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import styles from './profile.less';
 
 const { Link } = Typography;

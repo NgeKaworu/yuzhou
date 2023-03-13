@@ -1,5 +1,5 @@
-import { Tail } from '@/js-sdk/decorators/type';
-import { restful } from '@/js-sdk/utils/http';
+import { Tail } from 'edk/src/decorators/type';
+import { restful } from 'edk/src/utils/http';
 
 export const fetchCaptcha = (...args: Tail<Parameters<typeof restful.get>>) =>
   restful.get(`user-center/captcha/fetch`, ...args);
