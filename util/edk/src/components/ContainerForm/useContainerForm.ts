@@ -33,7 +33,7 @@ export default <T>(initValue?: InitValue<T>) => {
   const [data, setData] = useState<any>(initValue?.data);
 
   function close() {
-    setContainerProps((pre) => ({ ...pre, visible: false }));
+    setContainerProps((pre) => ({ ...pre, open: false }));
     form.resetFields();
     setData(undefined);
   }

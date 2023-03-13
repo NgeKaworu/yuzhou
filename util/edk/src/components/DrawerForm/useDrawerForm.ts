@@ -31,7 +31,7 @@ export default (initValue?: InitValue) => {
   const [data, setData] = useState<any>(initValue?.data);
 
   function close() {
-    setDrawerProps((pre) => ({ ...pre, visible: false }));
+    setDrawerProps((pre) => ({ ...pre, open: false }));
     form.resetFields();
     setData(undefined);
   }

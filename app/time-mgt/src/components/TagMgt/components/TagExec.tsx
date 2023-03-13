@@ -1,8 +1,6 @@
-import React, { ReactElement } from 'react';
-
 import { Form, Input } from 'antd';
 
-import { SketchPicker, SketchPickerProps } from 'react-color';
+import { SketchPicker } from 'react-color';
 
 import ModalForm from 'edk/src/components/ModalForm';
 import useModalForm from 'edk/src/components/ModalForm/useModalForm';
@@ -29,7 +27,7 @@ export function TagModForm({
         await add(value);
       }
       await onSuccess?.();
-      setModalProps((pre) => ({ ...pre, visible: false }));
+      setModalProps((pre) => ({ ...pre, open: false }));
     } catch (e) {
       console.error(e);
     } finally {
@@ -61,9 +59,9 @@ export function TagModForm({
         rules={[{ required: true, message: '请选个颜色' }]}
         label="颜色"
       >
-        {compose<ReactElement<SketchPickerProps>>(
+        {compose<any>(
           IOC([
-            Format({
+            Format<any>({
               valuePropName: 'color',
               f: (obj: any) => obj?.hex,
             }),

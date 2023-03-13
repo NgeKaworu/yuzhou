@@ -48,14 +48,14 @@ export default function TagMgt(props?: TagMgtProps) {
 
   // 打开新建弹窗
   function addHandler() {
-    editor.setModalProps((pre) => ({ ...pre, visible: true }));
+    editor.setModalProps((pre) => ({ ...pre, open: true }));
   }
 
   // 打开编辑弹窗
   function editHandler(t: TagSchema) {
     return () => {
       editor.form.setFieldsValue(t);
-      editor.setModalProps((pre) => ({ ...pre, visible: true }));
+      editor.setModalProps((pre) => ({ ...pre, open: true }));
     };
   }
 

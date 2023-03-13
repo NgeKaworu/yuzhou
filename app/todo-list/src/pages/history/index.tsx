@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router';
-import { useInfiniteQuery, useQueryClient, useMutation } from 'react-query';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useInfiniteQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
 import { Input, Layout, Button, Modal, Form, Radio, Empty, Row, Col, Checkbox, Space } from 'antd';
 
 const { Header, Content, Footer } = Layout;
 
-import { restful as RESTful } from '@/js-sdk/utils/http';
+import { restful as RESTful } from 'edk/src/utils/http';
 
 import RecordItem from '@/components/RecordItem';
 
@@ -23,8 +23,9 @@ const Flex1 = { flex: 1 };
 export default () => {
   const [sortForm] = Form.useForm();
   const [inputForm] = Form.useForm();
-  const history = useHistory();
-  const _location = history.location;
+  const history = useNavigate();
+
+  const _location = useLocation();
   const _search = _location.search;
   const params = new URLSearchParams(_search);
 
@@ -85,7 +86,7 @@ export default () => {
   async function addTask(value: Task) {
     try {
       await creator.mutateAsync({ ...value, done: false });
-      queryClient.invalidateQueries('tasks-list');
+      queryClient.invalidateQueries(['tasks-list']);
       inputForm.resetFields();
       setInputVisible(false);
     } catch (e) {
@@ -101,7 +102,7 @@ export default () => {
     sortForm.validateFields().then(({ sort, orderby }) => {
       params.set('sort', sort);
       params.set('orderby', orderby);
-      history.push({
+      history({
         pathname: _location.pathname,
         search: params.toString(),
       });
@@ -112,7 +113,7 @@ export default () => {
   function onSortCancel() {
     params.delete('sort');
     params.delete('orderby');
-    history.push({
+    history({
       pathname: _location.pathname,
       search: params.toString(),
     });
@@ -129,7 +130,7 @@ export default () => {
     try {
       const values = await inputForm.validateFields();
       await updater.mutateAsync(values);
-      queryClient.invalidateQueries('tasks-list');
+      queryClient.invalidateQueries(['tasks-list']);
       inputForm.resetFields();
       setInputVisible(false);
     } catch (e) {
@@ -140,7 +141,7 @@ export default () => {
   async function removeHandler(id: string) {
     try {
       await remover.mutateAsync(id);
-      queryClient.invalidateQueries('tasks-list');
+      queryClient.invalidateQueries(['tasks-list']);
     } catch (e) {
       console.error(e);
     }
@@ -149,7 +150,7 @@ export default () => {
   async function itemChangeHandler(values: any) {
     try {
       await updater.mutateAsync(values);
-      queryClient.invalidateQueries('tasks-list');
+      queryClient.invalidateQueries(['tasks-list']);
     } catch (e) {
       console.error(e);
     }
@@ -190,7 +191,7 @@ export default () => {
         >
           排序
         </Button> */}
-        <Modal visible={sortVisible} title="排序" onCancel={hideSortModal} onOk={onSortSubmit}>
+        <Modal open={sortVisible} title="排序" onCancel={hideSortModal} onOk={onSortSubmit}>
           <Form onFinish={onSortSubmit} form={sortForm}>
             <FormItem name="sort" label="排序关键字" rules={[{ required: true }]}>
               <Radio.Group>
@@ -270,7 +271,7 @@ export default () => {
         </Form>
       </Footer>
 
-      <Modal title={'编辑'} visible={inputVisible} onCancel={hideInputModal} onOk={updateHandler}>
+      <Modal title={'编辑'} open={inputVisible} onCancel={hideInputModal} onOk={updateHandler}>
         <Form
           form={inputForm}
           onFinish={updateHandler}
@@ -324,7 +325,6 @@ export default () => {
                               <Col span={20}>
                                 <FormItem
                                   name={[field.name, 'title']}
-                                  fieldKey={[field.fieldKey, 'title']}
                                   rules={[
                                     {
                                       required: true,
@@ -342,11 +342,7 @@ export default () => {
                                   justifyContent: 'center',
                                 }}
                               >
-                                <FormItem
-                                  name={[field.name, 'done']}
-                                  fieldKey={[field.fieldKey, 'done']}
-                                  valuePropName="checked"
-                                >
+                                <FormItem name={[field.name, 'done']} valuePropName="checked">
                                   <Checkbox />
                                 </FormItem>
                               </Col>

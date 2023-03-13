@@ -1,3 +1,13 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-13 17:00:04
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-13 18:43:04
+ * @FilePath: /yuzhou/app/todo-list/src/components/Importer.tsx
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
 import React, { cloneElement, ReactElement, useState } from 'react';
 import { Modal, Input } from 'antd';
 
@@ -48,7 +58,7 @@ export default function (props: ImportorProps) {
       {children && cloneElement(children, { onClick: modalVis })}
       <Modal
         onOk={okHandler}
-        visible={vis}
+        open={vis}
         onCancel={onCancel}
         title="批量导入"
         {...modalProps}

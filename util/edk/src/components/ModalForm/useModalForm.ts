@@ -29,7 +29,7 @@ export default function useModalForm(initValue?: InitValue) {
   const [data, setData] = useState<any>(initValue?.data);
 
   function close() {
-    setModalProps((pre) => ({ ...pre, visible: false }));
+    setModalProps((pre) => ({ ...pre, open: false }));
     form.resetFields();
     setData(undefined);
   }
