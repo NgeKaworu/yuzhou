@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-13 17:00:04
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-13 17:09:28
+ * @LastEditTime: 2023-03-13 18:50:32
  * @FilePath: /yuzhou/app/todo-list/.umirc.ts
  * @Description:
  *
@@ -25,7 +25,8 @@ export default defineConfig({
   routes,
   proxy: {
       '/api/todo-list': {
-        target: 'http://localhost:8040',
+        // target: 'http://localhost:8040',
+        target: 'https://api.furan.xyz/todo-list',
         changeOrigin: true,
         pathRewrite: {
           '/api/todo-list': '',

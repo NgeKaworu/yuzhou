@@ -236,7 +236,7 @@ export default () => {
         {pages?.length ? (
           pages?.map((record: MainTask) => (
             <RecordItem
-              key={record._id}
+              key={record.id}
               record={record}
               onEditClick={editHandler}
               onRemoveClick={removeHandler}

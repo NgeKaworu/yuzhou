@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { ConfigProvider, Layout, theme } from 'antd';
 
@@ -51,7 +51,9 @@ export default (props: PropsWithChildren<any>) => {
     <QueryClientProvider client={queyClient}>
       <ConfigProvider locale={zhCN}>
         <Layout className={classNames(`${prefixCls}-layout`, hashId)}>
-          <Content className={classNames(`${prefixCls}-content`, hashId)}>{props.children}</Content>
+          <Content className={classNames(`${prefixCls}-content`, hashId)}>
+            <Outlet />
+          </Content>
           <Footer className={classNames(`${prefixCls}-footer-menu`, hashId)}>
             {menu.map((i) => (
               <div
