@@ -7,16 +7,8 @@
     "build": "tsc",
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NgeKaworu/edk.git"
-  },
   "author": "furan",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/NgeKaworu/edk/issues"
-  },
-  "homepage": "https://github.com/NgeKaworu/edk#readme",
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@ant-design/cssinjs": "^1.6.1",
