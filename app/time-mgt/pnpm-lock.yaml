@@ -1,0 +1,21 @@
+lockfileVersion: 5.4
+
+importers:
+
+  .:
+    specifiers:
+      edk: workspace:^1.0.0
+    dependencies:
+      edk: link:../../util/edk
+
+  ../../common/temp:
+    specifiers: {}
+
+  ../../common/temp/pnpm-local:
+    specifiers: {}
+
+  ../../util/edk:
+    specifiers: {}
+
+  ../todo-list:
+    specifiers: {}

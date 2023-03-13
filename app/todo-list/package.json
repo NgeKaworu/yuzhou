@@ -1,13 +1,26 @@
 {
-  "name": "time-mgt",
-  "version": "1.0.0",
+  "name": "to-do-list",
   "private": true,
   "scripts": {
-    "dev": "umi dev",
+    "start": "umi dev",
     "build": "umi build",
-    "postinstall": "umi setup",
-    "setup": "umi setup",
-    "start": "npm run dev"
+    "postinstall": "umi generate tmp",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "spush": "git subtree push -P src/js-sdk js-sdk master",
+    "spull": "git subtree pull -P src/js-sdk js-sdk master --squash"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.6.1",
@@ -18,7 +31,6 @@
     "dayjs": "^1.11.7",
     "edk": "workspace:^1.0.0",
     "react": "^18.2.0",
-    "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.2",
     "umi": "^4.0.55"
