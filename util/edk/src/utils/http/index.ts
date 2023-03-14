@@ -1,4 +1,5 @@
-import { message } from 'antd';
+import Scope from '../../';
+const { message } = Scope.antd;
 
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 

@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import Scope from '../';
+const { useRef } = Scope.react;
 
 export default (fn: Function, delay: number) => {
   // 定时器，用来 setTimeout

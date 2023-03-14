@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import Scope from '../';
+const { useRef } = Scope.react;
 
 export default (fn: Function, threshold = 500) => {
   const last = useRef<number>(Date.now()),

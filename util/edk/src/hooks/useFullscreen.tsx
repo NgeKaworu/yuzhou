@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import Scope from '../';
+const { useEffect, useState } = Scope.react;
 import type { MutableRefObject } from 'react';
 
 export interface useFullscreenParams<T extends Element> {

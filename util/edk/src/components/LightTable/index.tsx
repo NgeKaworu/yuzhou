@@ -1,12 +1,11 @@
 import type { ReactNode, Ref, CSSProperties } from 'react';
-import { Table } from 'antd';
+import Scope from '../../';
+const { Table, Typography } = Scope.antd;
 import type { TableProps, TableColumnProps } from 'antd';
 import type { ParagraphProps } from 'antd/lib/typography/Paragraph';
 import type { LinkProps } from 'antd/lib/typography/Link';
 import type { ValueEnum, ValueType } from '../type';
 import { RenderNode, RenderChain } from './struct/renderChain';
-
-import { Typography } from 'antd';
 
 import { getValueEnumValue } from '../type';
 import { _valueTypeRegister } from './valueTypeRegister';

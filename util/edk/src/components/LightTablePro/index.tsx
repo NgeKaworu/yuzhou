@@ -1,5 +1,6 @@
 import type { MutableRefObject, ReactNode, Ref } from 'react';
-import { Card } from 'antd';
+import Scope from '../../';
+const { Card } = Scope.antd;
 import type { FormInstance, FormProps } from 'antd';
 import type { LightColumnProps, LightTableProps } from '../LightTable';
 import LightTable from '../LightTable';

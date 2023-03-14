@@ -2,18 +2,19 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 16:48:01
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-11 02:43:23
- * @FilePath: /yuzhou/workspace/edk/src/components/DistrictCascader/index.tsx
+ * @LastEditTime: 2023-03-14 23:50:16
+ * @FilePath: /yuzhou/util/edk/src/components/DistrictCascader/index.tsx
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
+import Scope from '../../';
 import AMap, { Config } from '../../utils/aMap/singleton/aMap';
 import Plugin from '../../utils/aMap/plugin';
 
-import { useQuery } from '@tanstack/react-query';
+const { useQuery } = Scope.reactQuery;
 import type { CascaderProps } from 'antd';
-import { Cascader } from 'antd';
+const { Cascader } = Scope.antd;
 
 type Status = 'complete';
 type Level = 'province' | 'country';

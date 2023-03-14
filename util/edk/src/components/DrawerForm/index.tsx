@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react';
-import { Form, Drawer, Space, Button } from 'antd';
+import Scope from '../../';
+const { Form, Drawer, Space, Button } = Scope.antd;
 import type { DrawerProps } from 'antd';
 import type { InitValue } from './useDrawerForm';
 export { default as useDrawerForm } from './useDrawerForm';

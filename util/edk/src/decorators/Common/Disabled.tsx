@@ -9,7 +9,8 @@
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
 import type { ReactElement } from 'react';
-import { cloneElement } from 'react';
+import Scope from '../';
+const { cloneElement } = Scope.react;
 /**
  * disabled 切片
  */

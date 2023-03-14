@@ -1,5 +1,6 @@
 import type React from 'react';
-import { useState, useEffect } from 'react';
+import Scope from '../';
+const { useState, useEffect } = Scope.react;
 
 export default (ref: React.MutableRefObject<HTMLElement | null>) => {
   const [contentRect, setContentRect] = useState<IntersectionObserverEntry>();

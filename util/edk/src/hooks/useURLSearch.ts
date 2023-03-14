@@ -9,7 +9,8 @@
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
  */
 import moment from 'dayjs';
-import { useLayoutEffect } from 'react';
+import Scope from '../';
+const { useLayoutEffect } = Scope.react;
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface Param<T extends any = any> {

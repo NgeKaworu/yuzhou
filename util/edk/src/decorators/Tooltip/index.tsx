@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { curry } from '../utils';
-import { Tooltip } from 'antd';
+import Scope from '../../';
+const { Tooltip } = Scope.antd;
 import type { TooltipProps } from 'antd';
 
 // 正反函数

@@ -2,15 +2,16 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 16:48:01
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-11 20:49:52
- * @FilePath: /yuzhou/workspace/edk/src/components/SearchForm.tsx
- * @Description: 
- * 
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ * @LastEditTime: 2023-03-14 23:44:26
+ * @FilePath: /yuzhou/util/edk/src/components/SearchForm.tsx
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
+import Scope from '../';
 import type { FormProps } from 'antd';
-import { Form } from 'antd';
-import { ReactNode } from 'react';
+const { Form } = Scope.antd;
+import type { ReactNode } from 'react';
 import useURLSearch from '../hooks/useURLSearch';
 
 export interface SearchFormProps {

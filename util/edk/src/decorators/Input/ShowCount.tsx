@@ -1,7 +1,9 @@
 import type { ReactElement } from 'react';
-import { cloneElement } from 'react';
+import Scope from '../';
+const { cloneElement } = Scope.react;
 import type { InputProps } from 'antd';
-import { Typography } from 'antd';
+import Scope from '../../';
+const { Typography } = Scope.antd;
 
 const { Text } = Typography;
 /**

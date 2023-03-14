@@ -1,6 +1,7 @@
 import ChildrenRender from '../components/ChildrenRender';
 import type { ReactElement } from 'react';
-import { cloneElement } from 'react';
+import Scope from '../';
+const { cloneElement } = Scope.react;
 import { curry, maybe, compose } from './utils';
 
 export interface ForwardProps {

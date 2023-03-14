@@ -1,8 +1,10 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { useState } from 'react';
+import Scope from '../';
+const { useState } = Scope.react;
 import type { MarqueeProps } from '../Marquee';
 import Marquee from '../Marquee';
-import { Tooltip, Typography, theme } from 'antd';
+import Scope from '../../';
+const { Tooltip, Typography, theme } = Scope.antd;
 import trimEndWith from '../../struct/string/trimEndWith';
 import arr from '../../struct/array/arr';
 import { DerivativeToken, useStyleRegister } from 'antd/es/theme/internal';

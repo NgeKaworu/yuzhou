@@ -1,7 +1,8 @@
+import Scope from '../../';
 import type { ReactElement, ReactNode } from 'react';
-import { createElement } from 'react';
+const { createElement } = Scope.react;
 import type { ColProps } from 'antd';
-import { Button, Col, Form, Input, Row, Space } from 'antd';
+const { Button, Col, Form, Input, Row, Space } = Scope.antd;
 import type { FormItemProps, TableColumnProps } from 'antd';
 import type { FormInstance, FormProps } from 'antd/lib/form/Form';
 import SearchForm from '../SearchForm';

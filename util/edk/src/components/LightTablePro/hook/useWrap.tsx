@@ -1,11 +1,12 @@
+import Scope from '../../../';
 import type { FormInstance } from 'antd';
-import { Form } from 'antd';
+const { Form } = Scope.antd;
 import type { FormProps, TableProps, PaginationProps } from 'antd';
 import type React from 'react';
-import { useState, useRef } from 'react';
+const { useState, useRef } = Scope.react;
 import type { LightTableProps } from '../../LightTable';
 import type { QueryKey, QueryFunction, UseQueryOptions } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
+const { useQuery } = Scope.reactQuery;
 import type { ActionRef } from '..';
 import useURLSearch from '../../../hooks/useURLSearch';
 

@@ -1,5 +1,6 @@
 import type { MutableRefObject, ReactNode, Ref } from 'react';
-import { Card, Descriptions, Pagination } from 'antd';
+import Scope from '../../';
+const { Card, Descriptions, Pagination } = Scope.antd;
 import type { FormInstance, FormProps, DescriptionsProps, PaginationProps, TableProps } from 'antd';
 import { LightColumnProps, LightTableProps, renderTitle } from '../LightTable';
 import type { SearchColumnsProps } from '../Search';

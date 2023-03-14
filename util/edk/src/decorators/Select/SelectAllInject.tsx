@@ -1,6 +1,7 @@
 import isValidValue from '../../utils/isValidValue';
 import type { Select } from 'antd';
-import { cloneElement } from 'react';
+import Scope from '../';
+const { cloneElement } = Scope.react;
 import { compose, curry, maybe } from '../utils';
 
 export interface SelectAllInjectParam {

@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { message } from 'antd';
+import Scope from '../';
+const { useState } = Scope.react;
+import Scope from '../../';
+const { message } = Scope.antd;
 import type { ExportColumns } from './util';
 import { JSON2Sheet } from './util';
 import exportExcel from './util';

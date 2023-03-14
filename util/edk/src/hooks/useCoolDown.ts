@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import Scope from '../';
+const { useState, useRef, useEffect } = Scope.react;
 export interface CoolDownParams {
   interval?: number;
   count: number;

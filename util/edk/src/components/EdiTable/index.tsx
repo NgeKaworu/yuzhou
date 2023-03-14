@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
-import { useRef } from 'react';
+import Scope from '../';
+const { useRef } = Scope.react;
 import type { TableProps } from 'antd';
-import { Table, Form } from 'antd';
+import Scope from '../../';
+const { Table, Form } = Scope.antd;
 import type { FormListProps } from 'antd/lib/form/FormList';
 import type { ColumnType } from 'antd/lib/table';
 import { useDrag, useDrop } from 'react-dnd';

@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import Scope from '../';
+const { useState } = Scope.react;
 import type { FormInstance, FormProps } from 'antd';
-import { Form } from 'antd';
+import Scope from '../../';
+const { Form } = Scope.antd;
 
 import type { CustomDrawerProps } from '.';
 

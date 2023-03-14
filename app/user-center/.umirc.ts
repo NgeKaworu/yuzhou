@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-13 23:05:58
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-13 23:40:41
+ * @LastEditTime: 2023-03-14 10:54:17
  * @FilePath: /yuzhou/app/user-center/.umirc.ts
  * @Description:
  *
@@ -13,6 +13,7 @@ import theme from './src/theme';
 import routes from './routes';
 
 export default defineConfig({
+  mfsu: false,
   plugins: ['@umijs/plugins/dist/qiankun'],
   qiankun: {
     slave: {},

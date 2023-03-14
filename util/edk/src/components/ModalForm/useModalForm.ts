@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import Scope from '../../';
+const { useState } = Scope.react;
 import type { FormInstance, FormProps, ModalProps } from 'antd';
-import { Form } from 'antd';
+
+const { Form } = Scope.antd;
 
 export interface InitValue {
   modalProps?: ModalProps;

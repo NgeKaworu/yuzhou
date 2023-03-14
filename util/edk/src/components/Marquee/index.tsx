@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react';
-import { useRef, useState } from 'react';
+import Scope from '../';
+const { useRef, useState } = Scope.react;
 
 export interface Point {
   x: number;

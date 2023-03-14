@@ -1,8 +1,10 @@
-import { cloneElement, useReducer } from 'react';
+import Scope from '../';
+const { cloneElement, useReducer } = Scope.react;
 import useDebounce from '../../hooks/useDebounce';
 import useThrottle from '../../hooks/useThrottle';
 import type { Select } from 'antd';
-import { Empty, Spin } from 'antd';
+import Scope from '../../';
+const { Empty, Spin } = Scope.antd;
 
 import type { useQuery } from '@tanstack/react-query';
 

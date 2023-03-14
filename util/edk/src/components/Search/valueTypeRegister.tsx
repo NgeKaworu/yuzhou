@@ -1,6 +1,7 @@
 import SearchSelect from '../SearchSelect';
 
-import { Input, DatePicker, TimePicker, InputNumber, Checkbox, Radio } from 'antd';
+import Scope from '../../';
+const { Input, DatePicker, TimePicker, InputNumber, Checkbox, Radio } = Scope.antd;
 
 type ReactClass = any;
 type ReactProps = any;
