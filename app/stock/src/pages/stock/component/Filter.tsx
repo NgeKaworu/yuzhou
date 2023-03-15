@@ -4,7 +4,7 @@ import { WithSuccess } from 'edk/src/Interface/Container';
 
 import { Button, Form, Typography } from 'antd';
 
-import { fields, Filter, tooltipMap } from '../../../model';
+import { fields, Filter } from '../../../model';
 import EdiTable, { EdiTableColumnType } from 'edk/src/components/EdiTable';
 import shouldUpdateHOF from 'edk/src/decorators/shouldUpdateHOF';
 import isValidValue from 'edk/src/utils/isValidValue';
@@ -13,6 +13,7 @@ import SearchSelect from 'edk/src/components/SearchSelect';
 import ConditionEditor from './ConditionEditor';
 import { renderCondition } from './ConditionEditor/util';
 import { decode, encode } from '@/utils/json';
+import { tooltipMap } from '@/component/TooptipMap';
 
 const { Item, ErrorList } = Form;
 const { Link } = Typography;

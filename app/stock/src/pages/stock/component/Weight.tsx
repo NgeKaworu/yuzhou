@@ -4,13 +4,14 @@ import { WithSuccess } from 'edk/src/Interface/Container';
 
 import { Button, Form, InputNumber, Switch, Typography } from 'antd';
 
-import { fields, tooltipMap, Weight } from '../../../model';
+import { fields, Weight } from '../../../model';
 import EdiTable, { EdiTableColumnType } from 'edk/src/components/EdiTable';
 import shouldUpdateHOF from 'edk/src/decorators/shouldUpdateHOF';
 import isValidValue from 'edk/src/utils/isValidValue';
 import Options from 'edk/src/utils/Options';
 import SearchSelect from 'edk/src/components/SearchSelect';
 import { decode, encode } from '@/utils/json';
+import { tooltipMap } from '@/component/TooptipMap';
 
 const { Item, ErrorList } = Form;
 const { Link } = Typography;

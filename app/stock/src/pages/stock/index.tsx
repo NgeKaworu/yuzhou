@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Steps, Tag, Switch, Modal, Space, Typography, StepsProps } from 'antd';
 
-import { Stock, Weight as IWeight, Filter as IFilter, fields, tooltipMap } from '../../model';
+import { Stock, Weight as IWeight, Filter as IFilter, fields } from '../../model';
 import isValidValue from 'edk/src/utils/isValidValue';
 import Weight from './component/Weight';
 import useDrawerForm from 'edk/src/components/DrawerForm/useDrawerForm';
@@ -20,8 +20,16 @@ import StockLabel from './component/StockLabel';
 import Editor from '../exchange/component/Editor';
 import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 const { Link } = Typography;
-import { calc as workerCalc, avg as workerAvg } from '../../worker/stock';
-// const worker = new Worker(new URL('../../worker/stock.ts', import.meta.url), { type: 'module' });
+import { tooltipMap } from '@/component/TooptipMap';
+let worker: Worker;
+
+// const worker = new Worker(new URL('../../worker/worker.ts', import.meta.url));
+// worker.postMessage({
+//   question: 'The Answer to the Ultimate Question of Life, The Universe, and Everything.',
+// });
+// worker.onmessage = ({ data: { answer } }) => {
+//   console.log(answer);
+// };
 
 export default () => {
   const [dataSource, setDataSource] = useState<Stock[]>(),
@@ -30,24 +38,26 @@ export default () => {
     [filters, setFilters] = useState<IFilter[]>(decode(localStorage.getItem('Filter'))),
     [filterSwitch, setFilterSwitch] = useState(true),
     [calculating, setCalculating] = useState<boolean>(false),
-    // workerHandler: Worker['onmessage'] = (e) => {
-    //   setData(e?.data?.payload);
-    //   setCalculating(false);
-    // },
+    workerHandler: Worker['onmessage'] = (e) => {
+      setData(e?.data?.payload);
+      setCalculating(false);
+    },
     weight = useDrawerForm(),
     filter = useDrawerForm();
 
   const exchangeEditor = useModalForm();
 
-  // useEffect(() => {
-  //   worker.onmessage = workerHandler;
-  //   return () => worker.terminate();
-  // }, [worker]);
+  useEffect(() => {
+    worker = new Worker(new URL('../../worker/stock.ts', import.meta.url), { type: 'module' });
+    worker.onmessage = workerHandler;
+    return () => {
+      worker.terminate();
+    };
+  }, [worker]);
 
   async function calc() {
-    // setCalculating(true);
-    setData(workerCalc({ dataSource: data!, weights }));
-    // worker.postMessage({ type: 'calc', payload: { dataSource: data, weights } });
+    setCalculating(true);
+    worker.postMessage({ type: 'calc', payload: { dataSource: data, weights } });
   }
 
   function cleanFilters() {
@@ -58,9 +68,8 @@ export default () => {
 
   function fetchDateAndAvg(stocks: Stock[]) {
     setDataSource(stocks);
-    // setCalculating(true);
-    // worker.postMessage({ type: 'avg', payload: stocks });
-    setData(workerAvg(stocks));
+    setCalculating(true);
+    worker.postMessage({ type: 'avg', payload: stocks });
   }
 
   const sorterHOF: (field: keyof Stock) => LightColumnProps<Stock>['sorter'] = (field) => (a, b) =>

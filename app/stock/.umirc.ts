@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 11:56:08
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 16:35:16
+ * @LastEditTime: 2023-03-15 23:48:22
  * @FilePath: /yuzhou/app/stock/.umirc.ts
  * @Description:
  *
@@ -18,7 +18,7 @@ export default defineConfig({
     slave: {},
   },
   hash: true,
-  runtimePublicPath: {},
+  runtimePublicPath: false,
   npmClient: 'pnpm',
   routes,
   theme,

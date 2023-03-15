@@ -2,15 +2,13 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2022-02-11 13:51:09
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-02-26 14:32:08
- * @FilePath: /stock/stock-umi/src/model/index.tsx
+ * @LastEditTime: 2023-03-15 23:43:56
+ * @FilePath: /yuzhou/app/stock/src/model/index.ts
  * @Description:
  *
  * Copyright (c) 2023 by fuRan NgeKaworu@gmail.com, All Rights Reserved.
  */
 import { Condition } from '@/pages/stock/component/ConditionEditor/model';
-import { InfoCircleOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
 import { ReactNode } from 'react';
 
 export interface Stock {
@@ -61,33 +59,6 @@ export const avgField: Array<keyof Stock> = [
   'DCER',
   'AAGR',
 ];
-
-export const tooltipMap = new Map<string, ReactNode>([
-  [
-    'PB',
-    <Tooltip title="市值 / 净资产 （反映市场预期）">
-      <InfoCircleOutlined />
-    </Tooltip>,
-  ],
-  [
-    'PE',
-    <Tooltip title="市值 / 净利润 （反映回本时间）">
-      <InfoCircleOutlined />
-    </Tooltip>,
-  ],
-  [
-    'PEG',
-    <Tooltip title="PE / 平均年增长率">
-      <InfoCircleOutlined />
-    </Tooltip>,
-  ],
-  [
-    'ROE',
-    <Tooltip title="净利润 / 净资产 (盈利能力)">
-      <InfoCircleOutlined />
-    </Tooltip>,
-  ],
-]);
 
 export const fields = new Map<string, ReactNode>([
   ['PB', '市净率'],
