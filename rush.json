@@ -434,6 +434,12 @@
       "projectFolder": "app/user-center",
       "reviewCategory": "production"
       // "tags": [ "production" ]
+    },
+    {
+      "packageName": "flashcard",
+      "projectFolder": "app/flashcard",
+      "reviewCategory": "production"
+      // "tags": [ "production" ]
     }
   ]
 }

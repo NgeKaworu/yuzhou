@@ -1,9 +1,9 @@
 /*
  * @Author: fuRan NgeKaworu@gmail.com
- * @Date: 2023-03-13 23:05:58
+ * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 10:16:58
- * @FilePath: /yuzhou/app/user-center/.umirc.ts
+ * @LastEditTime: 2023-03-15 10:17:38
+ * @FilePath: /yuzhou/app/flashcard/.umirc.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -20,19 +20,19 @@ export default defineConfig({
   hash: true,
   runtimePublicPath: {},
   npmClient: 'pnpm',
+  title: '单词卡',
   theme,
-  title: '用户中心',
-  base: '/user-center',
-  publicPath: '/micro/user-center/',
   routes,
+  base: '/flashcard',
+  publicPath: '/micro/flashcard/',
   proxy: {
-    '/api/user-center': {
-      // target: 'http://localhost:8020',
-      target: 'https://api.furan.xyz/user-center',
+    '/api/flashcard': {
+      target: 'https://api.furan.xyz/flashcard',
+      // target: 'http://localhost:8030',
       changeOrigin: true,
       pathRewrite: {
-        '/api/user-center': '',
+        '/api/flashcard': '',
       },
     },
-  },
+  }
 });
