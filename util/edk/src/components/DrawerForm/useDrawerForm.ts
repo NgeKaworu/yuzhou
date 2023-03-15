@@ -1,7 +1,17 @@
-import Scope from '../';
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-14 23:42:22
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-15 14:00:42
+ * @FilePath: /yuzhou/util/edk/src/components/DrawerForm/useDrawerForm.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
+import Scope from '../../';
+
 const { useState } = Scope.react;
 import type { FormInstance, FormProps } from 'antd';
-import Scope from '../../';
 const { Form } = Scope.antd;
 
 import type { CustomDrawerProps } from '.';

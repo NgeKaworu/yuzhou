@@ -10,8 +10,8 @@
  */
 import { Form, Input, InputNumber } from 'antd';
 
-import ModalForm from '@/js-sdk/components/ModalForm';
-import type useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import ModalForm from 'edk/src/components/ModalForm';
+import type useModalForm from 'edk/src/components/ModalForm/useModalForm';
 
 import { update } from '@/api/position';
 
@@ -37,7 +37,7 @@ export default ({
       }
 
       await onSuccess?.();
-      setModalProps((pre) => ({ ...pre, visible: false }));
+      setModalProps((pre) => ({ ...pre, open: false }));
       form.resetFields();
     } finally {
       setModalProps((pre) => ({ ...pre, confirmLoading: false }));

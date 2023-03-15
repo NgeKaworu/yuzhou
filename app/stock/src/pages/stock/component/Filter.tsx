@@ -1,15 +1,15 @@
-import DrawerForm from '@/js-sdk/components/DrawerForm';
-import useDrawerForm from '@/js-sdk/components/DrawerForm/useDrawerForm';
-import { WithSuccess } from '@/js-sdk/Interface/Container';
+import DrawerForm from 'edk/src/components/DrawerForm';
+import useDrawerForm from 'edk/src/components/DrawerForm/useDrawerForm';
+import { WithSuccess } from 'edk/src/Interface/Container';
 
 import { Button, Form, Typography } from 'antd';
 
 import { fields, Filter, tooltipMap } from '../../../model';
-import EdiTable, { EdiTableColumnType } from '@/js-sdk/components/EdiTable';
-import shouldUpdateHOF from '@/js-sdk/decorators/shouldUpdateHOF';
-import isValidValue from '@/js-sdk/utils/isValidValue';
-import Options from '@/js-sdk/utils/Options';
-import SearchSelect from '@/js-sdk/components/SearchSelect';
+import EdiTable, { EdiTableColumnType } from 'edk/src/components/EdiTable';
+import shouldUpdateHOF from 'edk/src/decorators/shouldUpdateHOF';
+import isValidValue from 'edk/src/utils/isValidValue';
+import Options from 'edk/src/utils/Options';
+import SearchSelect from 'edk/src/components/SearchSelect';
 import ConditionEditor from './ConditionEditor';
 import { renderCondition } from './ConditionEditor/util';
 import { decode, encode } from '@/utils/json';
@@ -58,12 +58,7 @@ const columns: EdiTableColumnType<Filter>[] = [
     width: 200,
     title: '过滤条件',
     renderFormItem: ({ field }) => (
-      <Item
-        dependencies={[['filters', field.name, 'filter']]}
-        noStyle
-        fieldKey={field.fieldKey}
-        key={field.key}
-      >
+      <Item dependencies={[['filters', field.name, 'filter']]} noStyle key={field.key}>
         {({ getFieldValue }) => (
           <Item {...field} name={[field.name, 'filter']}>
             <ConditionEditor>
@@ -100,10 +95,10 @@ export default ({
     const { filters } = await formProps?.form?.validateFields();
     await onSuccess(filters);
     localStorage.setItem('Filter', encode(filters));
-    setDrawerProps((pre) => ({ ...pre, visible: false }));
+    setDrawerProps((pre) => ({ ...pre, open: false }));
   }
   function onClose() {
-    setDrawerProps((pre) => ({ ...pre, visible: false }));
+    setDrawerProps((pre) => ({ ...pre, open: false }));
   }
 
   return (

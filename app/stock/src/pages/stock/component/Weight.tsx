@@ -1,15 +1,15 @@
-import DrawerForm from '@/js-sdk/components/DrawerForm';
-import useDrawerForm from '@/js-sdk/components/DrawerForm/useDrawerForm';
-import { WithSuccess } from '@/js-sdk/Interface/Container';
+import DrawerForm from 'edk/src/components/DrawerForm';
+import useDrawerForm from 'edk/src/components/DrawerForm/useDrawerForm';
+import { WithSuccess } from 'edk/src/Interface/Container';
 
 import { Button, Form, InputNumber, Switch, Typography } from 'antd';
 
 import { fields, tooltipMap, Weight } from '../../../model';
-import EdiTable, { EdiTableColumnType } from '@/js-sdk/components/EdiTable';
-import shouldUpdateHOF from '@/js-sdk/decorators/shouldUpdateHOF';
-import isValidValue from '@/js-sdk/utils/isValidValue';
-import Options from '@/js-sdk/utils/Options';
-import SearchSelect from '@/js-sdk/components/SearchSelect';
+import EdiTable, { EdiTableColumnType } from 'edk/src/components/EdiTable';
+import shouldUpdateHOF from 'edk/src/decorators/shouldUpdateHOF';
+import isValidValue from 'edk/src/utils/isValidValue';
+import Options from 'edk/src/utils/Options';
+import SearchSelect from 'edk/src/components/SearchSelect';
 import { decode, encode } from '@/utils/json';
 
 const { Item, ErrorList } = Form;
@@ -64,11 +64,13 @@ const columns: EdiTableColumnType<Weight>[] = [
   {
     width: 120,
     title: '是否生序',
-    renderFormItem: ({ field }) => (
-      <Item {...field} name={[field.name, 'isAsc']} valuePropName="checked">
-        <Switch />
-      </Item>
-    ),
+    renderFormItem: ({ field }) => {
+      return (
+        <Item {...field} name={[field.name, 'isAsc']} valuePropName="checked">
+          <Switch />
+        </Item>
+      );
+    },
   },
   {
     width: 120,
@@ -93,10 +95,10 @@ export default ({
     const { weights } = await formProps?.form?.validateFields();
     await onSuccess(weights);
     localStorage.setItem('Weight', encode(weights));
-    setDrawerProps((pre) => ({ ...pre, visible: false }));
+    setDrawerProps((pre) => ({ ...pre, open: false }));
   }
   function onClose() {
-    setDrawerProps((pre) => ({ ...pre, visible: false }));
+    setDrawerProps((pre) => ({ ...pre, open: false }));
   }
 
   return (
@@ -109,7 +111,12 @@ export default ({
       drawerProps={{ ...drawerProps, onOk: onFinish, onClose: onClose, title: '计算指标' }}
     >
       <EdiTable
-        tableProps={{ columns }}
+        tableProps={{
+          columns,
+          rowKey: (r) => {
+            return r?.field ?? Math.random();
+          },
+        }}
         formListProps={{
           name: 'weights',
           rules: [

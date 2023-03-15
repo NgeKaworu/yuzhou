@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2023 by fuRan NgeKaworu@gmail.com, All Rights Reserved.
  */
-import isValidValue from '@/js-sdk/utils/isValidValue';
+import isValidValue from 'edk/src/utils/isValidValue';
 import { safeAdd, safeDivision } from '@/utils/number';
 import { Weight, Stock, Sort2Num, avgField } from '../model';
 

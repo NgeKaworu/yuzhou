@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Button, Steps, Tag, Switch, Modal, Space, Typography } from 'antd';
+import { Button, Steps, Tag, Switch, Modal, Space, Typography, StepsProps } from 'antd';
 
 import { Stock, Weight as IWeight, Filter as IFilter, fields, tooltipMap } from '../../model';
-import isValidValue from '@/js-sdk/utils/isValidValue';
+import isValidValue from 'edk/src/utils/isValidValue';
 import Weight from './component/Weight';
-import useDrawerForm from '@/js-sdk/components/DrawerForm/useDrawerForm';
+import useDrawerForm from 'edk/src/components/DrawerForm/useDrawerForm';
 import DataSource from './component/DataSource';
-import LightTable, { LightColumnProps } from '@/js-sdk/components/LightTable';
+import LightTable, { LightColumnProps } from 'edk/src/components/LightTable';
 import Filter from './component/Filter';
 import { decode } from '@/utils/json';
 import {
@@ -17,7 +17,7 @@ import {
 import { conditionParse } from './component/ConditionEditor/model';
 import StockLabel from './component/StockLabel';
 import Editor from '../exchange/component/Editor';
-import useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 const { Link } = Typography;
 
 const worker = new Worker(new URL('../../worker/stock.ts', import.meta.url));
@@ -124,7 +124,7 @@ export default () => {
 
   function createExchange(code?: string) {
     return () => {
-      exchangeEditor.setModalProps((pre) => ({ ...pre, visible: true, title: '新增' }));
+      exchangeEditor.setModalProps((pre) => ({ ...pre, open: true, title: '新增' }));
       exchangeEditor.form.setFieldsValue({ code });
 
       exchangeEditor.setData({ code });
@@ -139,6 +139,72 @@ export default () => {
     });
   }
 
+  const items: StepsProps['items'] = [
+    {
+      status: isValidValue(dataSource) ? 'finish' : 'wait',
+      title: '先选个时间范围',
+      description: <DataSource onSuccess={fetchDateAndAvg} />,
+    },
+    {
+      status: isValidValue(weights) ? 'finish' : 'wait',
+      title: '权重',
+      description: (
+        <>
+          {weights?.map?.((w) => (
+            <Tag color={w.isAsc ? 'lawngreen' : 'orangered'} key={w.field}>
+              {tooltipMap.get(w.field)} {w.field} {fields.get(w.field)} ({w.coefficient})
+            </Tag>
+          ))}
+          <Button
+            onClick={() => weight.setDrawerProps((pre) => ({ ...pre, open: true }))}
+            type="primary"
+            ghost
+          >
+            配置权重
+          </Button>{' '}
+          <Button
+            onClick={calc}
+            type="primary"
+            disabled={!isValidValue(dataSource) || !isValidValue(weights)}
+            loading={calculating}
+          >
+            计算
+          </Button>
+        </>
+      ),
+    },
+
+    {
+      status: isValidValue(filters) ? 'finish' : 'wait',
+      title: '过滤',
+      description: (
+        <>
+          {filters?.map?.((f) => (
+            <Tag key={f.field}>
+              {tooltipMap.get(f.field)} {f.field} {fields.get(f.field)} {renderCondition(f.filter)}
+            </Tag>
+          ))}
+          <Button
+            onClick={() => filter.setDrawerProps((pre) => ({ ...pre, open: true }))}
+            type="primary"
+            ghost
+          >
+            配置过滤条件
+          </Button>{' '}
+          <Button onClick={cleanFilters} type="link">
+            清空过滤条件
+          </Button>{' '}
+          <Switch
+            checkedChildren="过滤"
+            unCheckedChildren="不过滤"
+            onChange={setFilterSwitch}
+            checked={filterSwitch}
+          />
+        </>
+      ),
+    },
+  ];
+
   return (
     <>
       <Weight {...weight} onSuccess={setWeights} />
@@ -146,72 +212,7 @@ export default () => {
 
       <Editor {...exchangeEditor} onSuccess={createExchangeSuccess} />
 
-      <Steps direction="vertical">
-        <Step
-          status={isValidValue(dataSource) ? 'finish' : 'wait'}
-          title="先选个时间范围"
-          description={<DataSource onSuccess={fetchDateAndAvg} />}
-        />
-        <Step
-          status={isValidValue(weights) ? 'finish' : 'wait'}
-          title="权重"
-          description={
-            <>
-              {weights?.map?.((w) => (
-                <Tag color={w.isAsc ? 'lawngreen' : 'orangered'} key={w.field}>
-                  {tooltipMap.get(w.field)} {w.field} {fields.get(w.field)} ({w.coefficient})
-                </Tag>
-              ))}
-              <Button
-                onClick={() => weight.setDrawerProps((pre) => ({ ...pre, visible: true }))}
-                type="primary"
-                ghost
-              >
-                配置权重
-              </Button>{' '}
-              <Button
-                onClick={calc}
-                type="primary"
-                disabled={!isValidValue(dataSource) || !isValidValue(weights)}
-                loading={calculating}
-              >
-                计算
-              </Button>
-            </>
-          }
-        />
-
-        <Step
-          status={isValidValue(filters) ? 'finish' : 'wait'}
-          title="过滤"
-          description={
-            <>
-              {filters?.map?.((f) => (
-                <Tag key={f.field}>
-                  {tooltipMap.get(f.field)} {f.field} {fields.get(f.field)}{' '}
-                  {renderCondition(f.filter)}
-                </Tag>
-              ))}
-              <Button
-                onClick={() => filter.setDrawerProps((pre) => ({ ...pre, visible: true }))}
-                type="primary"
-                ghost
-              >
-                配置过滤条件
-              </Button>{' '}
-              <Button onClick={cleanFilters} type="link">
-                清空过滤条件
-              </Button>{' '}
-              <Switch
-                checkedChildren="过滤"
-                unCheckedChildren="不过滤"
-                onChange={setFilterSwitch}
-                checked={filterSwitch}
-              />
-            </>
-          }
-        />
-      </Steps>
+      <Steps direction="vertical" items={items} />
 
       <LightTable
         columnEmptyText="-"

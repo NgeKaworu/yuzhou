@@ -2,8 +2,8 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2022-01-27 14:50:20
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-01-31 22:25:29
- * @FilePath: /stock/stock-umi/src/pages/component/DataSource.tsx
+ * @LastEditTime: 2023-03-15 14:14:21
+ * @FilePath: /yuzhou/app/stock/src/pages/stock/component/DataSource.tsx
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -11,10 +11,10 @@
 import { useState } from 'react';
 import { Button, DatePicker, Divider, Form, Space, TimeRangePickerProps } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-import SearchForm from '@/js-sdk/components/SearchForm';
-import { restful } from '@/js-sdk/utils/http';
-import { WithSuccess } from '@/js-sdk/Interface/Container';
-import moment from 'moment';
+import SearchForm from 'edk/src/components/SearchForm';
+import { restful } from 'edk/src/utils/http';
+import { WithSuccess } from 'edk/src/Interface/Container';
+import moment from 'dayjs';
 
 const { Item } = Form;
 const { RangePicker } = DatePicker;
@@ -22,11 +22,11 @@ const { RangePicker } = DatePicker;
 export default ({ onSuccess }: WithSuccess<{}>) => {
   const [loading, setLoading] = useState(false);
 
-  const rangePresets: TimeRangePickerProps['ranges'] = {
-    上季度: [moment().add(-3, 'month'), moment()],
-    上半年: [moment().add(-6, 'month'), moment()],
-    上一年: [moment().add(-12, 'month'), moment()],
-  };
+  const rangePresets: TimeRangePickerProps['presets'] = [
+    { label: '上季度', value: [moment().add(-3, 'month'), moment()] },
+    { label: '上半年', value: [moment().add(-6, 'month'), moment()] },
+    { label: '上一年', value: [moment().add(-12, 'month'), moment()] },
+  ];
 
   async function onFinish(value: any) {
     setLoading(true);
@@ -58,7 +58,7 @@ export default ({ onSuccess }: WithSuccess<{}>) => {
     <SearchForm formProps={{ onFinish, wrapperCol: void 0, labelCol: void 0 }}>
       <Space>
         <Item name="dataTime" rules={[{ required: true, message: '时间区间不能为空' }]}>
-          <RangePicker ranges={rangePresets} />
+          <RangePicker presets={rangePresets} />
         </Item>
         <Item>
           <Button htmlType="submit" type="primary" ghost loading={loading}>

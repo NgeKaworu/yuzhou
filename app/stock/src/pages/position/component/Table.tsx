@@ -8,13 +8,13 @@
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
-import Table, { LightTableProColumnProps } from '@/js-sdk/components/LightTablePro';
-import useLightTablePro from '@/js-sdk/components/LightTablePro/hook/useLightTablePro';
+import Table, { LightTableProColumnProps } from 'edk/src/components/LightTablePro';
+import useLightTablePro from 'edk/src/components/LightTablePro/hook/useLightTablePro';
 import Position from '@/model/position';
 import { list } from '@/api/position';
 import Editor from './Editor';
 import ExchangeEditor from '../../exchange/component/Editor';
-import useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 import { Space, Typography, Switch, Button, Modal, Tooltip } from 'antd';
 import StockLabel from '@/pages/stock/component/StockLabel';
 
@@ -135,7 +135,7 @@ export default () => {
 
   function edit(row: Position) {
     return () => {
-      editor.setModalProps((pre) => ({ ...pre, visible: true, title: '编辑' }));
+      editor.setModalProps((pre) => ({ ...pre, open: true, title: '编辑' }));
       editor.form.setFieldsValue(row);
     };
   }
@@ -152,7 +152,7 @@ export default () => {
 
   function createExchange(code?: string) {
     return () => {
-      exchangeEditor.setModalProps((pre) => ({ ...pre, visible: true, title: '新增' }));
+      exchangeEditor.setModalProps((pre) => ({ ...pre, open: true, title: '新增' }));
       exchangeEditor.form.setFieldsValue({ code });
 
       exchangeEditor.setData({ code });

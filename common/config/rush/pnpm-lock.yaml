@@ -50,6 +50,53 @@ importers:
       prettier: 2.8.4
       typescript: 4.9.5
 
+  ../../app/stock:
+    specifiers:
+      '@ant-design/cssinjs': ^1.6.1
+      '@ant-design/icons': ^5.0.1
+      '@tanstack/react-query': ^4.26.0
+      '@types/react-color': ^3.0.6
+      '@types/react-dom': ^18.0.11
+      '@umijs/fabric': ^2.8.1
+      '@umijs/plugin-qiankun': ^2.42.0
+      '@umijs/plugins': ^4.0.55
+      antd: ^5.2.3
+      classnames: ^2.3.2
+      dayjs: ^1.11.7
+      edk: workspace:^1.0.0
+      prettier: ^2.8.4
+      react: ^18.2.0
+      react-dnd: ^16.0.1
+      react-dnd-html5-backend: ^16.0.1
+      react-dom: ^18.2.0
+      react-router-dom: ^6.8.2
+      typescript: ^4.9.5
+      umi: ^4.0.55
+      unstated-next: ^1.1.0
+    dependencies:
+      '@ant-design/cssinjs': 1.6.1_biqbaboplfbrettd7655fr4n2y
+      '@ant-design/icons': 5.0.1_biqbaboplfbrettd7655fr4n2y
+      '@tanstack/react-query': 4.26.1_biqbaboplfbrettd7655fr4n2y
+      antd: 5.3.0_biqbaboplfbrettd7655fr4n2y
+      classnames: 2.3.2
+      dayjs: 1.11.7
+      edk: link:../../util/edk
+      react: 18.2.0
+      react-dnd: 16.0.1_react@18.2.0
+      react-dnd-html5-backend: 16.0.1
+      react-dom: 18.2.0_react@18.2.0
+      react-router-dom: 6.9.0_biqbaboplfbrettd7655fr4n2y
+      umi: 4.0.57_xb3pqn7q5z3htg3uk3q35j4l3q
+      unstated-next: 1.1.0
+    devDependencies:
+      '@types/react-color': 3.0.6
+      '@types/react-dom': 18.0.11
+      '@umijs/fabric': 2.14.1
+      '@umijs/plugin-qiankun': 2.42.0_giujc5roehzl5kknow67aa343q
+      '@umijs/plugins': 4.0.57_3ccyqqhivduipw35hyyzc2qata
+      prettier: 2.8.4
+      typescript: 4.9.5
+
   ../../app/time-mgt:
     specifiers:
       '@ant-design/cssinjs': ^1.6.1
@@ -2708,6 +2755,20 @@ packages:
     dependencies:
       '@floating-ui/core': 0.6.2
 
+  /@floating-ui/react-dom-interactions/0.3.1_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-tP2KEh7EHJr5hokSBHcPGojb+AorDNUf0NYfZGg/M+FsMvCOOsSEeEF0O1NDfETIzDnpbHnCs0DuvCFhSMSStg==}
+    deprecated: Package renamed to @floating-ui/react
+    dependencies:
+      '@floating-ui/react-dom': 0.6.3_ef5jwxihqo6n7gxfmzogljlgcm
+      aria-hidden: 1.2.3
+      point-in-polygon: 1.1.0
+      use-isomorphic-layout-effect: 1.1.2_react@18.1.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+      - react-dom
+    dev: false
+
   /@floating-ui/react-dom-interactions/0.3.1_geqtkvvluj2en6xdskblg4z7uq:
     resolution: {integrity: sha512-tP2KEh7EHJr5hokSBHcPGojb+AorDNUf0NYfZGg/M+FsMvCOOsSEeEF0O1NDfETIzDnpbHnCs0DuvCFhSMSStg==}
     deprecated: Package renamed to @floating-ui/react
@@ -2720,6 +2781,20 @@ packages:
       - '@types/react'
       - react
       - react-dom
+
+  /@floating-ui/react-dom/0.6.3_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-hC+pS5D6AgS2wWjbmSQ6UR6Kpy+drvWGJIri6e1EDGADTPsCaa4KzCgmCczHrQeInx9tqs81EyDmbKJYY2swKg==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@floating-ui/dom': 0.4.5
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      use-isomorphic-layout-effect: 1.1.2_react@18.1.0
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
 
   /@floating-ui/react-dom/0.6.3_geqtkvvluj2en6xdskblg4z7uq:
     resolution: {integrity: sha512-hC+pS5D6AgS2wWjbmSQ6UR6Kpy+drvWGJIri6e1EDGADTPsCaa4KzCgmCczHrQeInx9tqs81EyDmbKJYY2swKg==}
@@ -4327,6 +4402,51 @@ packages:
     dependencies:
       tsx: 3.12.4
 
+  /@umijs/plugins/4.0.57_3ccyqqhivduipw35hyyzc2qata:
+    resolution: {integrity: sha512-DeaZaTvpI7MvMWVHsDHoP0yEf1bkA89eRTULXJaQ97LKy9Xg0FL/xLH0cr7VtmFQGET+cC+8CWR83scJcXDm8w==}
+    dependencies:
+      '@ahooksjs/use-request': 2.8.15_react@18.2.0
+      '@ant-design/antd-theme-variable': 1.0.0
+      '@ant-design/icons': 4.8.0_biqbaboplfbrettd7655fr4n2y
+      '@ant-design/pro-components': 2.4.1_gobdu7oqf7subfinaleisgb544
+      '@tanstack/react-query': 4.26.1_biqbaboplfbrettd7655fr4n2y
+      '@tanstack/react-query-devtools': 4.26.1_brdhmlf72zuns3lsk66phyptty
+      '@umijs/bundler-utils': 4.0.57
+      '@umijs/valtio': 1.0.3_react@18.2.0
+      antd-dayjs-webpack-plugin: 1.0.6_dayjs@1.11.7
+      axios: 0.27.2
+      babel-plugin-import: 1.13.6
+      dayjs: 1.11.7
+      dva-core: 2.0.4_redux@4.2.1
+      dva-immer: 1.0.0
+      dva-loading: 3.0.22_dva-core@2.0.4
+      event-emitter: 0.3.5
+      fast-deep-equal: 3.1.3
+      intl: 1.2.5
+      lodash: 4.17.21
+      moment: 2.29.4
+      qiankun: 2.10.3
+      react-intl: 3.12.1_react@18.2.0
+      react-redux: 8.0.5_vgzmmmdsxlsvqklhwylf67wqfy
+      redux: 4.2.1
+      styled-components: 6.0.0-beta.9_biqbaboplfbrettd7655fr4n2y
+      tslib: 2.5.0
+      warning: 4.0.3
+    transitivePeerDependencies:
+      - '@types/lodash.merge'
+      - '@types/react'
+      - '@types/react-dom'
+      - antd
+      - babel-plugin-styled-components
+      - debug
+      - dva
+      - rc-field-form
+      - react
+      - react-dom
+      - react-native
+      - supports-color
+    dev: true
+
   /@umijs/plugins/4.0.57_kkaxl2irarlo5xf66wzu5eajq4:
     resolution: {integrity: sha512-DeaZaTvpI7MvMWVHsDHoP0yEf1bkA89eRTULXJaQ97LKy9Xg0FL/xLH0cr7VtmFQGET+cC+8CWR83scJcXDm8w==}
     dependencies:
@@ -4424,6 +4544,60 @@ packages:
       - webpack-dev-server
       - webpack-hot-middleware
       - webpack-plugin-serve
+
+  /@umijs/preset-umi/4.0.57_typescript@4.9.5:
+    resolution: {integrity: sha512-VyZWNBvm7fFGE7b106Mxu2eL8b4ZSxKd/crsLedSJsHMzIA0c9jM8sTLEj3zFtwxiUCD2STsOEhlXO1YrZgggQ==}
+    dependencies:
+      '@iconify/utils': 2.1.1
+      '@svgr/core': 6.5.1
+      '@umijs/ast': 4.0.57
+      '@umijs/babel-preset-umi': 4.0.57
+      '@umijs/bundler-utils': 4.0.57
+      '@umijs/bundler-vite': 4.0.57
+      '@umijs/bundler-webpack': 4.0.57_typescript@4.9.5
+      '@umijs/core': 4.0.57
+      '@umijs/did-you-know': 1.0.3
+      '@umijs/history': 5.3.1
+      '@umijs/mfsu': 4.0.57
+      '@umijs/plugin-run': 4.0.57
+      '@umijs/renderer-react': 4.0.57_ef5jwxihqo6n7gxfmzogljlgcm
+      '@umijs/server': 4.0.57
+      '@umijs/utils': 4.0.57
+      babel-plugin-dynamic-import-node: 2.3.3
+      click-to-react-component: 1.0.8_ef5jwxihqo6n7gxfmzogljlgcm
+      core-js: 3.28.0
+      current-script-polyfill: 1.0.0
+      enhanced-resolve: 5.9.3
+      fast-glob: 3.2.12
+      html-webpack-plugin: 5.5.0
+      path-to-regexp: 1.7.0
+      postcss-prefix-selector: 1.16.0
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      react-router: 6.3.0_react@18.1.0
+      react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
+      regenerator-runtime: 0.13.11
+    transitivePeerDependencies:
+      - '@types/node'
+      - '@types/react'
+      - '@types/webpack'
+      - postcss
+      - rollup
+      - sass
+      - sockjs-client
+      - styled-components
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - type-fest
+      - typescript
+      - vue-template-compiler
+      - webpack
+      - webpack-dev-server
+      - webpack-hot-middleware
+      - webpack-plugin-serve
+    dev: false
 
   /@umijs/renderer-react/4.0.57_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-35FOfFn0YBOmx45ul9B9Yervuv/loRhDz03Ia3yA2nHtya5BX5H233tu3iAkKTmVZ22QMO8VzCTEW55ZJYging==}
@@ -5345,6 +5519,20 @@ packages:
     dependencies:
       escape-string-regexp: 1.0.5
     dev: true
+
+  /click-to-react-component/1.0.8_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-YBNYOp00udy+NBEnUmM/3Df0Yco1iHNQ8k0ltlJVcDYK9AuYt14xPoJicBh/BokLqbzkci1p+pbdY5r4JXZC4g==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      '@floating-ui/react-dom-interactions': 0.3.1_ef5jwxihqo6n7gxfmzogljlgcm
+      htm: 3.1.1
+      react: 18.1.0
+      react-merge-refs: 1.1.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
+    dev: false
 
   /click-to-react-component/1.0.8_geqtkvvluj2en6xdskblg4z7uq:
     resolution: {integrity: sha512-YBNYOp00udy+NBEnUmM/3Df0Yco1iHNQ8k0ltlJVcDYK9AuYt14xPoJicBh/BokLqbzkci1p+pbdY5r4JXZC4g==}
@@ -11014,6 +11202,12 @@ packages:
       tinycolor2: 1.6.0
     dev: false
 
+  /react-dnd-html5-backend/16.0.1:
+    resolution: {integrity: sha512-Wu3dw5aDJmOGw8WjH1I1/yTH+vlXEL4vmjk5p+MHxP8HuHJS1lAGeIdG/hze1AvNeXWo/JgULV87LyQOr+r5jw==}
+    dependencies:
+      dnd-core: 16.0.1
+    dev: false
+
   /react-dnd/16.0.1_pmekkgnqduwlme35zpnqhenc34:
     resolution: {integrity: sha512-QeoM/i73HHu2XF9aKksIUuamHPDvRglEwdHL4jsp784BgUuWcg6mzfxT0QDdQz8Wj0qyRKx2eMg8iZtWvU4E2Q==}
     peerDependencies:
@@ -11032,6 +11226,29 @@ packages:
       '@react-dnd/invariant': 4.0.2
       '@react-dnd/shallowequal': 4.0.2
       '@types/react': 18.0.28
+      dnd-core: 16.0.1
+      fast-deep-equal: 3.1.3
+      hoist-non-react-statics: 3.3.2
+      react: 18.2.0
+    dev: false
+
+  /react-dnd/16.0.1_react@18.2.0:
+    resolution: {integrity: sha512-QeoM/i73HHu2XF9aKksIUuamHPDvRglEwdHL4jsp784BgUuWcg6mzfxT0QDdQz8Wj0qyRKx2eMg8iZtWvU4E2Q==}
+    peerDependencies:
+      '@types/hoist-non-react-statics': '>= 3.3.1'
+      '@types/node': '>= 12'
+      '@types/react': '>= 16'
+      react: '>= 16.14'
+    peerDependenciesMeta:
+      '@types/hoist-non-react-statics':
+        optional: true
+      '@types/node':
+        optional: true
+      '@types/react':
+        optional: true
+    dependencies:
+      '@react-dnd/invariant': 4.0.2
+      '@react-dnd/shallowequal': 4.0.2
       dnd-core: 16.0.1
       fast-deep-equal: 3.1.3
       hoist-non-react-statics: 3.3.2
@@ -11148,6 +11365,39 @@ packages:
       '@babel/runtime': 7.21.0
       '@types/hoist-non-react-statics': 3.3.1
       '@types/react': 18.0.28
+      '@types/react-dom': 18.0.11
+      '@types/use-sync-external-store': 0.0.3
+      hoist-non-react-statics: 3.3.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-is: 18.2.0
+      redux: 4.2.1
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: true
+
+  /react-redux/8.0.5_vgzmmmdsxlsvqklhwylf67wqfy:
+    resolution: {integrity: sha512-Q2f6fCKxPFpkXt1qNRZdEDLlScsDWyrgSj0mliK59qU6W5gvBiKkdMEG2lJzhd1rCctf0hb6EtePPLZ2e0m1uw==}
+    peerDependencies:
+      '@types/react': ^16.8 || ^17.0 || ^18.0
+      '@types/react-dom': ^16.8 || ^17.0 || ^18.0
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+      react-native: '>=0.59'
+      redux: ^4
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+      redux:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.21.0
+      '@types/hoist-non-react-statics': 3.3.1
       '@types/react-dom': 18.0.11
       '@types/use-sync-external-store': 0.0.3
       hoist-non-react-statics: 3.3.2
@@ -12466,6 +12716,54 @@ packages:
       - webpack-hot-middleware
       - webpack-plugin-serve
 
+  /umi/4.0.57_xb3pqn7q5z3htg3uk3q35j4l3q:
+    resolution: {integrity: sha512-qrbB5hMTXHvJtxog5Wmux1TjHUHLm6ANa7Qj7zwAJxppJAA5r6WoZ/yrVaFKr2R+/cyCoBa7UN5qL+rpC3wLrA==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@babel/runtime': 7.21.0
+      '@umijs/bundler-utils': 4.0.57
+      '@umijs/bundler-webpack': 4.0.57_typescript@4.9.5
+      '@umijs/core': 4.0.57
+      '@umijs/lint': 4.0.57_typescript@4.9.5
+      '@umijs/preset-umi': 4.0.57_typescript@4.9.5
+      '@umijs/renderer-react': 4.0.57_biqbaboplfbrettd7655fr4n2y
+      '@umijs/server': 4.0.57
+      '@umijs/test': 4.0.57
+      '@umijs/utils': 4.0.57
+      prettier-plugin-organize-imports: 3.2.2_silln3pw57har7jydmecgzoypa
+      prettier-plugin-packagejson: 2.4.3_prettier@2.8.4
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/node'
+      - '@types/react'
+      - '@types/webpack'
+      - '@volar/vue-language-plugin-pug'
+      - '@volar/vue-typescript'
+      - eslint
+      - jest
+      - postcss
+      - prettier
+      - react
+      - react-dom
+      - rollup
+      - sass
+      - sockjs-client
+      - styled-components
+      - stylelint
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - type-fest
+      - typescript
+      - vue-template-compiler
+      - webpack
+      - webpack-dev-server
+      - webpack-hot-middleware
+      - webpack-plugin-serve
+    dev: false
+
   /unbox-primitive/1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
     dependencies:
@@ -12531,6 +12829,10 @@ packages:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
     engines: {node: '>= 10.0.0'}
 
+  /unstated-next/1.1.0:
+    resolution: {integrity: sha512-AAn47ZncPvgBGOvMcn8tSRxsrqwf2VdAPxLASTuLJvZt4rhKfDvUkmYZLGfclImSfTVMv7tF4ynaVxin0JjDCA==}
+    dev: false
+
   /update-browserslist-db/1.0.10_browserslist@4.21.5:
     resolution: {integrity: sha512-OztqDenkfFkbSG+tRxBeAnCVPckDBcvibKd35yDONx6OU8N7sqgwc7rCbkJ/WcYtVRZ4ba68d6byhC21GFh7sQ==}
     hasBin: true
@@ -12563,6 +12865,18 @@ packages:
     dependencies:
       '@types/react': 18.0.28
       react: 18.1.0
+
+  /use-isomorphic-layout-effect/1.1.2_react@18.1.0:
+    resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      react: 18.1.0
+    dev: false
 
   /use-json-comparison/1.0.6_react@18.2.0:
     resolution: {integrity: sha512-xPadt5yMRbEmVfOSGFSMqjjICrq7nLbfSH3rYIXsrtcuFX7PmbYDN/ku8ObBn3v8o/yZelO1OxUS5+5TI3+fUw==}

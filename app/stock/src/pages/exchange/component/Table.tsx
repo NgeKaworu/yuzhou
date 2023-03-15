@@ -2,20 +2,20 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-02-04 18:12:36
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-02-26 19:06:31
- * @FilePath: /stock/stock-umi/src/pages/exchange/component/Table.tsx
+ * @LastEditTime: 2023-03-15 13:58:28
+ * @FilePath: /yuzhou/app/stock/src/pages/exchange/component/Table.tsx
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
 
-import { LightTableProColumnProps } from '@/js-sdk/components/LightTablePro';
+import { LightTableProColumnProps } from 'edk/src/components/LightTablePro';
 import Position from '@/model/position';
 import { detail } from '@/api/position';
 import { list, deleteOne } from '@/api/exchange';
 import Editor from './Editor';
 import PositionEditor from '../../position/component/Editor';
-import useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 import {
   Button,
   Space,
@@ -27,10 +27,10 @@ import {
   Tooltip,
 } from 'antd';
 import { InfoCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import LightTable from '@/js-sdk/components/LightTable';
-import { useParams } from 'react-router';
+import LightTable from 'edk/src/components/LightTable';
+import { useParams } from 'react-router-dom';
 import Exchange from '@/model/exchange';
 import StockLabel from '@/pages/stock/component/StockLabel';
 import { safeAdd, safeDivision, safeMultiply, safeNumber } from '@/utils/number';
@@ -119,7 +119,7 @@ export default () => {
   ];
 
   function create() {
-    editor.setModalProps((pre) => ({ ...pre, visible: true, title: '新增' }));
+    editor.setModalProps((pre) => ({ ...pre, open: true, title: '新增' }));
     editor.form.setFieldsValue({ code });
 
     editor.setData({ code });
@@ -127,7 +127,7 @@ export default () => {
 
   function edit(row: Exchange) {
     return () => {
-      editor.setModalProps((pre) => ({ ...pre, visible: true, title: '编辑' }));
+      editor.setModalProps((pre) => ({ ...pre, open: true, title: '编辑' }));
       editor.form.setFieldsValue(row);
 
       editor.setData({ code });
@@ -153,7 +153,7 @@ export default () => {
 
   function editPosition(row: Position) {
     return () => {
-      positionEditor.setModalProps((pre) => ({ ...pre, visible: true, title: '编辑' }));
+      positionEditor.setModalProps((pre) => ({ ...pre, open: true, title: '编辑' }));
       positionEditor.form.setFieldsValue(row);
     };
   }

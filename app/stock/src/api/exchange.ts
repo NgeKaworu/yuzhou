@@ -8,9 +8,9 @@
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
-import { Tail } from '@/js-sdk/decorators/type';
-import { restful } from '@/js-sdk/utils/http';
-import { Res } from '@/js-sdk/utils/http/type';
+import { Tail } from 'edk/src/decorators/type';
+import { restful } from 'edk/src/utils/http';
+import { Res } from 'edk/src/utils/http/type';
 import Exchange from '@/model/exchange';
 import { SERVER } from '.';
 

@@ -2,8 +2,8 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-02-04 16:14:33
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-02-26 18:32:57
- * @FilePath: /stock/stock-umi/src/pages/exchange/component/Editor.tsx
+ * @LastEditTime: 2023-03-15 14:37:39
+ * @FilePath: /yuzhou/app/stock/src/pages/exchange/component/Editor.tsx
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -19,15 +19,15 @@ import {
   Typography,
 } from 'antd';
 
-import ModalForm from '@/js-sdk/components/ModalForm';
-import type useModalForm from '@/js-sdk/components/ModalForm/useModalForm';
+import ModalForm from 'edk/src/components/ModalForm';
+import type useModalForm from 'edk/src/components/ModalForm/useModalForm';
 
 import { update, create } from '@/api/exchange';
-import moment from 'moment';
-import Format from '@/js-sdk/decorators/Format';
-import { IOC } from '@/js-sdk/decorators/hoc';
-import { compose } from '@/js-sdk/decorators/utils';
-import { useQuery } from 'react-query';
+import moment from 'dayjs';
+import Format from 'edk/src/decorators/Format';
+import { IOC } from 'edk/src/decorators/hoc';
+import { compose } from 'edk/src/decorators/utils';
+import { useQuery } from '@tanstack/react-query';
 import { detail } from '@/api/position';
 import { safeMultiply, safeAdd, safeDivision, safeNumber } from '@/utils/number';
 
@@ -77,7 +77,7 @@ export default ({
       }
 
       await onSuccess?.(value?.code);
-      setModalProps((pre) => ({ ...pre, visible: false }));
+      setModalProps((pre) => ({ ...pre, open: false }));
       form.resetFields();
       setCalcProp({
         transactionPrice: 0,
@@ -174,7 +174,7 @@ export default ({
         <InputNumber<number>
           placeholder="请输入"
           onChange={(transactionPrice) => {
-            setCalcProp((pre) => ({ ...pre, transactionPrice }));
+            setCalcProp((pre) => ({ ...pre, transactionPrice: transactionPrice! }));
           }}
         />
       </Item>
@@ -182,7 +182,7 @@ export default ({
         <InputNumber<number>
           placeholder="请输入"
           onChange={(currentShare) => {
-            setCalcProp((pre) => ({ ...pre, currentShare }));
+            setCalcProp((pre) => ({ ...pre, currentShare: currentShare! }));
           }}
         />
       </Item>

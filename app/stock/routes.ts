@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2022-02-11 13:51:09
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 13:50:50
+ * @LastEditTime: 2023-03-15 14:18:00
  * @FilePath: /yuzhou/app/stock/routes.ts
  * @Description:
  *

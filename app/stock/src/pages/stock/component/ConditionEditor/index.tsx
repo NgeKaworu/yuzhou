@@ -13,10 +13,10 @@ import {
   Divider,
 } from 'antd';
 import { Condition, OperatorMap } from '@/pages/stock/component/ConditionEditor/model';
-import { compose } from '@/js-sdk/decorators/utils';
-import Search from '@/js-sdk/decorators/Select/Search';
-import Options from '@/js-sdk/utils/Options';
-import isValidValue from '@/js-sdk/utils/isValidValue';
+import { compose } from 'edk/src/decorators/utils';
+import Search from 'edk/src/decorators/Select/Search';
+import Options from 'edk/src/utils/Options';
+import isValidValue from 'edk/src/utils/isValidValue';
 import { renderCondition } from './util';
 
 const { TabPane } = Tabs;
@@ -43,16 +43,16 @@ export default function ConditionEditor<D = any>({
 
   useEffect(() => {
     setData(value);
-  }, [value, modal?.visible]);
+  }, [value, modal?.open]);
 
   const [activeKey, setActiveKey] = useState<string>();
 
   function onShow() {
-    setModal((pre) => ({ ...pre, visible: true }));
+    setModal((pre) => ({ ...pre, open: true }));
   }
 
   function onHide() {
-    setModal((pre) => ({ ...pre, visible: false }));
+    setModal((pre) => ({ ...pre, open: false }));
   }
 
   function onOk() {
@@ -60,7 +60,7 @@ export default function ConditionEditor<D = any>({
       message.error('所有字段均不能为空');
     if (data) {
       onChange?.(data);
-      setModal((pre) => ({ ...pre, visible: false }));
+      setModal((pre) => ({ ...pre, open: false }));
     }
   }
 
