@@ -1,0 +1,37 @@
+{
+  "name": "stock",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "unstated-next": "^1.1.0",
+    "@ant-design/cssinjs": "^1.6.1",
+    "@ant-design/icons": "^5.0.1",
+    "@tanstack/react-query": "^4.26.0",
+    "antd": "^5.2.3",
+    "classnames": "^2.3.2",
+    "dayjs": "^1.11.7",
+    "edk": "workspace:^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.2",
+    "umi": "^4.0.55"
+  },
+  "devDependencies": {
+    "@types/react-color": "^3.0.6",
+    "@types/react-dom": "^18.0.11",
+    "@umijs/fabric": "^2.8.1",
+    "@umijs/plugin-qiankun": "^2.42.0",
+    "@umijs/plugins": "^4.0.55",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5"
+  }
+}

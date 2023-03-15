@@ -91,6 +91,10 @@
       "allowedCategories": [ "production", "tools" ]
     },
     {
+      "name": "react-dnd-html5-backend",
+      "allowedCategories": [ "production" ]
+    },
+    {
       "name": "react-dom",
       "allowedCategories": [ "production", "tools" ]
     },
@@ -117,6 +121,10 @@
     {
       "name": "umi",
       "allowedCategories": [ "production", "tools" ]
+    },
+    {
+      "name": "unstated-next",
+      "allowedCategories": [ "production" ]
     },
     {
       "name": "xlsx",

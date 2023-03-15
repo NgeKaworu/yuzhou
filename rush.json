@@ -440,6 +440,12 @@
       "projectFolder": "app/flashcard",
       "reviewCategory": "production"
       // "tags": [ "production" ]
+    },
+    {
+      "packageName": "stock",
+      "projectFolder": "app/stock",
+      "reviewCategory": "production"
+      // "tags": [ "production" ]
     }
   ]
 }
