@@ -111,7 +111,7 @@ export default ({
       drawerProps={{ ...drawerProps, onOk: onFinish, onClose: onClose, title: '计算指标' }}
     >
       <EdiTable
-        tableProps={{ columns }}
+        tableProps={{ columns, rowKey: (r) => r.field ?? Math.random() }}
         formListProps={{
           name: 'filters',
           rules: [
