@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 10:17:38
+ * @LastEditTime: 2023-03-15 11:34:57
  * @FilePath: /yuzhou/app/flashcard/.umirc.ts
  * @Description:
  *
@@ -13,6 +13,7 @@ import theme from './src/theme';
 import routes from './routes';
 
 export default defineConfig({
+  mfsu: false,
   plugins: ['@umijs/plugins/dist/qiankun'],
   qiankun: {
     slave: {},
@@ -34,5 +35,5 @@ export default defineConfig({
         '/api/flashcard': '',
       },
     },
-  }
+  },
 });

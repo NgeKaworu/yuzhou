@@ -11,11 +11,12 @@ import {
 import { DeleteOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
 
 import type { Record } from '@/models/record';
-import { prefixCls } from '@/theme';
+import { prefixCls as defaultPrefixCls } from '@/theme';
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
 import { DerivativeToken } from 'antd/es/theme/internal';
 import classNames from 'classnames';
 
+const prefixCls = defaultPrefixCls + '-record-item';
 export interface RecordItemProps {
   onClick: (id: string) => void;
   onRemoveClick: (id: string) => void;
@@ -64,17 +65,17 @@ export default ({
 
   return wrapSSR(
     <div
-      className={classNames(`${prefixCls}-record-card`)}
+      className={classNames(`${prefixCls}-record-card`, hashId)}
       onClick={clickHandler}
     >
       <div
-        className={classNames(`${prefixCls}-progress`)}
+        className={classNames(`${prefixCls}-progress`, hashId)}
         style={{ width: percent }}
       />
       <div
         className={classNames(
-          classNames(`${prefixCls}-check`),
-          selected && classNames(`${prefixCls}-selected`),
+          classNames(`${prefixCls}-check`, hashId),
+          selected && classNames(`${prefixCls}-selected`, hashId),
         )}
       />
       <div style={{ whiteSpace: 'pre-wrap' }} onClick={clickHandler}>
@@ -84,7 +85,7 @@ export default ({
       <div style={{ whiteSpace: 'pre-wrap' }} onClick={clickHandler}>
         {translation}
       </div>
-      <div className={classNames(`${prefixCls}-tools-bar`)}>
+      <div className={classNames(`${prefixCls}-tools-bar`, hashId)}>
         <Button
           size="small"
           type="text"
@@ -119,6 +120,7 @@ const genStyle = (token: DerivativeToken): CSSInterpolation => ({
   [`.${prefixCls}-record-card`]: {
     position: 'relative',
     height: '100%',
+    width: '100%',
     padding: '12px',
     overflowWrap: 'break-word',
     backgroundColor: '#fff',

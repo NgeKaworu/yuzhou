@@ -1,4 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-15 10:04:53
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-15 11:47:55
+ * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   useInfiniteQuery,
@@ -9,34 +19,27 @@ import {
 import {
   Empty,
   Input,
-  Layout,
   Button,
   Menu,
   Space,
   Modal,
   Form,
   Radio,
-  Card,
-  Skeleton,
   MenuProps,
+  List,
+  ListProps,
 } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
 
 import { restful } from 'edk/src/utils/http';
+import { Res } from 'edk/src/utils/http/type';
 
 import RecordItem from './components/RecordItem';
 
 import { Record } from '@/models/record';
 
 import styles from '@/index.less';
-
-import {
-  WindowScroller,
-  List,
-  InfiniteLoader,
-  ListProps,
-} from 'react-virtualized';
 
 type inputType = '' | '新建' | '编辑';
 
@@ -56,7 +59,6 @@ export default () => {
   const [inputType, setInputType] = useState<inputType>('新建');
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  const wsRef = useRef();
   // 编辑modal使用
   const [curRecrod, setCurRecord] = useState<Record>();
 
@@ -74,14 +76,17 @@ export default () => {
         new URLSearchParams(_search),
       );
 
-      return restful.get(`/flashcard/record/list`, {
-        notify: 'fail',
-        params: {
-          ...params,
-          skip: pageParam * limit,
-          limit,
+      return restful.get<Res<Record[]>, Res<Record[]>>(
+        `/flashcard/record/list`,
+        {
+          notify: 'fail',
+          params: {
+            ...params,
+            skip: pageParam * limit,
+            limit,
+          },
         },
-      });
+      );
     },
     {
       getNextPageParam: (lastPage, pages) => {
@@ -90,12 +95,12 @@ export default () => {
     },
   );
 
-  const datas = data?.pages as any,
-    pages = datas?.reduce(
+  const dataSource = data?.pages,
+    pages = dataSource?.reduce(
       (acc: any, cur: any) => acc.concat(cur?.data),
       [],
     ) as any[],
-    total = datas?.[datas?.length - 1]?.total || 0;
+    total = dataSource?.[dataSource?.length - 1]?.total || 0;
 
   const creator = useMutation(
     (data) => restful.post(`/flashcard/record/create`, data),
@@ -176,7 +181,7 @@ export default () => {
     allReviewer.mutate();
   }
 
-  function onMenuSelect({ key }: MenuProps['onSelect']) {
+  const onMenuSelect: MenuProps['onSelect'] = ({ key }) => {
     if (key !== 'all') {
       params.set('type', `${key}`);
     } else {
@@ -186,7 +191,7 @@ export default () => {
       pathname: _location.pathname,
       search: params.toString(),
     });
-  }
+  };
 
   function showSortModal() {
     setSortVisable(true);
@@ -264,69 +269,51 @@ export default () => {
   function cancelAllSelect() {
     setSelectedItems([]);
   }
-
-  // react-window-infinite
-  // const length = pages?.length || 0;
-  // If there are more items to be loaded then add an extra row to hold a loading indicator.
-  // const itemCount = hasNextPage ? length + 1 : length;
-
-  // Only load 1 page of items at a time.
-  // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
   const loadMoreItems = () =>
     isFetching ? Promise.resolve() : fetchNextPage();
 
-  // Every row is loaded except for our loading indicator row.
-  // const isItemLoaded = index => !hasNextPage || index < pages.length;
-  const isItemLoaded = ({ index }: { index: number }) =>
-    !hasNextPage || index < pages?.length;
-
-  const getRowHeight: ListProps['rowHeight'] = ({ index }) => {
-    const { source, translation } = pages[index] ?? {},
-      baseWidth = document.body.clientWidth - 32,
-      sourceSpace = source?.split('\n')?.length ?? 0,
-      sourceRows =
-        Math.ceil((((source?.length ?? 1) - sourceSpace) * 14) / baseWidth) +
-        sourceSpace,
-      sourceHeight = Math.max(sourceRows * 22, 22),
-      translationSpace = translation?.split('\n')?.length ?? 0,
-      translationRows =
-        Math.ceil(
-          (((translation?.length ?? 1) - translationSpace) * 14) / baseWidth,
-        ) + translationSpace,
-      translationHeight = Math.max(translationRows * 22, 22);
-    return sourceHeight + translationHeight + 49 + 56;
-  };
-
   // Render an item or a loading indicator.
-  const renderItem: ListProps['rowRenderer'] = ({ parent, index, style }) => {
-    const record = pages[index];
+  const renderItem: ListProps<Record>['renderItem'] = (record) => {
     const selected = selectedItems.some((s) => s === record?._id);
-    console.log('parent', parent);
     return (
-      <div
-        style={{ ...style, padding: 4, paddingTop: index === 0 ? 4 : 0 }}
-        key={record?._id}
-      >
-        {isItemLoaded({ index }) ? (
-          <RecordItem
-            record={record}
-            selected={selected}
-            onClick={onItemClick}
-            onEditClick={onItemEditClick}
-            onSyncClick={(e) => {
-              e.stopPropagation();
-              parent?.recomputeGridSize?.(index);
-            }}
-            onRemoveClick={onItemRemoveClick}
-          />
-        ) : (
-          <Card>
-            <Skeleton />
-          </Card>
-        )}
-      </div>
+      <List.Item key={record?._id}>
+        <RecordItem
+          record={record}
+          selected={selected}
+          onClick={onItemClick}
+          onEditClick={onItemEditClick}
+          onSyncClick={(e) => {
+            e.stopPropagation();
+          }}
+          onRemoveClick={onItemRemoveClick}
+        />
+      </List.Item>
     );
   };
+
+  const loadMore = !isFetching ? (
+    <div
+      style={{
+        textAlign: 'center',
+        margin: '12px auto',
+        height: 32,
+        lineHeight: '32px',
+      }}
+    >
+      {hasNextPage ? (
+        <Button onClick={loadMoreItems}>加载更多...</Button>
+      ) : (
+        '没有更多了'
+      )}
+    </div>
+  ) : null;
+
+  const items: MenuProps['items'] = [
+    { key: 'enable', label: '可复习' },
+    { key: 'cooling', label: '冷却中' },
+    { key: 'done', label: '己完成' },
+    { key: 'all', label: '全部' },
+  ];
 
   return (
     <section>
@@ -337,17 +324,13 @@ export default () => {
             mode="horizontal"
             onSelect={onMenuSelect}
             selectedKeys={selectedKeys}
-          >
-            <Menu.Item key="enable">可复习</Menu.Item>
-            <Menu.Item key="cooling">冷却中</Menu.Item>
-            <Menu.Item key="done">己完成</Menu.Item>
-            <Menu.Item key="all">全部</Menu.Item>
-          </Menu>
+            items={items}
+          />
           <Button type="link" size="small" onClick={showSortModal}>
             排序
           </Button>
           <Modal
-            visible={sortVisable}
+            open={sortVisable}
             title="排序"
             onCancel={hideSortModal}
             onOk={onSortSubmit}
@@ -390,32 +373,13 @@ export default () => {
       </header>
       <main className={styles['content']}>
         {pages?.length ? (
-          <InfiniteLoader
-            isRowLoaded={isItemLoaded}
-            rowCount={total}
-            loadMoreRows={loadMoreItems}
-          >
-            {({ onRowsRendered, registerChild }) => (
-              <WindowScroller
-                scrollElement={document.querySelector('#scroll-root')}
-              >
-                {({ registerChild: winRef, ...winProps }) => (
-                  <List
-                    autoHeight
-                    style={{ background: '#f0f2f5' }}
-                    {...winProps}
-                    ref={(ref) => {
-                      wsRef.current = registerChild(winRef(ref));
-                    }}
-                    rowCount={total}
-                    onRowsRendered={onRowsRendered}
-                    rowHeight={getRowHeight}
-                    rowRenderer={renderItem}
-                  />
-                )}
-              </WindowScroller>
-            )}
-          </InfiniteLoader>
+          <List
+            dataSource={pages}
+            style={{ background: '#f0f2f5' }}
+            renderItem={renderItem}
+            loading={isFetching}
+            loadMore={loadMore}
+          />
         ) : (
           <Empty className={styles['empty']} />
         )}
@@ -458,7 +422,7 @@ export default () => {
       </footer>
       <Modal
         title={inputType}
-        visible={inputVisable}
+        open={inputVisable}
         onCancel={hideInputModal}
         onOk={onInputSubmit}
       >
