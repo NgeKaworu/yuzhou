@@ -2,13 +2,12 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2022-02-11 13:51:09
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-01-25 18:43:05
- * @FilePath: /stock/stock-umi/src/worker/stock.ts
+ * @LastEditTime: 2023-03-15 16:42:37
+ * @FilePath: /yuzhou/app/stock/src/worker/stock.ts
  * @Description:
  *
  * Copyright (c) 2023 by fuRan NgeKaworu@gmail.com, All Rights Reserved.
  */
-import isValidValue from 'edk/src/utils/isValidValue';
 import { safeAdd, safeDivision } from '@/utils/number';
 import { Weight, Stock, Sort2Num, avgField } from '../model';
 
@@ -35,14 +34,14 @@ self.onerror = (e) => {
   console.error(e);
 };
 
-function calc({ weights, dataSource }: { weights: Weight[]; dataSource: Stock[] }) {
+export function calc({ weights, dataSource }: { weights: Weight[]; dataSource: Stock[] }) {
   const temp = dataSource?.map((s) => ({ ...s, grade: 0 }));
   weights?.forEach(sortWeight(temp));
   lock--;
   return temp;
 }
 
-function avg(dataSource: Stock[]): Stock[] {
+export function avg(dataSource: Stock[]): Stock[] {
   const g = group(dataSource);
   let ret: Stock[] = [];
   for (const [_, value] of g) {
@@ -64,7 +63,7 @@ function avg(dataSource: Stock[]): Stock[] {
   return ret;
 }
 
-function group(dataSource: Stock[]): Map<string, Stock[]> {
+export function group(dataSource: Stock[]): Map<string, Stock[]> {
   let m = new Map<string, Stock[]>();
   for (const stock of dataSource) {
     const { code, bourse, bourseCode } = stock,
@@ -77,7 +76,7 @@ function group(dataSource: Stock[]): Map<string, Stock[]> {
   return m;
 }
 
-function sortWeight(dataSource: Stock[]) {
+export function sortWeight(dataSource: Stock[]) {
   return (w: Weight) => {
     const { isAsc, coefficient, field } = w;
 
@@ -86,3 +85,5 @@ function sortWeight(dataSource: Stock[]) {
     dataSource.forEach((k, idx) => (k.grade = (k.grade ?? 0) + idx * coefficient));
   };
 }
+
+export {};

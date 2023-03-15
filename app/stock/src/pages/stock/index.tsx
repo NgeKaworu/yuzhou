@@ -9,6 +9,7 @@ import DataSource from './component/DataSource';
 import LightTable, { LightColumnProps } from 'edk/src/components/LightTable';
 import Filter from './component/Filter';
 import { decode } from '@/utils/json';
+
 import {
   convert2Number,
   interpolationCondition,
@@ -19,10 +20,8 @@ import StockLabel from './component/StockLabel';
 import Editor from '../exchange/component/Editor';
 import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 const { Link } = Typography;
-
-const worker = new Worker(new URL('../../worker/stock.ts', import.meta.url));
-
-const { Step } = Steps;
+import { calc as workerCalc, avg as workerAvg } from '../../worker/stock';
+// const worker = new Worker(new URL('../../worker/stock.ts', import.meta.url), { type: 'module' });
 
 export default () => {
   const [dataSource, setDataSource] = useState<Stock[]>(),
@@ -30,24 +29,25 @@ export default () => {
     [weights, setWeights] = useState<IWeight[]>(decode(localStorage.getItem('Weight'))),
     [filters, setFilters] = useState<IFilter[]>(decode(localStorage.getItem('Filter'))),
     [filterSwitch, setFilterSwitch] = useState(true),
-    [calculating, setCalculating] = useState<boolean>(),
-    workerHandler: Worker['onmessage'] = (e) => {
-      setData(e?.data?.payload);
-      setCalculating(false);
-    },
+    [calculating, setCalculating] = useState<boolean>(false),
+    // workerHandler: Worker['onmessage'] = (e) => {
+    //   setData(e?.data?.payload);
+    //   setCalculating(false);
+    // },
     weight = useDrawerForm(),
     filter = useDrawerForm();
 
   const exchangeEditor = useModalForm();
 
-  useEffect(() => {
-    worker.onmessage = workerHandler;
-    return () => worker.terminate();
-  }, [worker]);
+  // useEffect(() => {
+  //   worker.onmessage = workerHandler;
+  //   return () => worker.terminate();
+  // }, [worker]);
 
   async function calc() {
-    setCalculating(true);
-    worker.postMessage({ type: 'calc', payload: { dataSource: data, weights } });
+    // setCalculating(true);
+    setData(workerCalc({ dataSource: data!, weights }));
+    // worker.postMessage({ type: 'calc', payload: { dataSource: data, weights } });
   }
 
   function cleanFilters() {
@@ -58,8 +58,9 @@ export default () => {
 
   function fetchDateAndAvg(stocks: Stock[]) {
     setDataSource(stocks);
-    setCalculating(true);
-    worker.postMessage({ type: 'avg', payload: stocks });
+    // setCalculating(true);
+    // worker.postMessage({ type: 'avg', payload: stocks });
+    setData(workerAvg(stocks));
   }
 
   const sorterHOF: (field: keyof Stock) => LightColumnProps<Stock>['sorter'] = (field) => (a, b) =>
