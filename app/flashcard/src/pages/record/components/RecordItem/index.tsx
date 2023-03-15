@@ -1,19 +1,31 @@
 import React from 'react';
 
-import { Divider, Popconfirm, Button } from 'antd';
+import {
+  Divider,
+  Popconfirm,
+  Button,
+  theme,
+  ButtonProps,
+  PopconfirmProps,
+} from 'antd';
 import { DeleteOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
 
 import type { Record } from '@/models/record';
-import styles from './index.less';
+import { prefixCls } from '@/theme';
+import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
+import { DerivativeToken } from 'antd/es/theme/internal';
+import classNames from 'classnames';
 
 export interface RecordItemProps {
   onClick: (id: string) => void;
   onRemoveClick: (id: string) => void;
   onEditClick: (record: Record) => void;
-  onSyncClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onSyncClick: ButtonProps['onClick'];
   record: Record;
   selected: boolean;
 }
+
+const { useToken } = theme;
 
 export default ({
   onClick,
@@ -28,23 +40,43 @@ export default ({
     e.stopPropagation();
     onClick(_id);
   }
-  function editClickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  const editClickHandler: ButtonProps['onClick'] = (e) => {
     e.stopPropagation();
     onEditClick(record);
-  }
-  function removeClickHandler(e?: React.MouseEvent<HTMLElement, MouseEvent>) {
+  };
+  const removeClickHandler: PopconfirmProps['onConfirm'] = (e) => {
     e?.stopPropagation();
     onRemoveClick(_id);
-  }
+  };
 
   function stopPropagation(e?: React.MouseEvent<HTMLElement, MouseEvent>) {
     e?.stopPropagation();
   }
 
-  return (
-    <div className={styles['record-card']} onClick={clickHandler}>
-      <div className={styles.progress} style={{ width: percent }} />
-      <div className={[styles.check, selected && styles.selected].join(' ')} />
+  // 【自定义】制造样式
+  const { theme, token, hashId } = useToken();
+
+  // 全局注册，内部会做缓存优化
+  const wrapSSR = useStyleRegister(
+    { theme, token, hashId, path: [prefixCls] },
+    () => [genStyle(token)],
+  );
+
+  return wrapSSR(
+    <div
+      className={classNames(`${prefixCls}-record-card`)}
+      onClick={clickHandler}
+    >
+      <div
+        className={classNames(`${prefixCls}-progress`)}
+        style={{ width: percent }}
+      />
+      <div
+        className={classNames(
+          classNames(`${prefixCls}-check`),
+          selected && classNames(`${prefixCls}-selected`),
+        )}
+      />
       <div style={{ whiteSpace: 'pre-wrap' }} onClick={clickHandler}>
         {source}
       </div>
@@ -52,7 +84,7 @@ export default ({
       <div style={{ whiteSpace: 'pre-wrap' }} onClick={clickHandler}>
         {translation}
       </div>
-      <div className={styles['tools-bar']}>
+      <div className={classNames(`${prefixCls}-tools-bar`)}>
         <Button
           size="small"
           type="text"
@@ -79,6 +111,39 @@ export default ({
           ></Button>
         </Popconfirm>
       </div>
-    </div>
+    </div>,
   );
 };
+
+const genStyle = (token: DerivativeToken): CSSInterpolation => ({
+  [`.${prefixCls}-record-card`]: {
+    position: 'relative',
+    height: '100%',
+    padding: '12px',
+    overflowWrap: 'break-word',
+    backgroundColor: '#fff',
+    '&:hover .check': { visibility: 'visible' },
+  },
+  [`.${prefixCls}-tools-bar`]: {
+    position: 'absolute',
+    top: '0',
+    right: '12px',
+  },
+  [`.${prefixCls}-progress`]: {
+    position: 'absolute',
+    bottom: '0',
+    left: '0',
+    height: '2px',
+    backgroundImage: 'linear-gradient(to right, red, lightgreen)',
+  },
+  [`.${prefixCls}-check`]: {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    width: '1px',
+    height: '100%',
+    backgroundColor: token.colorPrimary,
+    visibility: 'hidden',
+  },
+  [`.${prefixCls}-selected`]: { visibility: 'visible' },
+});

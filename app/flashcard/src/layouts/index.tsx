@@ -1,15 +1,27 @@
-import React, { PropsWithChildren } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { useLocation, useHistory } from 'react-router';
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-15 10:04:53
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-15 11:02:24
+ * @FilePath: /yuzhou/app/flashcard/src/layouts/index.tsx
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
+import React from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { ConfigProvider, Layout } from 'antd';
+import { ConfigProvider, theme } from 'antd';
+
+import defaultTheme, { prefixCls } from '@/theme';
 
 import { FormOutlined, SyncOutlined } from '@ant-design/icons';
-
-const { Content, Footer } = Layout;
+import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
+import classNames from 'classnames';
 
 import zhCN from 'antd/es/locale/zh_CN';
-import styles from './index.less';
+import { DerivativeToken } from 'antd/es/theme/internal';
 
 const queyClient = new QueryClient();
 
@@ -23,44 +35,100 @@ const menu = [
   { title: '复习', path: '/review/', icon: <SyncOutlined /> },
 ];
 
-export default (props: PropsWithChildren<any>) => {
+const { useToken } = theme;
+
+export default () => (
+  <React.StrictMode>
+    <QueryClientProvider client={queyClient}>
+      <ConfigProvider locale={zhCN} theme={defaultTheme}>
+        <Main />
+      </ConfigProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
+);
+
+function Main() {
   const { pathname } = useLocation();
-  const history = useHistory();
+  const history = useNavigate();
+
+  // 【自定义】制造样式
+  const { theme, token, hashId } = useToken();
+
+  // 全局注册，内部会做缓存优化
+  const wrapSSR = useStyleRegister(
+    { theme, token, hashId, path: [prefixCls] },
+    () => [genStyle(token)],
+  );
 
   function onMenuClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const path: string = e?.currentTarget?.dataset?.path as string,
       query = menu.find((m) => m?.path === path)?.query;
 
-    history.push({
+    history({
       pathname: path,
       search: new URLSearchParams(query)?.toString(),
     });
   }
-  return (
-    <QueryClientProvider client={queyClient}>
-      <ConfigProvider locale={zhCN}>
-        <section className={styles['layout']} id="scroll-root">
-          <main>{props.children}</main>
-          <footer>
-            <div className={styles['footer']}>
-              {menu.map((i) => (
-                <div
-                  className={[
-                    styles?.['menu-item'],
-                    i.path.includes(pathname) && styles?.['active'],
-                  ]?.join(' ')}
-                  key={i.path}
-                  data-path={i.path}
-                  onClick={onMenuClick}
-                >
-                  {i.icon}
-                  {i.title}
-                </div>
-              ))}
+  return wrapSSR(
+    <section
+      className={classNames(`${prefixCls}-layout`, hashId)}
+      id="scroll-root"
+    >
+      <main>
+        <Outlet />
+      </main>
+      <footer>
+        <div className={classNames(`${prefixCls}-footer`, hashId)}>
+          {menu.map((i) => (
+            <div
+              className={classNames(
+                classNames(`${prefixCls}-menu-item`, hashId),
+                i.path.includes(pathname) &&
+                  classNames(`${prefixCls}-active`, hashId),
+              )}
+              key={i.path}
+              data-path={i.path}
+              onClick={onMenuClick}
+            >
+              {i.icon}
+              {i.title}
             </div>
-          </footer>
-        </section>
-      </ConfigProvider>
-    </QueryClientProvider>
+          ))}
+        </div>
+      </footer>
+    </section>
   );
-};
+}
+
+const genStyle = (token: DerivativeToken): CSSInterpolation => ({
+  [`.${prefixCls}-layout`]: { background: '#eee' },
+  [`.${prefixCls}-footer`]: {
+    position: 'fixed',
+    right: '0',
+    bottom: '0',
+    left: '0',
+    display: 'flex',
+    justifyContent: 'space-around',
+    height: '36px',
+    padding: '0',
+    background: 'white',
+    borderTop: '1px solid rgba(233, 233, 233, 05)',
+    boxShadow: '0px 1px 20px 5px rgba(0, 0, 0, 0.05)',
+  },
+  [`.${prefixCls}-menu-item`]: {
+    anticon: { fontSize: '16px' },
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#000',
+    fontSize: '12px',
+    textAlign: 'center',
+    cursor: 'pointer',
+    opacity: 0.7,
+    ':hover': { color: token.colorPrimary, opacity: 1 },
+    ':active': { opacity: 0.5 },
+  },
+  [`.${prefixCls}-active`]: { color: token.colorPrimary, opacity: 1 },
+});

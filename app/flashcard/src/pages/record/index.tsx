@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useHistory } from 'react-router';
-import { useInfiniteQuery, useQueryClient, useMutation } from 'react-query';
+import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  useInfiniteQuery,
+  useQueryClient,
+  useMutation,
+} from '@tanstack/react-query';
 
 import {
   Empty,
@@ -14,15 +18,12 @@ import {
   Radio,
   Card,
   Skeleton,
+  MenuProps,
 } from 'antd';
-
-const { Content, Footer } = Layout;
 
 import { PlusOutlined } from '@ant-design/icons';
 
-import { SelectInfo } from 'rc-menu/lib/interface';
-
-import { restful } from '@/js-sdk/utils/http';
+import { restful } from 'edk/src/utils/http';
 
 import RecordItem from './components/RecordItem';
 
@@ -44,8 +45,8 @@ const limit = 15;
 export default () => {
   const [sortForm] = Form.useForm();
   const [inputForm] = Form.useForm();
-  const history = useHistory();
-  const _location = history.location;
+  const history = useNavigate();
+  const _location = useLocation();
   const _search = _location.search;
   const params = new URLSearchParams(_search);
   const selectedKeys = [params.get('type') || 'all'];
@@ -100,7 +101,7 @@ export default () => {
     (data) => restful.post(`/flashcard/record/create`, data),
     {
       onSuccess() {
-        queryClient.invalidateQueries('records-list');
+        queryClient.invalidateQueries(['records-list']);
         inputForm.resetFields();
         setInputVisable(false);
       },
@@ -115,7 +116,7 @@ export default () => {
       }),
     {
       onSuccess() {
-        queryClient.invalidateQueries('records-list');
+        queryClient.invalidateQueries(['records-list']);
         inputForm.resetFields();
         setInputVisable(false);
       },
@@ -126,7 +127,7 @@ export default () => {
     (data?: string) => restful.delete(`/flashcard/record/remove/${data}`),
     {
       onSuccess() {
-        queryClient.invalidateQueries('records-list');
+        queryClient.invalidateQueries(['records-list']);
       },
     },
   );
@@ -135,9 +136,9 @@ export default () => {
     (ids: string[]) => restful.patch(`/flashcard/record/review`, { ids }),
     {
       onSuccess() {
-        queryClient.invalidateQueries('records-list');
-        queryClient.invalidateQueries('review-list');
-        history.push('/review/');
+        queryClient.invalidateQueries(['records-list']);
+        queryClient.invalidateQueries(['review-list']);
+        history('/review/');
       },
     },
   );
@@ -146,9 +147,9 @@ export default () => {
     (data) => restful.patch(`/flashcard/record/random-review`, data),
     {
       onSuccess() {
-        queryClient.invalidateQueries('records-list');
-        queryClient.invalidateQueries('review-list');
-        history.push('/review/');
+        queryClient.invalidateQueries(['records-list']);
+        queryClient.invalidateQueries(['review-list']);
+        history('/review/');
       },
     },
   );
@@ -157,9 +158,9 @@ export default () => {
     (data) => restful.get(`/flashcard/record/review-all`),
     {
       onSuccess() {
-        queryClient.invalidateQueries('records-list');
-        queryClient.invalidateQueries('review-list');
-        history.push('/review/');
+        queryClient.invalidateQueries(['records-list']);
+        queryClient.invalidateQueries(['review-list']);
+        history('/review/');
       },
     },
   );
@@ -175,13 +176,13 @@ export default () => {
     allReviewer.mutate();
   }
 
-  function onMenuSelect({ key }: SelectInfo) {
+  function onMenuSelect({ key }: MenuProps['onSelect']) {
     if (key !== 'all') {
       params.set('type', `${key}`);
     } else {
       params.delete('type');
     }
-    history.push({
+    history({
       pathname: _location.pathname,
       search: params.toString(),
     });
@@ -199,7 +200,7 @@ export default () => {
     sortForm.validateFields().then(({ sort, orderby }) => {
       params.set('sort', sort);
       params.set('orderby', orderby);
-      history.push({
+      history({
         pathname: _location.pathname,
         search: params.toString(),
       });
@@ -210,7 +211,7 @@ export default () => {
   function onSortCancel() {
     params.delete('sort');
     params.delete('orderby');
-    history.push({
+    history({
       pathname: _location.pathname,
       search: params.toString(),
     });

@@ -10,7 +10,6 @@
     "start": "npm run dev"
   },
   "dependencies": {
-
     "react-virtualized": "^9.22.3",
     "@ant-design/cssinjs": "^1.6.1",
     "@ant-design/icons": "^5.0.1",

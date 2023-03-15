@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useQuery, useQueryClient, useMutation } from 'react-query';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
 import {
   Empty,
@@ -12,15 +12,14 @@ import {
   Divider,
 } from 'antd';
 
-const { Header, Content, Footer } = Layout,
-  ua = navigator.userAgent?.toLowerCase();
+  const ua = navigator.userAgent?.toLowerCase();
 
 import { Record } from '@/models/record';
-import moment from 'moment';
+import moment from 'dayjs';
 
 import styles from '@/index.less';
 import reviewStyles from './index.less';
-import { restful } from '@/js-sdk/utils/http';
+import { restful } from 'edk/src/utils/http';
 
 type ReviewType = 'normal' | 'success' | 'fail';
 export default () => {
@@ -29,7 +28,7 @@ export default () => {
   const [curIdx, setCurIdx] = useState<number>(0);
   const queryClient = useQueryClient();
 
-  const { data } = useQuery('review-list', () => {
+  const { data } = useQuery(['review-list'], () => {
     return restful.get(`/flashcard/record/list`, {
       notify: 'fail',
       params: {
@@ -70,8 +69,8 @@ export default () => {
     },
     {
       onSuccess: async () => {
-        queryClient.invalidateQueries('records-list');
-        queryClient.invalidateQueries('review-list');
+        queryClient.invalidateQueries(['records-list']);
+        queryClient.invalidateQueries(['review-list']);
         setFlag('normal');
         setCurIdx(0);
         form.resetFields();
