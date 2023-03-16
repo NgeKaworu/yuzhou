@@ -1,6 +1,15 @@
-import Scope from '../';
-const { useState } = Scope.react;
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-14 23:42:22
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-17 00:21:34
+ * @FilePath: /yuzhou/util/edk/src/hooks/useExportExcel/index.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import Scope from '../../';
+const { useState } = Scope.react;
 const { message } = Scope.antd;
 import type { ExportColumns } from './util';
 import { JSON2Sheet } from './util';

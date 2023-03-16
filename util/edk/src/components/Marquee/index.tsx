@@ -1,5 +1,5 @@
+import Scope from '../../';
 import type { PropsWithChildren } from 'react';
-import Scope from '../';
 const { useRef, useState } = Scope.react;
 
 export interface Point {

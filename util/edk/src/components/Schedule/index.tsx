@@ -1,15 +1,15 @@
+import Scope from '../../';
 import type { CSSProperties, ReactNode } from 'react';
-import Scope from '../';
-const { useState } = Scope.react;
 import type { MarqueeProps } from '../Marquee';
 import Marquee from '../Marquee';
-import Scope from '../../';
-const { Tooltip, Typography, theme } = Scope.antd;
 import trimEndWith from '../../struct/string/trimEndWith';
 import arr from '../../struct/array/arr';
 import { DerivativeToken, useStyleRegister } from 'antd/es/theme/internal';
 import { CSSInterpolation } from '@ant-design/cssinjs';
 import classNames from 'classnames';
+
+const { useState } = Scope.react;
+const { Tooltip, Typography, theme } = Scope.antd;
 
 const { Link, Paragraph, Text } = Typography;
 

@@ -1,6 +1,16 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-14 23:42:22
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-17 00:21:26
+ * @FilePath: /yuzhou/util/edk/src/decorators/Select/SelectAllInject.tsx
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
+import Scope from '../../';
 import isValidValue from '../../utils/isValidValue';
 import type { Select } from 'antd';
-import Scope from '../';
 const { cloneElement } = Scope.react;
 import { compose, curry, maybe } from '../utils';
 

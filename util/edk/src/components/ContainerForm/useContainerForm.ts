@@ -2,16 +2,15 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-14 23:25:54
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-14 23:26:33
+ * @LastEditTime: 2023-03-17 00:19:51
  * @FilePath: /yuzhou/util/edk/src/components/ContainerForm/useContainerForm.ts
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
  */
-import Scope from '../';
+import Scope from '../../';
 const { useState } = Scope.react;
 import type { FormInstance, FormProps } from 'antd';
-import Scope from '../../';
 const { Form } = Scope.antd;
 
 export type ContainerProps<T> = T & {

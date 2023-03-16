@@ -1,9 +1,18 @@
-import Scope from '../';
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-03-14 23:42:22
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-03-17 00:20:34
+ * @FilePath: /yuzhou/util/edk/src/decorators/Select/SearchAsync.tsx
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
+import Scope from '../../';
 const { cloneElement, useReducer } = Scope.react;
 import useDebounce from '../../hooks/useDebounce';
 import useThrottle from '../../hooks/useThrottle';
 import type { Select } from 'antd';
-import Scope from '../../';
 const { Empty, Spin } = Scope.antd;
 
 import type { useQuery } from '@tanstack/react-query';
