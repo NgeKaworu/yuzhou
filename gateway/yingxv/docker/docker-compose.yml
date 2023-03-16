@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  yingxv:
+    restart: "always"
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    image: ngekaworu/yingxv
+    container_name: yingxv
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    name: frontend
+    driver: bridge

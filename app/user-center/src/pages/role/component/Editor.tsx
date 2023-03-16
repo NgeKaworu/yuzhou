@@ -113,7 +113,7 @@ export default ({
       </Item>
       <Item name="perms" label="拥有权限">
         {compose<any>(
-          IOC([
+          IOC<any>([
             Format({
               f: (v) => v?.map((vv: any) => vv?.value ?? vv),
             }),

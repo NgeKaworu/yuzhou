@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  yingxv-dev:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.dev
+    image: yingxv:dev
+    container_name: yingxv-dev
+    stdin_open: true
+    tty: true
+    environment:
+      BRANCH: ${BRANCH:-dev}
+    networks:
+      - frontend
+      - backend
+    ports:
+      - 8000:80
+    volumes:
+      - ~/.ssh:/root/.ssh
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
+  frontend:
+    name: frontend
+    driver: bridge

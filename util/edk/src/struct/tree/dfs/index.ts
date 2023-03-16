@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-05 16:48:01
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-16 11:20:27
+ * @LastEditTime: 2023-03-16 13:29:52
  * @FilePath: /yuzhou/util/edk/src/struct/tree/dfs/index.ts
  * @Description:
  *
@@ -47,7 +47,7 @@ export function dfsMap<T extends { [key: string]: T[] | any }, P extends T = T>(
 }
 
 export function deepMap(node: any, mapper: any) {
-  if (typeof node !== 'object') return node;
+  if (typeof node !== 'object' || null == node) return node
   const newNode: any = Array.isArray(node) ? [] : {};
 
   for (const [k, v] of Object.entries(node)) {
