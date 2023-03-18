@@ -17,7 +17,7 @@ export default defineConfig({
   qiankun: {
     slave: {},
   },
-  hash: true,
+  // hash: true,
   runtimePublicPath: false,
   npmClient: 'pnpm',
   theme,

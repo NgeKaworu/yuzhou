@@ -3,7 +3,7 @@ import { defineConfig } from 'umi';
 export default defineConfig({
   plugins: ['@umijs/plugins/dist/qiankun'],
   qiankun: { master: {} },
-  hash: true,
+  // hash: true,
   runtimePublicPath: false,
   npmClient: 'pnpm',
   title: '盈虚',
