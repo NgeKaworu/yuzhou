@@ -22,9 +22,9 @@ import useModalForm from 'edk/src/components/ModalForm/useModalForm';
 const { Link } = Typography;
 import { tooltipMap } from '@/component/TooptipMap';
 
-// import { calc as workerCalc, avg as workerAvg } from '../../worker/stock';
+import { calc as workerCalc, avg as workerAvg } from '../../worker/stock';
 
-let worker: Worker;
+// let worker: Worker;
 
 // const worker = new Worker(new URL('../../worker/worker.ts', import.meta.url));
 // worker.postMessage({
@@ -41,27 +41,27 @@ export default () => {
     [filters, setFilters] = useState<IFilter[]>(decode(localStorage.getItem('Filter'))),
     [filterSwitch, setFilterSwitch] = useState(true),
     [calculating, setCalculating] = useState<boolean>(false),
-    workerHandler: Worker['onmessage'] = (e) => {
-      setData(e?.data?.payload);
-      setCalculating(false);
-    },
+    // workerHandler: Worker['onmessage'] = (e) => {
+    //   setData(e?.data?.payload);
+    //   setCalculating(false);
+    // },
     weight = useDrawerForm(),
     filter = useDrawerForm();
 
   const exchangeEditor = useModalForm();
 
-  useEffect(() => {
-    worker = new Worker(new URL('../../worker/stock.ts', import.meta.url), { type: 'module' });
-    worker.onmessage = workerHandler;
-    return () => {
-      worker.terminate();
-    };
-  }, [worker]);
+  // useEffect(() => {
+  //   worker = new Worker(new URL('../../worker/stock.ts', import.meta.url), { type: 'module' });
+  //   worker.onmessage = workerHandler;
+  //   return () => {
+  //     worker.terminate();
+  //   };
+  // }, [worker]);
 
   async function calc() {
-    setCalculating(true);
-    worker.postMessage({ type: 'calc', payload: { dataSource: data, weights } });
-    // setData(workerCalc({ dataSource: data!, weights }));
+    // setCalculating(true);
+    // worker.postMessage({ type: 'calc', payload: { dataSource: data, weights } });
+    setData(workerCalc({ dataSource: data!, weights }));
   }
 
   function cleanFilters() {
@@ -72,9 +72,9 @@ export default () => {
 
   function fetchDateAndAvg(stocks: Stock[]) {
     setDataSource(stocks);
-    setCalculating(true);
-    worker.postMessage({ type: 'avg', payload: stocks });
-    // setData(workerAvg(stocks));
+    // setCalculating(true);
+    // worker.postMessage({ type: 'avg', payload: stocks });
+    setData(workerAvg(stocks));
   }
 
   const sorterHOF: (field: keyof Stock) => LightColumnProps<Stock>['sorter'] = (field) => (a, b) =>

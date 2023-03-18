@@ -45,8 +45,7 @@ export default defineConfig({
         ].map((r) => ({
           ...r,
           microAppProps: {
-            className: 'root-slave',
-            wrapperClassName: 'load-wrap',
+            loader: (loading: boolean) => loading && '加载中...',
           },
         })),
         { redirect: '/user-center/' },

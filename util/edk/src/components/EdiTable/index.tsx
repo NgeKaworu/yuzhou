@@ -158,7 +158,7 @@ export function DnDRow({
   drop(rowRef);
   return (
     <tr
-      key={field.key}
+      key={field?.key}
       ref={rowRef}
       className={`${className} ${isOver ? styles?.[dropClassName] : ''}`}
       children={children?.map?.((child: any) => ({
@@ -204,7 +204,7 @@ export function DnDCell({
 
   return (
     <td
-      key={`${field.key}-${title}`}
+      key={`${field?.key}-${title}`}
       ref={canDrag && drag}
       {...props}
       style={{ cursor: canDrag ? 'grab' : undefined, ...style }}
