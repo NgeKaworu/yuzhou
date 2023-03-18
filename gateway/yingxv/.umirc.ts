@@ -4,7 +4,7 @@ export default defineConfig({
   plugins: ['@umijs/plugins/dist/qiankun'],
   qiankun: { master: {} },
   hash: true,
-  runtimePublicPath: false,
+  runtimePublicPath: {},
   npmClient: 'pnpm',
   title: '盈虚',
   favicons: ['/favicon.ico'],

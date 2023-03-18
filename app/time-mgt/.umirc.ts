@@ -18,7 +18,7 @@ export default defineConfig({
     slave: {},
   },
   hash: true,
-  runtimePublicPath: false,
+  runtimePublicPath: {},
   npmClient: 'pnpm',
   theme,
   title: '柳比歇夫时间管理法',

@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-16 15:01:23
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-16 22:11:10
+ * @LastEditTime: 2023-03-18 20:12:44
  * @FilePath: /yuzhou/gateway/yingxv/src/layouts/index.tsx
  * @Description:
  *
@@ -48,7 +48,7 @@ function Main() {
   return wrapSSR(
     <>
       <Menu />
-      {/* <Outlet /> */}
+      <Outlet />
     </>,
   );
 }

@@ -18,7 +18,7 @@ export default defineConfig({
     slave: {},
   },
   hash: true,
-  runtimePublicPath: false,
+  runtimePublicPath: {},
   npmClient: 'pnpm',
   title: '待办清单',
   theme,
