@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  yingxv:
+    restart: "always"
+    image: ngekaworu/yingxv
+    container_name: yingxv
+    networks:
+      - frontend
+  user-center-umi:
+    restart: "always"
+    image: ngekaworu/user-center-umi
+    container_name: user-center-umi
+    networks:
+      - frontend
+  time-mgt-umi:
+    restart: "always"
+    image: ngekaworu/time-mgt-umi
+    container_name: time-mgt-umi
+    networks:
+      - frontend
+  todo-list-umi:
+    restart: "always"
+    image: ngekaworu/todo-list-umi
+    container_name: todo-list-umi
+    networks:
+      - frontend
+  stock-umi:
+    restart: "always"
+    image: ngekaworu/stock-umi
+    container_name: stock-umi
+    networks:
+      - frontend
+  flashcard-umi:
+    restart: "always"
+    image: ngekaworu/flashcard-umi
+    container_name: flashcard-umi
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    name: frontend
+    driver: bridge
