@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "umi dev",
-    "build": "umi build",
+    "docker": "cd ./docker; sh publish.sh",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev"

@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "umi dev",
-    "build": "umi build",
+    "docker": "cd ./docker; sh publish.sh",
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev"
   },
   "dependencies": {
-    
+
     "@ant-design/cssinjs": "^1.6.1",
     "@ant-design/icons": "^5.0.1",
     "@tanstack/react-query": "^4.26.0",
