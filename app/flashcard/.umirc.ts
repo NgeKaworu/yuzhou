@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-18 13:00:57
+ * @LastEditTime: 2023-03-18 23:00:41
  * @FilePath: /yuzhou/app/flashcard/.umirc.ts
  * @Description:
  *
@@ -18,7 +18,7 @@ export default defineConfig({
     slave: {},
   },
   hash: true,
-  runtimePublicPath: false,
+  runtimePublicPath: {},
   npmClient: 'pnpm',
   title: '单词卡',
   theme,
