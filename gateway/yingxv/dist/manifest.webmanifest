@@ -1,0 +1,17 @@
+{
+  "name": "盈虚",
+  "short_name": "盈虚",
+  "theme_color": "#ff0000",
+  "background_color": "#ff0000",
+  "display": "minimal-ui",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ]
+}
