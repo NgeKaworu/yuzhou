@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 11:47:55
+ * @LastEditTime: 2023-03-19 00:00:19
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -276,7 +276,7 @@ export default () => {
   const renderItem: ListProps<Record>['renderItem'] = (record) => {
     const selected = selectedItems.some((s) => s === record?._id);
     return (
-      <List.Item key={record?._id}>
+      <List.Item key={record?._id} style={{ padding: `2px 4px` }}>
         <RecordItem
           record={record}
           selected={selected}
@@ -374,6 +374,7 @@ export default () => {
       <main className={styles['content']}>
         {pages?.length ? (
           <List
+            size="small"
             dataSource={pages}
             style={{ background: '#f0f2f5' }}
             renderItem={renderItem}
