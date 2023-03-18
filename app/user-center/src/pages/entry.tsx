@@ -41,11 +41,11 @@ export default () => {
     charon = useMutation((value) => restful.post(`user-center/${entry}`, value));
 
   if (!['register', 'login', 'forget-pwd'].includes(entry)) {
-    history.replace('/');
+    history('/', { replace: true });
   }
 
   function go(pathname: ENTRY_TYPE) {
-    return () => history.replace(`/${pathname}`);
+    return () => history(`/${pathname}`, { replace: true });
   }
 
   const onFinish: FormProps['onFinish'] = async (value) => {

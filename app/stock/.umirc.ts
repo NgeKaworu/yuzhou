@@ -18,7 +18,7 @@ export default defineConfig({
     slave: {},
   },
   hash: true,
-  runtimePublicPath: {},
+  runtimePublicPath: false,
   npmClient: 'pnpm',
   routes,
   theme,

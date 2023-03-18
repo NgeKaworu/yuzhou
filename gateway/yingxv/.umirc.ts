@@ -4,7 +4,7 @@ export default defineConfig({
   plugins: ['@umijs/plugins/dist/qiankun'],
   qiankun: { master: {} },
   hash: true,
-  runtimePublicPath: {},
+  runtimePublicPath: false,
   npmClient: 'pnpm',
   title: '盈虚',
   favicons: ['/favicon.ico'],
@@ -23,23 +23,23 @@ export default defineConfig({
         { path: '/', redirect: '/user-center/' },
         ...[
           {
-            path: '/user-center/',
+            path: '/user-center/*',
             microApp: 'user-center',
           },
           {
-            path: '/flashcard/',
+            path: '/flashcard/*',
             microApp: 'flashcard',
           },
           {
-            path: '/time-mgt/',
+            path: '/time-mgt/*',
             microApp: 'time-mgt',
           },
           {
-            path: '/todo-list/',
+            path: '/todo-list/*',
             microApp: 'todo-list',
           },
           {
-            path: '/stock/',
+            path: '/stock/*',
             microApp: 'stock',
           },
         ].map((r) => ({
@@ -47,7 +47,6 @@ export default defineConfig({
           microAppProps: {
             className: 'root-slave',
             wrapperClassName: 'load-wrap',
-            autoSetLoading: true,
           },
         })),
         { redirect: '/user-center/' },
@@ -55,87 +54,20 @@ export default defineConfig({
     },
   ],
   proxy: {
-    '/api/user-center': {
-      // target: 'http://localhost:8020',
-      target: 'https://api.furan.xyz/user-center',
+    '/api': {
+      target: 'https://api.furan.xyz',
       changeOrigin: true,
       pathRewrite: {
-        '/api/user-center': '',
+        '/api': '',
       },
     },
-    '/api/flashcard': {
-      // target: 'http://localhost:8030',
-      target: 'https://api.furan.xyz/flashcard',
+    '/micro': {
+      target: 'https://micro.furan.xyz',
       changeOrigin: true,
       pathRewrite: {
-        '/api/flashcard': '',
+        '/micro': '',
       },
     },
-    '/api/todo-list': {
-      // target: 'http://localhost:8040',
-      target: 'https://api.furan.xyz/todo-list',
-      changeOrigin: true,
-      pathRewrite: {
-        '/api/todo-list': '',
-      },
-    },
-    '/api/time-mgt': {
-      // target: 'http://localhost:8050',
-      target: 'https://api.furan.xyz/time-mgt',
-      changeOrigin: true,
-      pathRewrite: {
-        '/api/time-mgt': '',
-      },
-    },
-    '/api/stock': {
-      // target: 'http://localhost:8060',
-      target: 'https://api.furan.xyz/stock',
-      changeOrigin: true,
-      pathRewrite: {
-        '/api/stock': '',
-      },
-    },
-
-    // '/micro/user-center/': {
-    //   // target: 'http://localhost:8020',
-    //   target: 'https://micro.furan.xyz/user-center/',
-    //   changeOrigin: true,
-    //   pathRewrite: {
-    //     '/micro/user/-center': '',
-    //   },
-    // },
-    // '/micro/flashcard/': {
-    //   // target: 'http://localhost:8030',
-    //   target: 'https://micro.furan.xyz/flashcard/',
-    //   changeOrigin: true,
-    //   pathRewrite: {
-    //     '/micro/flashcard/': '',
-    //   },
-    // },
-    // '/micro/todo-list/': {
-    //   // target: 'http://localhost:8040',
-    //   target: 'https://micro.furan.xyz/todo-list/',
-    //   changeOrigin: true,
-    //   pathRewrite: {
-    //     '/micro/todo/-list': '',
-    //   },
-    // },
-    // '/micro/time-mgt/': {
-    //   // target: 'http://localhost:8050',
-    //   target: 'https://micro.furan.xyz/time-mgt/',
-    //   changeOrigin: true,
-    //   pathRewrite: {
-    //     '/micro/time/-mgt': '',
-    //   },
-    // },
-    // '/micro/stock/': {
-    //   // target: 'http://localhost:8060',
-    //   target: 'https://micro.furan.xyz/stock/',
-    //   changeOrigin: true,
-    //   pathRewrite: {
-    //     '/micro/stock/': '',
-    //   },
-    // },
   },
   metas: [
     { name: 'apple-mobile-web-app-capable', content: 'yes' },
