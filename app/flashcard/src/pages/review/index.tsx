@@ -10,16 +10,19 @@ import {
   Form,
   Skeleton,
   Divider,
+  theme,
 } from 'antd';
 
-  const ua = navigator.userAgent?.toLowerCase();
+const ua = navigator.userAgent?.toLowerCase();
 
 import { Record } from '@/models/record';
 import moment from 'dayjs';
 
-import styles from '@/index.less';
 import reviewStyles from './index.less';
 import { restful } from 'edk/src/utils/http';
+import { Res } from 'edk/src/utils/http/type';
+import classNames from 'classnames';
+import { prefixCls } from '@/theme';
 
 type ReviewType = 'normal' | 'success' | 'fail';
 export default () => {
@@ -29,7 +32,7 @@ export default () => {
   const queryClient = useQueryClient();
 
   const { data } = useQuery(['review-list'], () => {
-    return restful.get(`/flashcard/record/list`, {
+    return restful.get<Res<Record[]>, Res<Record[]>>(`/flashcard/record/list`, {
       notify: 'fail',
       params: {
         inReview: true,
@@ -53,9 +56,11 @@ export default () => {
   }
 
   const datas = data?.data,
-    curRencord: Record = datas?.[curIdx];
+    curRencord: Record = datas?.[curIdx]!;
 
-  const [source, setSource] = useState<React.ReactChild>('');
+  const [source, setSource] = useState<React.ReactNode>('');
+
+  const { hashId } = theme.useToken();
 
   useEffect(() => {
     setSource(curRencord?.source);
@@ -313,9 +318,11 @@ export default () => {
   return (
     <section>
       <header style={{ height: 24 }}>
-        <div className={styles['header']}>{renderTitle()}</div>
+        <div className={classNames(`${prefixCls}-header`, hashId)}>
+          {renderTitle()}
+        </div>
       </header>
-      <main className={styles['content']}>
+      <main className={classNames(`${prefixCls}-content`, hashId)}>
         {datas?.length ? (
           <Form className={reviewStyles['form']} form={form}>
             <Form.Item className={reviewStyles['form-item']}>
@@ -344,11 +351,11 @@ export default () => {
             </Form.Item>
           </Form>
         ) : (
-          <Empty className={styles['empty']} />
+          <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
         )}
       </main>
       <footer>
-        <div className={styles['footer']}>
+        <div className={classNames(`${prefixCls}-content-footer`, hashId)}>
           <Space style={{ marginRight: '12px', whiteSpace: 'pre-wrap' }}>
             余{total}
           </Space>

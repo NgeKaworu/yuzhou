@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 11:02:24
+ * @LastEditTime: 2023-03-19 01:00:59
  * @FilePath: /yuzhou/app/flashcard/src/layouts/index.tsx
  * @Description:
  *
@@ -96,7 +96,7 @@ function Main() {
           ))}
         </div>
       </footer>
-    </section>
+    </section>,
   );
 }
 
@@ -131,4 +131,40 @@ const genStyle = (token: DerivativeToken): CSSInterpolation => ({
     ':active': { opacity: 0.5 },
   },
   [`.${prefixCls}-active`]: { color: token.colorPrimary, opacity: 1 },
+
+  [`.${prefixCls}-content`]: { minHeight: '100vh', paddingBottom: '72px' },
+  [`.${prefixCls}-header`]: {
+    position: 'fixed',
+    top: '0',
+    right: '0',
+    left: '0',
+    zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '0',
+    overflowX: 'auto',
+    background: '#fff',
+    borderBottom: '1px solid #eee',
+    height: '24px',
+  },
+  [`.${prefixCls}-menu`]: { margin: '0 auto', lineHeight: '24px' },
+  [`.${prefixCls}-content-footer`]: {
+    position: 'fixed',
+    right: '0',
+    bottom: '36px',
+    left: '0',
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '4px',
+    overflowX: 'auto',
+    background: '#fff',
+    borderTop: '1px solid #eee',
+  },
+  [`.${prefixCls}-empty`]: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minHeight: '100vh',
+  },
 });

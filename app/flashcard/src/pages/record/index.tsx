@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-19 00:00:19
+ * @LastEditTime: 2023-03-19 01:00:11
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -28,6 +28,7 @@ import {
   MenuProps,
   List,
   ListProps,
+  theme,
 } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -38,8 +39,8 @@ import { Res } from 'edk/src/utils/http/type';
 import RecordItem from './components/RecordItem';
 
 import { Record } from '@/models/record';
-
-import styles from '@/index.less';
+import classNames from 'classnames';
+import { prefixCls } from '@/theme';
 
 type inputType = '' | '新建' | '编辑';
 
@@ -61,6 +62,9 @@ export default () => {
 
   // 编辑modal使用
   const [curRecrod, setCurRecord] = useState<Record>();
+
+  // 【自定义】制造样式
+  const { hashId } = theme.useToken();
 
   useEffect(() => {
     const params = new URLSearchParams(_search);
@@ -318,9 +322,9 @@ export default () => {
   return (
     <section>
       <header style={{ height: 24 }}>
-        <div className={styles['header']}>
+        <div className={classNames(`${prefixCls}-header`, hashId)}>
           <Menu
-            className={styles.menu}
+            className={classNames(`${prefixCls}-menu`, hashId)}
             mode="horizontal"
             onSelect={onMenuSelect}
             selectedKeys={selectedKeys}
@@ -371,7 +375,7 @@ export default () => {
           </Modal>
         </div>
       </header>
-      <main className={styles['content']}>
+      <main className={classNames(`${prefixCls}-content`, hashId)}>
         {pages?.length ? (
           <List
             size="small"
@@ -382,11 +386,11 @@ export default () => {
             loadMore={loadMore}
           />
         ) : (
-          <Empty className={styles['empty']} />
+          <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
         )}
       </main>
       <footer>
-        <div className={styles['footer']}>
+        <div className={classNames(`${prefixCls}-content-footer`, hashId)}>
           <Space style={{ marginRight: '12px' }}>
             {selectedItems.length}/{total}
             <Button size="small" type="dashed" onClick={cancelAllSelect}>
