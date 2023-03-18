@@ -20,7 +20,7 @@ export default defineConfig({
   preact: false,
   request: false,
   sass: false,
-  // hash: true,
+  hash: true,
   runtimePublicPath: true,
   externals: { moment: 'moment' },
   scripts: ['https://lib.baomitu.com/moment.js/latest/moment.min.js'],

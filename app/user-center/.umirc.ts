@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-13 23:05:58
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 10:16:58
+ * @LastEditTime: 2023-03-18 13:25:03
  * @FilePath: /yuzhou/app/user-center/.umirc.ts
  * @Description:
  *
@@ -17,7 +17,7 @@ export default defineConfig({
   qiankun: {
     slave: {},
   },
-  // hash: true,
+  hash: true,
   runtimePublicPath: false,
   npmClient: 'pnpm',
   theme,
