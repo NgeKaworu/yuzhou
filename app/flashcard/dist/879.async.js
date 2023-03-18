@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkflashcard_=self.webpackChunkflashcard_||[]).push([[879],{79879:function(c,n,t){t.r(n),t.d(n,{default:function(){return a}});var f=t(93981),u=t(82003),E=t(29541);function a(){var s=(0,u.bx)();return(0,E.jsx)(u.j3,{context:s})}}}]);

@@ -17,3 +17,5 @@
 /src/.umi-test
 /.env.local
 .umi
+
+.turbo
