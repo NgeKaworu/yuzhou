@@ -23,4 +23,17 @@ describe('findLastLTE test', () => {
   it(`expect(findLastLTE(11, [1, 2, 3, 4, 5, 10])).toBe(11)`, () => {
     return expect(findLastLTE(11, [1, 2, 3, 4, 5, 10])).toBe(10);
   });
+
+  it(`expect(findLastLTE(0, new Set([1, 2, 3, 4, 5, 10]))).toBe(void 0);`, () => {
+    return expect(findLastLTE(0, new Set([1, 2, 3, 4, 5, 10]))).toBe(void 0);
+  });
+  it(`expect(findLastLTE(2, new Set([1, 2, 3, 4, 5, 10]))).toBe(2);`, () => {
+    return expect(findLastLTE(2, new Set([1, 2, 3, 4, 5, 10]))).toBe(2);
+  });
+  it(`expect(findLastLTE(7, new Set([1, 2, 3, 4, 5, 10]))).toBe(5);`, () => {
+    return expect(findLastLTE(7, new Set([1, 2, 3, 4, 5, 10]))).toBe(5);
+  });
+  it(`expect(findLastLTE(11, new Set([1, 2, 3, 4, 5, 10]))).toBe(10);`, () => {
+    return expect(findLastLTE(11, new Set([1, 2, 3, 4, 5, 10]))).toBe(10);
+  });
 });
