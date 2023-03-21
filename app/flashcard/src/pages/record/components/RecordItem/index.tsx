@@ -70,7 +70,7 @@ export default ({
     >
       <div
         className={classNames(`${prefixCls}-progress`, hashId)}
-        style={{ width: percent }}
+        style={{ width: `${percent}%` }}
       />
       <div
         className={classNames(

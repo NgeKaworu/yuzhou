@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-02-04 16:14:33
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 14:37:39
+ * @LastEditTime: 2023-03-20 17:58:02
  * @FilePath: /yuzhou/app/stock/src/pages/exchange/component/Editor.tsx
  * @Description:
  *
@@ -33,6 +33,7 @@ import { safeMultiply, safeAdd, safeDivision, safeNumber } from '@/utils/number'
 
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+import { Subject, throttleTime } from 'rxjs';
 
 const { Item } = Form;
 
@@ -50,6 +51,10 @@ export default ({
 }: ReturnType<typeof useModalForm> & {
   onSuccess?: (...args: any) => void;
 }) => {
+  const obs = new Subject();
+  obs
+    .pipe(throttleTime(10000, void 0, { leading: true, trailing: true }))
+    .subscribe((value) => setData((pre: any) => ({ ...pre, code: value })));
   const { code } = data ?? {};
   const positionDetail = useQuery(
     ['position-detail', code],
@@ -157,7 +162,7 @@ export default ({
       <Item name="code" label="股票代码" rules={[{ required: true }]}>
         <Input
           onChange={(e) => {
-            setData((pre: any) => ({ ...pre, code: e.currentTarget.value }));
+            obs.next(e.currentTarget.value);
           }}
         />
       </Item>

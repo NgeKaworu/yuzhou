@@ -11,9 +11,6 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "unstated-next": "^1.1.0",
     "@ant-design/cssinjs": "^1.6.1",
     "@ant-design/icons": "^5.0.1",
     "@tanstack/react-query": "^4.26.0",
@@ -22,9 +19,13 @@
     "dayjs": "^1.11.7",
     "edk": "workspace:^1.0.0",
     "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.2",
-    "umi": "^4.0.55"
+    "rxjs": "^7.8.0",
+    "umi": "^4.0.55",
+    "unstated-next": "^1.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
