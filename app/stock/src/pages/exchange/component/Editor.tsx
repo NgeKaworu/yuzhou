@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-02-04 16:14:33
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-20 17:58:02
+ * @LastEditTime: 2023-03-23 22:26:43
  * @FilePath: /yuzhou/app/stock/src/pages/exchange/component/Editor.tsx
  * @Description:
  *
@@ -103,7 +103,17 @@ export default ({
       safeAdd(totalShare, currentShare),
     ).toFixed(3),
     revenue = safeAdd(marketCapitalization, -cost!, totalDividend).toFixed(3),
-    revenueRate = (safeDivision(revenue, cost) * 100).toFixed(3);
+    revenueRate = (safeDivision(revenue, cost) * 100).toFixed(3),
+    originRevenueRate = (
+      safeDivision(
+        safeAdd(
+          safeMultiply(totalShare! * stock?.currentPrice!),
+          -totalCapital!,
+          totalDividend,
+        ).toFixed(3),
+        totalCapital,
+      ) * 100
+    ).toFixed(3);
 
   return (
     <ModalForm
@@ -151,7 +161,8 @@ export default ({
             )}
             <Text type={safeNumber(revenueRate) > 0 ? 'success' : 'danger'}>
               {`${revenueRate}%` ?? '-'}
-            </Text>
+            </Text>{' '}
+            <Text type={'secondary'}>({`${originRevenueRate}%` ?? '-'})</Text>
           </DescriptionsItem>
         </Descriptions>
       )}
