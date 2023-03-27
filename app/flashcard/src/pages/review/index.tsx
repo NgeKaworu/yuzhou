@@ -264,14 +264,25 @@ export default () => {
 
   function submitHandler() {
     form.validateFields().then((values) => {
+      const ignore = /[\s\d\.,，。的地得和与及]/;
+
+      function ignoreHOF(s: string) {
+        return s
+          .split('')
+          .filter((i) => !i.match(ignore))
+          .join('');
+      }
+
       const answer = values.answer?.trim(),
         actual = curRencord?.source?.trim();
-      if (answer === actual) {
+      if (ignoreHOF(answer) === ignoreHOF(actual)) {
         setFlag('success');
       } else {
         const actualDict = actual
-            ?.split(' ')
+            ?.split('')
             ?.reduce((acc: { [key: string]: number }, cur) => {
+              if (cur.match(ignore)) return acc;
+
               if (acc[cur] === undefined) {
                 acc[cur] = 1;
               } else {
@@ -280,16 +291,18 @@ export default () => {
               return acc;
             }, {}),
           diff: Array<React.ReactNode> = answer
-            ?.split(' ')
+            ?.split('')
             ?.map((i: string, idx: number) => {
               let ele: React.ReactNode;
-              if (actualDict[i] > 0) {
+              if (i.match(ignore)) {
+                ele = i;
+              } else if (actualDict[i] > 0) {
                 actualDict[i]--;
                 ele = i;
               } else {
                 ele = <span style={{ background: 'lightcoral' }}>{i}</span>;
               }
-              return <Fragment key={idx}>{ele} </Fragment>;
+              return <Fragment key={idx}>{ele}</Fragment>;
             });
 
         setSource(
