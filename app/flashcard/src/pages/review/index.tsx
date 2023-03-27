@@ -15,7 +15,7 @@ import {
 
 const ua = navigator.userAgent?.toLowerCase();
 
-import { Record } from '@/models/record';
+import { Record as RecordItem } from '@/models/record';
 import moment from 'dayjs';
 
 import reviewStyles from './index.less';
@@ -32,14 +32,17 @@ export default () => {
   const queryClient = useQueryClient();
 
   const { data } = useQuery(['review-list'], () => {
-    return restful.get<Res<Record[]>, Res<Record[]>>(`/flashcard/record/list`, {
-      notify: 'fail',
-      params: {
-        inReview: true,
-        skip: 0,
-        limit: 0,
+    return restful.get<Res<RecordItem[]>, Res<RecordItem[]>>(
+      `/flashcard/record/list`,
+      {
+        notify: 'fail',
+        params: {
+          inReview: true,
+          skip: 0,
+          limit: 0,
+        },
       },
-    });
+    );
   });
 
   function findOneNearestNeedReview() {
@@ -56,7 +59,7 @@ export default () => {
   }
 
   const datas = data?.data,
-    curRencord: Record = datas?.[curIdx]!;
+    curRencord: RecordItem = datas?.[curIdx]!;
 
   const [source, setSource] = useState<React.ReactNode>('');
 
@@ -264,7 +267,8 @@ export default () => {
 
   function submitHandler() {
     form.validateFields().then((values) => {
-      const ignore = /[\s\d\.,，。的地得和与及]/;
+      const ignore = /[\d的地得和与及\s\.,，。]/;
+      const newline = /[\s\.,，。]/;
 
       function ignoreHOF(s: string) {
         return s
@@ -273,43 +277,58 @@ export default () => {
           .join('');
       }
 
-      const answer = values.answer?.trim(),
-        actual = curRencord?.source?.trim();
+      const answer: string = values.answer,
+        actual = curRencord?.source;
       if (ignoreHOF(answer) === ignoreHOF(actual)) {
         setFlag('success');
+        setSource(actual);
       } else {
-        const actualDict = actual
-            ?.split('')
-            ?.reduce((acc: { [key: string]: number }, cur) => {
-              if (cur.match(ignore)) return acc;
+        const dAnswerDict = answer
+          ?.split('')
+          ?.map((i) => (i.match(newline) ? '\n' : i))
+          .join('')
+          ?.split('\n')
+          ?.reduce((arr: Record<string, number>[], cur) => {
+            return arr.concat(
+              cur.split('').reduce((acc: Record<string, number>, cur) => {
+                if (cur.match(ignore)) return acc;
 
-              if (acc[cur] === undefined) {
-                acc[cur] = 1;
-              } else {
-                acc[cur]++;
-              }
-              return acc;
-            }, {}),
-          diff: Array<React.ReactNode> = answer
-            ?.split('')
-            ?.map((i: string, idx: number) => {
-              let ele: React.ReactNode;
-              if (i.match(ignore)) {
-                ele = i;
-              } else if (actualDict[i] > 0) {
-                actualDict[i]--;
-                ele = i;
-              } else {
-                ele = <span style={{ background: 'lightcoral' }}>{i}</span>;
-              }
-              return <Fragment key={idx}>{ele}</Fragment>;
-            });
+                if (acc[cur] === undefined) {
+                  acc[cur] = 1;
+                } else {
+                  acc[cur]++;
+                }
+                return acc;
+              }, {}),
+            );
+          }, []);
+        let dDiff: Array<React.ReactNode> = [],
+          n = 0;
+
+        for (let i = 0; i < actual.length; i++) {
+          const c = actual[i];
+          let ele: React.ReactNode;
+          if (c.match(newline)) n++;
+          if (c.match(ignore)) {
+            ele = c;
+          } else if (dAnswerDict[n][c] > 0) {
+            dAnswerDict[n][c]--;
+            ele = c;
+          } else {
+            ele = (
+              <span key={i} style={{ background: 'lightcoral' }}>
+                {c}
+              </span>
+            );
+          }
+          dDiff = dDiff.concat(<Fragment key={i}>{ele}</Fragment>);
+        }
 
         setSource(
           <>
-            {actual}
+            {dDiff}
             <br />
-            {diff}
+            {answer}
           </>,
         );
         setFlag('fail');
