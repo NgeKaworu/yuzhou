@@ -304,8 +304,7 @@ export default () => {
           }, []);
         let dDiff: Array<React.ReactNode> = [];
 
-
-        for (let i = 0,n = 0; i < actual.length; i++) {
+        for (let i = 0, n = 0; i < actual.length; i++) {
           const c = actual[i];
           let ele: React.ReactNode;
           if (c.match(newline)) n++;
@@ -325,50 +324,49 @@ export default () => {
         }
 
         const dActualDict = actual
-        ?.split('')
-        ?.map((i) => (i.match(newline) ? '\n' : i))
-        .join('')
-        ?.split('\n')
-        ?.reduce((arr: Record<string, number>[], cur) => {
-          return arr.concat(
-            cur.split('').reduce((acc: Record<string, number>, cur) => {
-              if (cur.match(ignore)) return acc;
+          ?.split('')
+          ?.map((i) => (i.match(newline) ? '\n' : i))
+          .join('')
+          ?.split('\n')
+          ?.reduce((arr: Record<string, number>[], cur) => {
+            return arr.concat(
+              cur.split('').reduce((acc: Record<string, number>, cur) => {
+                if (cur.match(ignore)) return acc;
 
-              if (acc[cur] === undefined) {
-                acc[cur] = 1;
-              } else {
-                acc[cur]++;
-              }
-              return acc;
-            }, {}),
-          );
-        }, []);
-      let dAnswerDiff: Array<React.ReactNode> = [];
+                if (acc[cur] === undefined) {
+                  acc[cur] = 1;
+                } else {
+                  acc[cur]++;
+                }
+                return acc;
+              }, {}),
+            );
+          }, []);
+        let dAnswerDiff: Array<React.ReactNode> = [];
 
-
-      for (let i = 0,n = 0; i < answer.length; i++) {
-        const c = answer[i];
-        let ele: React.ReactNode;
-        if (c.match(newline)) n++;
-        if (c.match(ignore)) {
-          ele = c;
-        } else if (dActualDict?.[n]?.[c] > 0) {
-          dActualDict[n][c]--;
-          ele = c;
-        } else {
-          ele = (
-            <span key={i} style={{ background: 'lightcoral' }}>
-              {c}
-            </span>
-          );
+        for (let i = 0, n = 0; i < answer.length; i++) {
+          const c = answer[i];
+          let ele: React.ReactNode;
+          if (c.match(newline)) n++;
+          if (c.match(ignore)) {
+            ele = c;
+          } else if (dActualDict?.[n]?.[c] > 0) {
+            dActualDict[n][c]--;
+            ele = c;
+          } else {
+            ele = (
+              <span key={i} style={{ background: 'lightcoral' }}>
+                {c}
+              </span>
+            );
+          }
+          dAnswerDiff = dAnswerDiff.concat(<Fragment key={i}>{ele}</Fragment>);
         }
-        dAnswerDiff = dAnswerDiff.concat(<Fragment key={i}>{ele}</Fragment>);
-      }
 
         setSource(
           <>
             {dDiff}
-            <br />
+            <Divider dashed/>
             {dAnswerDiff}
           </>,
         );
