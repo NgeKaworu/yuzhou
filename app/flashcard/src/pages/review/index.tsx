@@ -267,8 +267,10 @@ export default () => {
 
   function submitHandler() {
     form.validateFields().then((values) => {
-      const ignore = /[\d的地得和与及\s\.,，。]/;
-      const newline = /[\s\.,，。]/;
+      const ignoreStr = `\\d的地得和与及；;：:、?？!！`;
+      const newlineStr = `\\s\\.,，。`;
+      const ignore = new RegExp(ignoreStr + newlineStr);
+      const newline = new RegExp(newlineStr);
 
       function ignoreHOF(s: string) {
         return s
@@ -366,7 +368,7 @@ export default () => {
         setSource(
           <>
             {dDiff}
-            <Divider dashed/>
+            <Divider dashed />
             {dAnswerDiff}
           </>,
         );
