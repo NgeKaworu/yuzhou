@@ -267,7 +267,7 @@ export default () => {
 
   function submitHandler() {
     form.validateFields().then((values) => {
-      const ignoreStr = `\\d的地得和与及；;：:、?？!！`;
+      const ignoreStr = `\\d的地得和与及；;：:、?？!！"“'‘·\``;
       const newlineStr = `\\s\\.,，。`;
       const ignore = new RegExp(ignoreStr + newlineStr);
       const newline = new RegExp(newlineStr);
