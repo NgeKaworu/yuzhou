@@ -269,8 +269,8 @@ export default () => {
     form.validateFields().then((values) => {
       const ignoreStr = `\\d的地得和与及；;：:、?？!！"“'‘·\``;
       const newlineStr = `\\s\\.,，。`;
-      const ignore = new RegExp(ignoreStr + newlineStr);
-      const newline = new RegExp(newlineStr);
+      const ignore = new RegExp(`[${ignoreStr}${newlineStr}]`);
+      const newline = new RegExp(`[${newlineStr}]`);
 
       function ignoreHOF(s: string) {
         return s
@@ -281,6 +281,8 @@ export default () => {
 
       const answer: string = values.answer,
         actual = curRencord?.source;
+      console.log(ignoreHOF(answer));
+      console.log(ignoreHOF(actual));
       if (ignoreHOF(answer) === ignoreHOF(actual)) {
         setFlag('success');
         setSource(actual);
