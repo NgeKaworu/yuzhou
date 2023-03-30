@@ -2,8 +2,8 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-02-04 16:34:30
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-02-26 20:20:16
- * @FilePath: /stock/stock-umi/src/pages/position/component/Table.tsx
+ * @LastEditTime: 2023-03-30 20:28:38
+ * @FilePath: /yuzhou/app/stock/src/pages/position/component/Table.tsx
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -197,7 +197,7 @@ export default () => {
           const res = await list({
             params: {
               ...params,
-              skip: (pagination?.current ?? 0) * (pagination?.pageSize ?? 0),
+              skip: pagination?.current! * pagination?.pageSize!,
               limit: pagination?.pageSize,
             },
           });

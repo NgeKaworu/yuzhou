@@ -108,7 +108,7 @@ export default () => {
           const res = await list({
             params: {
               keyword: params?.keyword,
-              skip: (pagination?.current ?? 0) * (pagination?.pageSize ?? 0),
+              skip: pagination?.current! * pagination?.pageSize!,
               limit: pagination?.pageSize,
             },
           });
