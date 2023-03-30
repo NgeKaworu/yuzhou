@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-02-04 16:34:30
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-30 20:28:38
+ * @LastEditTime: 2023-03-30 21:05:16
  * @FilePath: /yuzhou/app/stock/src/pages/position/component/Table.tsx
  * @Description:
  *
@@ -197,7 +197,7 @@ export default () => {
           const res = await list({
             params: {
               ...params,
-              skip: pagination?.current! * pagination?.pageSize!,
+              skip: ((pagination?.current ?? 1) - 1) * pagination?.pageSize!,
               limit: pagination?.pageSize,
             },
           });

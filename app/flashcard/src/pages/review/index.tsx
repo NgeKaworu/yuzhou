@@ -281,8 +281,6 @@ export default () => {
 
       const answer: string = values.answer,
         actual = curRencord?.source;
-      console.log(ignoreHOF(answer));
-      console.log(ignoreHOF(actual));
       if (ignoreHOF(answer) === ignoreHOF(actual)) {
         setFlag('success');
         setSource(actual);
