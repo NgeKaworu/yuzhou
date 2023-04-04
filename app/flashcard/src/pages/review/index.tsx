@@ -231,7 +231,7 @@ export default () => {
       case 'normal':
         return (
           <Button size="small" disabled={total <= 1} onClick={onNext}>
-            跳过当前
+            跳过
           </Button>
         );
       case 'success':
@@ -244,25 +244,32 @@ export default () => {
               loading={isLoading}
               style={{ background: 'lightgreen' }}
             >
-              记忆成功，{hasNext ? '下一项' : '完成复习'}
+              记住
             </Button>
 
-            {flag === 'fail' && (
-              <Button
-                size="small"
-                type="primary"
-                danger
-                onClick={onForget}
-                loading={isLoading}
-              >
-                记忆失败,{hasNext ? '下一项' : '完成复习'}
-              </Button>
-            )}
+            <Button
+              size="small"
+              type="primary"
+              danger
+              onClick={onForget}
+              loading={isLoading}
+            >
+              忘记
+            </Button>
+            <Button size="small" type="dashed" danger onClick={reset}>
+              重置
+            </Button>
           </Space>
         );
       default:
         console.error('invalidate type: ', flag);
     }
+  }
+
+  function reset() {
+    setSource('');
+    form.resetFields();
+    setFlag('normal');
   }
 
   function submitHandler() {
@@ -285,91 +292,157 @@ export default () => {
         setFlag('success');
         setSource(actual);
       } else {
-        const dAnswerDict = answer
-          ?.split('')
-          ?.map((i) => (i.match(newline) ? '\n' : i))
-          .join('')
-          ?.split('\n')
-          ?.reduce((arr: Record<string, number>[], cur) => {
-            return arr.concat(
-              cur.split('').reduce((acc: Record<string, number>, cur) => {
-                if (cur.match(ignore)) return acc;
+        // 组合法
+        // const dAnswerDict = answer
+        //   ?.split('')
+        //   ?.map((i) => (i.match(newline) ? '\n' : i))
+        //   .join('')
+        //   ?.split('\n')
+        //   ?.reduce((arr: Record<string, number>[], cur) => {
+        //     return arr.concat(
+        //       cur.split('').reduce((acc: Record<string, number>, cur) => {
+        //         if (cur.match(ignore)) return acc;
 
-                if (acc[cur] === undefined) {
-                  acc[cur] = 1;
-                } else {
-                  acc[cur]++;
-                }
-                return acc;
-              }, {}),
-            );
-          }, []);
-        let dDiff: Array<React.ReactNode> = [];
+        //         if (acc[cur] === undefined) {
+        //           acc[cur] = 1;
+        //         } else {
+        //           acc[cur]++;
+        //         }
+        //         return acc;
+        //       }, {}),
+        //     );
+        //   }, []);
+        // let dDiff: Array<React.ReactNode> = [];
 
-        for (let i = 0, n = 0; i < actual.length; i++) {
-          const c = actual[i];
-          let ele: React.ReactNode;
-          if (c.match(newline)) n++;
-          if (c.match(ignore)) {
-            ele = c;
-          } else if (dAnswerDict?.[n]?.[c] > 0) {
-            dAnswerDict[n][c]--;
-            ele = c;
+        // for (let i = 0, n = 0; i < actual.length; i++) {
+        //   const c = actual[i];
+        //   let ele: React.ReactNode;
+        //   if (c.match(newline)) n++;
+        //   if (c.match(ignore)) {
+        //     ele = c;
+        //   } else if (dAnswerDict?.[n]?.[c] > 0) {
+        //     dAnswerDict[n][c]--;
+        //     ele = c;
+        //   } else {
+        //     ele = (
+        //       <span key={i} style={{ background: 'lightcoral' }}>
+        //         {c}
+        //       </span>
+        //     );
+        //   }
+        //   dDiff = dDiff.concat(<Fragment key={i}>{ele}</Fragment>);
+        // }
+
+        // const dActualDict = actual
+        //   ?.split('')
+        //   ?.map((i) => (i.match(newline) ? '\n' : i))
+        //   .join('')
+        //   ?.split('\n')
+        //   ?.reduce((arr: Record<string, number>[], cur) => {
+        //     return arr.concat(
+        //       cur.split('').reduce((acc: Record<string, number>, cur) => {
+        //         if (cur.match(ignore)) return acc;
+
+        //         if (acc[cur] === undefined) {
+        //           acc[cur] = 1;
+        //         } else {
+        //           acc[cur]++;
+        //         }
+        //         return acc;
+        //       }, {}),
+        //     );
+        //   }, []);
+        // let dAnswerDiff: Array<React.ReactNode> = [];
+
+        // for (let i = 0, n = 0; i < answer.length; i++) {
+        //   const c = answer[i];
+        //   let ele: React.ReactNode;
+        //   if (c.match(newline)) n++;
+        //   if (c.match(ignore)) {
+        //     ele = c;
+        //   } else if (dActualDict?.[n]?.[c] > 0) {
+        //     dActualDict[n][c]--;
+        //     ele = c;
+        //   } else {
+        //     ele = (
+        //       <span key={i} style={{ background: 'lightcoral' }}>
+        //         {c}
+        //       </span>
+        //     );
+        //   }
+        //   dAnswerDiff = dAnswerDiff.concat(<Fragment key={i}>{ele}</Fragment>);
+        // }
+
+        // 排列法
+        let i = 0,
+          j = 0,
+          k = 0;
+
+        let tmp1: Array<React.ReactNode> = [];
+        const actualGroup = actual.split(newline);
+        const answerGroup = answer.split(newline);
+
+        while (k < actual.length) {
+          while (actual?.[k]?.match(ignore)) {
+            if (actual?.[k]?.match(newline)) {
+              i++;
+              j = 0;
+            }
+            tmp1 = tmp1.concat(<Fragment key={k}>{actual[k]}</Fragment>);
+            k++;
+          }
+
+          while (answerGroup?.[i]?.[j]?.match(ignore)) j++;
+
+          if (actual?.[k] === answerGroup?.[i]?.[j]) {
+            tmp1 = tmp1.concat(<Fragment key={k}>{actual[k]}</Fragment>);
           } else {
-            ele = (
-              <span key={i} style={{ background: 'lightcoral' }}>
-                {c}
-              </span>
+            tmp1 = tmp1.concat(
+              <span key={k} style={{ background: 'lightcoral' }}>
+                {actual[k]}
+              </span>,
             );
           }
-          dDiff = dDiff.concat(<Fragment key={i}>{ele}</Fragment>);
+          j++;
+          k++;
         }
 
-        const dActualDict = actual
-          ?.split('')
-          ?.map((i) => (i.match(newline) ? '\n' : i))
-          .join('')
-          ?.split('\n')
-          ?.reduce((arr: Record<string, number>[], cur) => {
-            return arr.concat(
-              cur.split('').reduce((acc: Record<string, number>, cur) => {
-                if (cur.match(ignore)) return acc;
+        i = 0;
+        j = 0;
+        k = 0;
 
-                if (acc[cur] === undefined) {
-                  acc[cur] = 1;
-                } else {
-                  acc[cur]++;
-                }
-                return acc;
-              }, {}),
-            );
-          }, []);
-        let dAnswerDiff: Array<React.ReactNode> = [];
+        let tmp2: Array<React.ReactNode> = [];
 
-        for (let i = 0, n = 0; i < answer.length; i++) {
-          const c = answer[i];
-          let ele: React.ReactNode;
-          if (c.match(newline)) n++;
-          if (c.match(ignore)) {
-            ele = c;
-          } else if (dActualDict?.[n]?.[c] > 0) {
-            dActualDict[n][c]--;
-            ele = c;
+        while (k < answer.length) {
+          while (answer?.[k]?.match(ignore)) {
+            if (answer?.[k]?.match(newline)) {
+              i++;
+              j = 0;
+            }
+            tmp2 = tmp2.concat(<Fragment key={k}>{answer[k]}</Fragment>);
+            k++;
+          }
+
+          while (actualGroup?.[i]?.[j]?.match(ignore)) j++;
+
+          if (answer?.[k] === actualGroup?.[i]?.[j]) {
+            tmp2 = tmp2.concat(<Fragment key={k}>{answer[k]}</Fragment>);
           } else {
-            ele = (
-              <span key={i} style={{ background: 'lightcoral' }}>
-                {c}
-              </span>
+            tmp2 = tmp2.concat(
+              <span key={k} style={{ background: 'lightcoral' }}>
+                {answer[k]}
+              </span>,
             );
           }
-          dAnswerDiff = dAnswerDiff.concat(<Fragment key={i}>{ele}</Fragment>);
+          j++;
+          k++;
         }
 
         setSource(
           <>
-            {dDiff}
+            {tmp1}
             <Divider dashed />
-            {dAnswerDiff}
+            {tmp2}
           </>,
         );
         setFlag('fail');
@@ -434,13 +507,8 @@ export default () => {
           </Space>
           <Space>
             {renderNextBtn()}
-            <Button
-              size="small"
-              type="primary"
-              disabled={flag !== 'normal'}
-              onClick={submitHandler}
-            >
-              提交
+            <Button size="small" type="primary" onClick={submitHandler}>
+              {flag !== 'normal' ? '重试' : '提交'}
             </Button>
           </Space>
         </div>
