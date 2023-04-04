@@ -11,6 +11,7 @@ import {
   Skeleton,
   Divider,
   theme,
+  Switch,
 } from 'antd';
 
 const ua = navigator.userAgent?.toLowerCase();
@@ -30,6 +31,8 @@ export default () => {
   const [flag, setFlag] = useState<ReviewType>('normal');
   const [curIdx, setCurIdx] = useState<number>(0);
   const queryClient = useQueryClient();
+  // permutation and combination
+  const [isPermutation, setIsPermutation] = useState(false);
 
   const { data } = useQuery(['review-list'], () => {
     return restful.get<Res<RecordItem[]>, Res<RecordItem[]>>(
@@ -272,6 +275,11 @@ export default () => {
     setFlag('normal');
   }
 
+  function changePermutation(v: boolean) {
+    setIsPermutation(v);
+    submitHandler();
+  }
+
   function submitHandler() {
     form.validateFields().then((values) => {
       const ignoreStr = `\\d的地得和与及；;：:、?？!！"“'‘·\``;
@@ -293,156 +301,171 @@ export default () => {
         setSource(actual);
       } else {
         // 组合法
-        // const dAnswerDict = answer
-        //   ?.split('')
-        //   ?.map((i) => (i.match(newline) ? '\n' : i))
-        //   .join('')
-        //   ?.split('\n')
-        //   ?.reduce((arr: Record<string, number>[], cur) => {
-        //     return arr.concat(
-        //       cur.split('').reduce((acc: Record<string, number>, cur) => {
-        //         if (cur.match(ignore)) return acc;
+        function combination() {
+          const dAnswerDict = answer
+            ?.split('')
+            ?.map((i) => (i.match(newline) ? '\n' : i))
+            .join('')
+            ?.split('\n')
+            ?.reduce((arr: Record<string, number>[], cur) => {
+              return arr.concat(
+                cur.split('').reduce((acc: Record<string, number>, cur) => {
+                  if (cur.match(ignore)) return acc;
 
-        //         if (acc[cur] === undefined) {
-        //           acc[cur] = 1;
-        //         } else {
-        //           acc[cur]++;
-        //         }
-        //         return acc;
-        //       }, {}),
-        //     );
-        //   }, []);
-        // let dDiff: Array<React.ReactNode> = [];
+                  if (acc[cur] === undefined) {
+                    acc[cur] = 1;
+                  } else {
+                    acc[cur]++;
+                  }
+                  return acc;
+                }, {}),
+              );
+            }, []);
+          let dDiff: Array<React.ReactNode> = [];
 
-        // for (let i = 0, n = 0; i < actual.length; i++) {
-        //   const c = actual[i];
-        //   let ele: React.ReactNode;
-        //   if (c.match(newline)) n++;
-        //   if (c.match(ignore)) {
-        //     ele = c;
-        //   } else if (dAnswerDict?.[n]?.[c] > 0) {
-        //     dAnswerDict[n][c]--;
-        //     ele = c;
-        //   } else {
-        //     ele = (
-        //       <span key={i} style={{ background: 'lightcoral' }}>
-        //         {c}
-        //       </span>
-        //     );
-        //   }
-        //   dDiff = dDiff.concat(<Fragment key={i}>{ele}</Fragment>);
-        // }
+          for (let i = 0, n = 0; i < actual.length; i++) {
+            const c = actual[i];
+            let ele: React.ReactNode;
+            if (c.match(newline)) n++;
+            if (c.match(ignore)) {
+              ele = c;
+            } else if (dAnswerDict?.[n]?.[c] > 0) {
+              dAnswerDict[n][c]--;
+              ele = c;
+            } else {
+              ele = (
+                <span key={i} style={{ background: 'lightcoral' }}>
+                  {c}
+                </span>
+              );
+            }
+            dDiff = dDiff.concat(<Fragment key={i}>{ele}</Fragment>);
+          }
 
-        // const dActualDict = actual
-        //   ?.split('')
-        //   ?.map((i) => (i.match(newline) ? '\n' : i))
-        //   .join('')
-        //   ?.split('\n')
-        //   ?.reduce((arr: Record<string, number>[], cur) => {
-        //     return arr.concat(
-        //       cur.split('').reduce((acc: Record<string, number>, cur) => {
-        //         if (cur.match(ignore)) return acc;
+          const dActualDict = actual
+            ?.split('')
+            ?.map((i) => (i.match(newline) ? '\n' : i))
+            .join('')
+            ?.split('\n')
+            ?.reduce((arr: Record<string, number>[], cur) => {
+              return arr.concat(
+                cur.split('').reduce((acc: Record<string, number>, cur) => {
+                  if (cur.match(ignore)) return acc;
 
-        //         if (acc[cur] === undefined) {
-        //           acc[cur] = 1;
-        //         } else {
-        //           acc[cur]++;
-        //         }
-        //         return acc;
-        //       }, {}),
-        //     );
-        //   }, []);
-        // let dAnswerDiff: Array<React.ReactNode> = [];
+                  if (acc[cur] === undefined) {
+                    acc[cur] = 1;
+                  } else {
+                    acc[cur]++;
+                  }
+                  return acc;
+                }, {}),
+              );
+            }, []);
+          let dAnswerDiff: Array<React.ReactNode> = [];
 
-        // for (let i = 0, n = 0; i < answer.length; i++) {
-        //   const c = answer[i];
-        //   let ele: React.ReactNode;
-        //   if (c.match(newline)) n++;
-        //   if (c.match(ignore)) {
-        //     ele = c;
-        //   } else if (dActualDict?.[n]?.[c] > 0) {
-        //     dActualDict[n][c]--;
-        //     ele = c;
-        //   } else {
-        //     ele = (
-        //       <span key={i} style={{ background: 'lightcoral' }}>
-        //         {c}
-        //       </span>
-        //     );
-        //   }
-        //   dAnswerDiff = dAnswerDiff.concat(<Fragment key={i}>{ele}</Fragment>);
-        // }
+          for (let i = 0, n = 0; i < answer.length; i++) {
+            const c = answer[i];
+            let ele: React.ReactNode;
+            if (c.match(newline)) n++;
+            if (c.match(ignore)) {
+              ele = c;
+            } else if (dActualDict?.[n]?.[c] > 0) {
+              dActualDict[n][c]--;
+              ele = c;
+            } else {
+              ele = (
+                <span key={i} style={{ background: 'lightcoral' }}>
+                  {c}
+                </span>
+              );
+            }
+            dAnswerDiff = dAnswerDiff.concat(
+              <Fragment key={i}>{ele}</Fragment>,
+            );
+          }
+
+          return [dDiff, dAnswerDiff];
+        }
 
         // 排列法
-        let i = 0,
-          j = 0,
+
+        function permutation() {
+          let i = 0,
+            j = 0,
+            k = 0;
+
+          let tmp1: Array<React.ReactNode> = [];
+          const actualGroup = actual.split(newline);
+          const answerGroup = answer.split(newline);
+
+          while (k < actual.length) {
+            while (actual?.[k]?.match(ignore)) {
+              if (actual?.[k]?.match(newline)) {
+                i++;
+                j = 0;
+              }
+              tmp1 = tmp1.concat(<Fragment key={k}>{actual[k]}</Fragment>);
+              k++;
+            }
+
+            while (answerGroup?.[i]?.[j]?.match(ignore)) j++;
+
+            if (actual?.[k] === answerGroup?.[i]?.[j]) {
+              tmp1 = tmp1.concat(<Fragment key={k}>{actual[k]}</Fragment>);
+            } else {
+              tmp1 = tmp1.concat(
+                <span key={k} style={{ background: 'lightcoral' }}>
+                  {actual[k]}
+                </span>,
+              );
+            }
+            j++;
+            k++;
+          }
+
+          i = 0;
+          j = 0;
           k = 0;
 
-        let tmp1: Array<React.ReactNode> = [];
-        const actualGroup = actual.split(newline);
-        const answerGroup = answer.split(newline);
+          let tmp2: Array<React.ReactNode> = [];
 
-        while (k < actual.length) {
-          while (actual?.[k]?.match(ignore)) {
-            if (actual?.[k]?.match(newline)) {
-              i++;
-              j = 0;
+          while (k < answer.length) {
+            while (answer?.[k]?.match(ignore)) {
+              if (answer?.[k]?.match(newline)) {
+                i++;
+                j = 0;
+              }
+              tmp2 = tmp2.concat(<Fragment key={k}>{answer[k]}</Fragment>);
+              k++;
             }
-            tmp1 = tmp1.concat(<Fragment key={k}>{actual[k]}</Fragment>);
+
+            while (actualGroup?.[i]?.[j]?.match(ignore)) j++;
+
+            if (answer?.[k] === actualGroup?.[i]?.[j]) {
+              tmp2 = tmp2.concat(<Fragment key={k}>{answer[k]}</Fragment>);
+            } else {
+              tmp2 = tmp2.concat(
+                <span key={k} style={{ background: 'lightcoral' }}>
+                  {answer[k]}
+                </span>,
+              );
+            }
+            j++;
             k++;
           }
 
-          while (answerGroup?.[i]?.[j]?.match(ignore)) j++;
-
-          if (actual?.[k] === answerGroup?.[i]?.[j]) {
-            tmp1 = tmp1.concat(<Fragment key={k}>{actual[k]}</Fragment>);
-          } else {
-            tmp1 = tmp1.concat(
-              <span key={k} style={{ background: 'lightcoral' }}>
-                {actual[k]}
-              </span>,
-            );
-          }
-          j++;
-          k++;
+          return [tmp1, tmp2];
         }
 
-        i = 0;
-        j = 0;
-        k = 0;
-
-        let tmp2: Array<React.ReactNode> = [];
-
-        while (k < answer.length) {
-          while (answer?.[k]?.match(ignore)) {
-            if (answer?.[k]?.match(newline)) {
-              i++;
-              j = 0;
-            }
-            tmp2 = tmp2.concat(<Fragment key={k}>{answer[k]}</Fragment>);
-            k++;
-          }
-
-          while (actualGroup?.[i]?.[j]?.match(ignore)) j++;
-
-          if (answer?.[k] === actualGroup?.[i]?.[j]) {
-            tmp2 = tmp2.concat(<Fragment key={k}>{answer[k]}</Fragment>);
-          } else {
-            tmp2 = tmp2.concat(
-              <span key={k} style={{ background: 'lightcoral' }}>
-                {answer[k]}
-              </span>,
-            );
-          }
-          j++;
-          k++;
-        }
+        const [actualDiff, answerDiff] = isPermutation
+          ? permutation()
+          : combination();
 
         setSource(
           <>
-            {tmp1}
+            {actualDiff}
             <Divider dashed />
-            {tmp2}
+            {answerDiff}
           </>,
         );
         setFlag('fail');
@@ -466,6 +489,13 @@ export default () => {
       <header style={{ height: 24 }}>
         <div className={classNames(`${prefixCls}-header`, hashId)}>
           {renderTitle()}
+          <Switch
+            checked={isPermutation}
+            onChange={changePermutation}
+            style={{ position: 'absolute', right: '12px' }}
+            checkedChildren="排列"
+            unCheckedChildren="组合"
+          />
         </div>
       </header>
       <main className={classNames(`${prefixCls}-content`, hashId)}>
