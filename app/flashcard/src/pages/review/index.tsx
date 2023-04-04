@@ -31,8 +31,6 @@ export default () => {
   const [flag, setFlag] = useState<ReviewType>('normal');
   const [curIdx, setCurIdx] = useState<number>(0);
   const queryClient = useQueryClient();
-  // permutation and combination
-  const [isPermutation, setIsPermutation] = useState(false);
 
   const { data } = useQuery(['review-list'], () => {
     return restful.get<Res<RecordItem[]>, Res<RecordItem[]>>(
@@ -259,9 +257,11 @@ export default () => {
             >
               忘记
             </Button>
-            <Button size="small" type="dashed" danger onClick={reset}>
-              重置
-            </Button>
+            <Form.Item noStyle>
+              <Button size="small" type="dashed" danger htmlType="reset">
+                重置
+              </Button>
+            </Form.Item>
           </Space>
         );
       default:
@@ -271,13 +271,7 @@ export default () => {
 
   function reset() {
     setSource('');
-    form.resetFields();
     setFlag('normal');
-  }
-
-  function changePermutation(v: boolean) {
-    setIsPermutation(v);
-    submitHandler();
   }
 
   function submitHandler() {
@@ -457,7 +451,7 @@ export default () => {
           return [tmp1, tmp2];
         }
 
-        const [actualDiff, answerDiff] = isPermutation
+        const [actualDiff, answerDiff] = values?.isPermutation
           ? permutation()
           : combination();
 
@@ -485,64 +479,69 @@ export default () => {
   }
 
   return (
-    <section>
-      <header style={{ height: 24 }}>
-        <div className={classNames(`${prefixCls}-header`, hashId)}>
-          {renderTitle()}
-          <Switch
-            checked={isPermutation}
-            onChange={changePermutation}
-            style={{ position: 'absolute', right: '12px' }}
-            checkedChildren="排列"
-            unCheckedChildren="组合"
-          />
-        </div>
-      </header>
-      <main className={classNames(`${prefixCls}-content`, hashId)}>
-        {datas?.length ? (
-          <Form className={reviewStyles['form']} form={form}>
-            <Form.Item className={reviewStyles['form-item']}>
-              <div>译文： </div>
-              {curRencord?.translation}
-            </Form.Item>
-            <Divider />
-            <div>默写区： </div>
-            <Form.Item
-              className={reviewStyles['form-item']}
-              name="answer"
-              rules={[{ required: true, message: '请把内容默写于此' }]}
-            >
-              <Input.TextArea
-                autoFocus
-                onKeyDown={onHotKey}
-                autoSize={{ minRows: 8 }}
-                placeholder="请把内容默写于此"
-                allowClear
+    <Form form={form} onFinish={submitHandler} onReset={reset}>
+      <section>
+        <header style={{ height: 24 }}>
+          <div className={classNames(`${prefixCls}-header`, hashId)}>
+            {renderTitle()}
+            <Form.Item noStyle name="isPermutation" valuePropName="checked">
+              <Switch
+                onChange={submitHandler}
+                style={{ position: 'absolute', right: '12px' }}
+                checkedChildren="排列"
+                unCheckedChildren="组合"
               />
             </Form.Item>
-            <Divider />
-            <Form.Item className={reviewStyles['form-item']}>
-              <div>原文： </div>
-              {flag !== 'normal' ? source : <Skeleton />}
-            </Form.Item>
-          </Form>
-        ) : (
-          <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
-        )}
-      </main>
-      <footer>
-        <div className={classNames(`${prefixCls}-content-footer`, hashId)}>
-          <Space style={{ marginRight: '12px', whiteSpace: 'pre-wrap' }}>
-            余{total}
-          </Space>
-          <Space>
-            {renderNextBtn()}
-            <Button size="small" type="primary" onClick={submitHandler}>
-              {flag !== 'normal' ? '重试' : '提交'}
-            </Button>
-          </Space>
-        </div>
-      </footer>
-    </section>
+          </div>
+        </header>
+        <main className={classNames(`${prefixCls}-content`, hashId)}>
+          {datas?.length ? (
+            <div className={reviewStyles['form']}>
+              <Form.Item className={reviewStyles['form-item']}>
+                <div>译文： </div>
+                {curRencord?.translation}
+              </Form.Item>
+              <Divider />
+              <div>默写区： </div>
+              <Form.Item
+                className={reviewStyles['form-item']}
+                name="answer"
+                rules={[{ required: true, message: '请把内容默写于此' }]}
+              >
+                <Input.TextArea
+                  autoFocus
+                  onKeyDown={onHotKey}
+                  autoSize={{ minRows: 8 }}
+                  placeholder="请把内容默写于此"
+                  allowClear
+                />
+              </Form.Item>
+              <Divider />
+              <Form.Item className={reviewStyles['form-item']}>
+                <div>原文： </div>
+                {flag !== 'normal' ? source : <Skeleton />}
+              </Form.Item>
+            </div>
+          ) : (
+            <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
+          )}
+        </main>
+        <footer>
+          <div className={classNames(`${prefixCls}-content-footer`, hashId)}>
+            <Space style={{ marginRight: '12px', whiteSpace: 'pre-wrap' }}>
+              余{total}
+            </Space>
+            <Space>
+              {renderNextBtn()}
+              <Form.Item noStyle>
+                <Button size="small" type="primary" htmlType="submit">
+                  {flag !== 'normal' ? '重试' : '提交'}
+                </Button>
+              </Form.Item>
+            </Space>
+          </div>
+        </footer>
+      </section>
+    </Form>
   );
 };
