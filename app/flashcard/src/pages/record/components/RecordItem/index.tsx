@@ -36,7 +36,7 @@ export default ({
   selected,
   record,
 }: RecordItemProps) => {
-  const { _id, source, translation, exp: percent } = record;
+  const { _id, source, translation, exp: percent, tag } = record;
   function clickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation();
     onClick(_id);
@@ -81,7 +81,9 @@ export default ({
       <div style={{ whiteSpace: 'pre-wrap' }} onClick={clickHandler}>
         {source}
       </div>
-      <Divider />
+      <Divider orientation="right" plain>
+        {tag}
+      </Divider>
       <div style={{ whiteSpace: 'pre-wrap' }} onClick={clickHandler}>
         {translation}
       </div>

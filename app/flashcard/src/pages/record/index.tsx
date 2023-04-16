@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-19 01:00:11
+ * @LastEditTime: 2023-04-16 23:02:26
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -431,7 +431,11 @@ export default () => {
         onCancel={hideInputModal}
         onOk={onInputSubmit}
       >
-        <Form form={inputForm} onFinish={onInputSubmit}>
+        <Form form={inputForm} onFinish={onInputSubmit} layout="vertical">
+          <Form.Item name="tag" label="标签">
+            <Input />
+          </Form.Item>
+
           <Form.Item name="source" label="原文" rules={[{ required: true }]}>
             <Input.TextArea autoSize allowClear />
           </Form.Item>
