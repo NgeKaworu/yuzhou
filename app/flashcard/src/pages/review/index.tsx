@@ -143,7 +143,7 @@ export default () => {
           data.exp = exp + 10;
           break;
         case 80:
-          data.cooldownAt = now.add(0.5, 'month');
+          data.cooldownAt = now.add(15, 'days');
           data.exp = exp + 10;
           break;
         case 90:
