@@ -467,13 +467,23 @@ export default () => {
     });
   }
 
-  function onHotKey({ key, metaKey, ctrlKey }: React.KeyboardEvent) {
+  function onHotKey({ key, metaKey, ctrlKey, altKey }: React.KeyboardEvent) {
     if (key === 'Enter') {
       if (
         (ua?.includes('windows') && ctrlKey) ||
         (ua?.includes('mac') && metaKey)
       ) {
         submitHandler();
+      }
+    }
+
+    if (key === 'r') {
+      if (
+        (ua?.includes('windows') && altKey) ||
+        (ua?.includes('mac') && ctrlKey)
+      ) {
+        form.resetFields();
+        reset();
       }
     }
   }
