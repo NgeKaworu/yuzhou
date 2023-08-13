@@ -81,6 +81,7 @@ export default () => {
     Number(a[field]) - Number(b[field]);
 
   const columns: LightColumnProps<Stock>[] = [
+    { dataIndex: 'number', title: '序号', render: (_, __, index) => index + 1 },
     {
       title: '股票',
       dataIndex: 'mixed',
