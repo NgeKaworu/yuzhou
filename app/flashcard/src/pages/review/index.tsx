@@ -292,7 +292,7 @@ export default () => {
   async function submitHandler() {
     const values = await form.validateFields();
 
-    if (RECORD_MODE.KEYWORD === curRecord.mode) {
+    if (RECORD_MODE.KEYWORD === mode) {
       const answerArr: Array<string> = values?.answer;
       if (
         answerArr?.every(
@@ -332,7 +332,7 @@ export default () => {
       }
     }
 
-    if (RECORD_MODE.FULL === curRecord.mode) {
+    if (RECORD_MODE.FULL === mode) {
       function ignoreHOF(s: string) {
         return s
           .split('')
