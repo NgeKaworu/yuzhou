@@ -503,9 +503,9 @@ export default () => {
 
         setSource(
           <>
-            {actualDiff}
+            <p style={{ textIndent: 24 }}>{actualDiff}</p>
             <Divider dashed />
-            {answerDiff}
+            <p style={{ textIndent: 24 }}>{answerDiff}</p>
           </>,
         );
         setFlag('fail');
