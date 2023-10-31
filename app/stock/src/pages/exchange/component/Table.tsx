@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-02-04 18:12:36
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 13:58:28
+ * @LastEditTime: 2023-10-30 23:43:08
  * @FilePath: /yuzhou/app/stock/src/pages/exchange/component/Table.tsx
  * @Description:
  *
@@ -52,32 +52,30 @@ export default () => {
     }
   }, [code]);
 
-  const positionDetail = useQuery(
-    ['position-detail', code],
-    () => detail(code, { params: { omitempty: false } }),
-    {
-      enabled: !!code,
-      onSuccess(res) {
-        if (res.data?.stock?.name) {
-          document.title = `${res.data?.stock.code} - ${res.data?.stock.name}`;
-        }
-      },
-    },
-  );
+  const positionDetail = useQuery({
+    queryKey: ['position-detail', code],
+    queryFn: () => detail(code, { params: { omitempty: false } }),
+    enabled: !!code,
+  });
 
-  const exchangeList = useQuery(
-    ['exchange-list', code, pages, pageSize],
-    () =>
+  useEffect(() => {
+    if (positionDetail.data?.data?.stock?.name) {
+      document.title = `${positionDetail.data?.data?.stock.code} - ${positionDetail.data?.data?.stock.name}`;
+    }
+  }, [positionDetail.data?.data?.stock?.name]);
+
+  const exchangeList = useQuery({
+    queryKey: ['exchange-list', code, pages, pageSize],
+
+    queryFn: () =>
       list(code, {
         params: {
           limit: pageSize,
           skip: (pages - 1) * (pageSize ?? 10),
         },
       }),
-    {
-      enabled: !!code,
-    },
-  );
+    enabled: !!code,
+  });
 
   const reload = () => {
     positionDetail.refetch();

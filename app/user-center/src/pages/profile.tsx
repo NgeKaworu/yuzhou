@@ -1,3 +1,13 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-10-30 22:34:17
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-10-30 23:49:20
+ * @FilePath: /yuzhou/app/user-center/src/pages/profile.tsx
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
 import { restful } from 'edk/src/utils/http';
 import User from '@/model/User';
 import { Spin, Card, Typography, Descriptions } from 'antd';
@@ -8,7 +18,10 @@ const { Link } = Typography;
 const { Item } = Descriptions;
 
 export default () => {
-  const profile = useQuery<{ data: User }>(['profile'], () => restful.get('user-center/profile'));
+  const profile = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => restful.get<User>('user-center/profile'),
+  });
   const logout = () => {
     localStorage.clear();
     location.replace('/user-center/login/');

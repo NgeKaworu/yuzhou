@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import styles from './profile.less';
 
 const { Item } = Form;
-const { Link, Title } = Typography;
+const { Link } = Typography;
 
 interface Entry {
   title: string;
@@ -38,7 +38,7 @@ export default () => {
   const { entry } = useParams() as { entry: ENTRY_TYPE },
     history = useNavigate(),
     [form] = Form.useForm(),
-    charon = useMutation((value) => restful.post(`user-center/${entry}`, value));
+    charon = useMutation({ mutationFn: (value) => restful.post(`user-center/${entry}`, value) });
 
   if (!['register', 'login', 'forget-pwd'].includes(entry)) {
     history('/', { replace: true });
@@ -78,7 +78,7 @@ export default () => {
                   type="primary"
                   size="large"
                   block
-                  loading={charon.isLoading}
+                  loading={charon.isPending}
                 >
                   {ENTRY_MAP.get(entry)?.title}
                 </Button>

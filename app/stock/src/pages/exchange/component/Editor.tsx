@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-02-04 16:14:33
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-23 22:26:43
+ * @LastEditTime: 2023-10-30 22:38:01
  * @FilePath: /yuzhou/app/stock/src/pages/exchange/component/Editor.tsx
  * @Description:
  *
@@ -56,13 +56,11 @@ export default ({
     .pipe(throttleTime(10000, void 0, { leading: true, trailing: true }))
     .subscribe((value) => setData((pre: any) => ({ ...pre, code: value })));
   const { code } = data ?? {};
-  const positionDetail = useQuery(
-    ['position-detail', code],
-    () => detail(code, { params: { omitempty: false } }),
-    {
-      enabled: !!code,
-    },
-  );
+  const positionDetail = useQuery({
+    queryKey: ['position-detail', code],
+    queryFn: () => detail(code, { params: { omitempty: false } }),
+    enabled: !!code,
+  });
 
   const inEdit = modalProps?.title === '编辑';
 

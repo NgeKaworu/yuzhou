@@ -13,9 +13,11 @@ import Perm from '@/model/Perm';
 const { Link } = Typography;
 
 export default () => {
-  const perms = useQuery(['user-center/perm/list', 'infinity'], () =>
-    permList({ params: { limit: 0 } }),
-  );
+  const perms = useQuery({
+    queryKey: ['user-center/perm/list', 'infinity'],
+
+    queryFn: () => permList({ params: { limit: 0 } }),
+  });
   const { actionRef, formRef } = useLightTablePro();
   const editor = useModalForm();
 

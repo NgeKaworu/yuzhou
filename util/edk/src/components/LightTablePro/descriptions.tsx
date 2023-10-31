@@ -9,7 +9,6 @@ import type { QueryKey, QueryFunction, UseQueryOptions } from '@tanstack/react-q
 import useWrap from './hook/useWrap';
 import styles from './index.module.less';
 import getIn from '../../struct/tree/getIn';
-import { ColumnTitle } from 'antd/es/table/interface';
 
 export { default as useLightTablePro } from './hook/useLightTablePro';
 export { default as useWrap } from './hook/useWrap';

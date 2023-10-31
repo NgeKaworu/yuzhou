@@ -2,12 +2,17 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-04-16 23:06:54
+ * @LastEditTime: 2023-10-31 00:02:37
  * @FilePath: /yuzhou/app/flashcard/src/models/record.ts
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
+
+export const enum RECORD_MODE {
+  FULL,
+  KEYWORD,
+}
 export interface Record {
   _id: string;
   cooldownAt: Date;
@@ -20,4 +25,5 @@ export interface Record {
   uid: string;
   updateAt: Date;
   tag: string;
+  mode: RECORD_MODE;
 }

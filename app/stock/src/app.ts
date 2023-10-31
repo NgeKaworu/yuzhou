@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 11:56:08
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-15 14:24:34
+ * @LastEditTime: 2023-10-30 23:45:36
  * @FilePath: /yuzhou/app/stock/src/app.ts
  * @Description:
  *
@@ -13,7 +13,7 @@ import edk from 'edk/src';
 import * as antd from 'antd';
 import * as reactQuery from '@tanstack/react-query';
 import * as react from 'react';
-import * as reactDnD from 'react-dnd'
+import * as reactDnD from 'react-dnd';
 
 export const qiankun = {
   // 应用加载之前
@@ -37,8 +37,6 @@ declare global {
     __INJECTED_PUBLIC_PATH_BY_QIANKUN__: string;
   }
 }
-
-
 
 edk.antd = antd;
 edk.reactQuery = reactQuery;

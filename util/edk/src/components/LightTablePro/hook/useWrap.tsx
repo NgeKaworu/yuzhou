@@ -56,9 +56,10 @@ export default function useWrap<RecordType extends Record<any, any> = any>({
     [form] = Form.useForm<RecordType>(),
     [tableState, setTableState] = useState<Partial<RequestParameters<RecordType>>>();
   const { setURLSearch } = useURLSearch({ onURLSearchChange: setTableState, key: 'tableState' }),
-    responser = useQuery(
-      _queryKey(queryKey),
-      async (...extra) =>
+    responser = useQuery({
+      queryKey: _queryKey(queryKey),
+
+      queryFn: async (...extra) =>
         request?.(
           await form.validateFields(),
           _pagination(),
@@ -66,8 +67,9 @@ export default function useWrap<RecordType extends Record<any, any> = any>({
           tableState?.[1],
           extra,
         ),
-      enabled === false ? { enabled } : queryOptions,
-    ),
+      ...queryOptions,
+      enabled,
+    }),
     formRef = useRef<FormInstance>(form),
     actionRef = useRef<ActionRef>({
       reload: responser.refetch,

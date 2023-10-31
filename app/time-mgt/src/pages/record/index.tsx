@@ -34,9 +34,9 @@ export default () => {
 
   const { hashId } = useToken();
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery(
-    ['records'],
-    ({ pageParam = 0 }) => {
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ['records'],
+    queryFn: ({ pageParam = 0 }) => {
       return page<
         { data: RecordSchema[]; total: number },
         { data: RecordSchema[]; total: number },
@@ -48,13 +48,12 @@ export default () => {
         },
       });
     },
-    {
-      getNextPageParam: (lastPage, pages) => {
-        return lastPage?.data?.length === 10 ? pages?.length : undefined;
-      },
-      refetchOnWindowFocus: false,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage?.data?.length === 10 ? pages?.length : undefined;
     },
-  );
+    refetchOnWindowFocus: false,
+  });
 
   const list = data?.pages,
     pages = list?.reduce((acc: RecordSchema[], cur) => acc.concat(cur?.data), []);
@@ -68,7 +67,7 @@ export default () => {
         await add(values);
       }
 
-      queryClient.invalidateQueries(['records']);
+      queryClient.invalidateQueries({ queryKey: ['records'] });
       form.resetFields();
     } catch (e) {
       console.error('create err: ', e);

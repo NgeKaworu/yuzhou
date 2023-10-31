@@ -70,7 +70,7 @@ export const Captcha = () => {
   }
 
   return (
-    <Item dependencies={[['email']]} noStyle>
+    (<Item dependencies={[['email']]} noStyle>
       {(form) => (
         <Item
           rules={[
@@ -107,7 +107,7 @@ export const Captcha = () => {
           />
         </Item>
       )}
-    </Item>
+    </Item>)
   );
 };
 

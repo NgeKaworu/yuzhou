@@ -2,11 +2,11 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-14 23:42:22
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-17 00:20:34
+ * @LastEditTime: 2023-10-30 23:51:15
  * @FilePath: /yuzhou/util/edk/src/decorators/Select/SearchAsync.tsx
- * @Description: 
- * 
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
 import Scope from '../../';
 const { cloneElement, useReducer } = Scope.react;

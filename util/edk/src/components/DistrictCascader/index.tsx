@@ -56,17 +56,18 @@ export default <T extends any = any>({ mapConfig, districtConfig, ...cascaderPro
     ...districtConfig,
   });
 
-  const district = useQuery(
-    ['district', districtConfig],
-    () =>
+  const district = useQuery({
+    queryKey: ['district', districtConfig],
+
+    queryFn: () =>
       new Promise<District>(async (res, reject) => {
         const client = await districtSearch.Get();
         client?.search('中国', (status: Status, data: District) => {
           if (status === 'complete') return res(data);
           return reject(data);
         });
-      }),
-  );
+      })
+  });
 
   return (
     <Cascader

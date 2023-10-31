@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-16 15:01:23
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-16 23:07:11
+ * @LastEditTime: 2023-10-30 23:21:31
  * @FilePath: /yuzhou/gateway/yingxv/src/layouts/component/Menu/index.tsx
  * @Description:
  *
@@ -32,7 +32,9 @@ export default () => {
 
   const { pathname } = useLocation();
 
-  const menu = useQuery<{ data: Perm[] }>(['menu-list'], () => list(), {
+  const menu = useQuery({
+    queryKey: ['menu-list'],
+    queryFn: () => list(),
     refetchOnWindowFocus: false,
   });
 

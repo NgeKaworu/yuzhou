@@ -1,3 +1,13 @@
+/*
+ * @Author: fuRan NgeKaworu@gmail.com
+ * @Date: 2023-10-30 22:34:17
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-10-30 23:50:05
+ * @FilePath: /yuzhou/app/user-center/src/pages/user/component/Table.tsx
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
+ */
 import Table, { LightTableProColumnProps } from 'edk/src/components/LightTablePro';
 import useLightTablePro from 'edk/src/components/LightTablePro/hook/useLightTablePro';
 import User from '@/model/User';
@@ -13,9 +23,11 @@ import Perm from '@/model/Perm';
 const { Link } = Typography;
 
 export default () => {
-  const perms = useQuery(['user-center/perm/list', 'infinity'], () =>
-    roles({ params: { limit: 0 } }),
-  );
+  const perms = useQuery({
+    queryKey: ['user-center/perm/list', 'infinity'],
+
+    queryFn: () => roles({ params: { limit: 0 } }),
+  });
   const { actionRef, formRef } = useLightTablePro();
   const editor = useModalForm();
 

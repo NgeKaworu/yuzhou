@@ -29,9 +29,11 @@ export default ({
   onSuccess?: (...args: any) => void;
 }) => {
   const inEdit = modalProps?.title === '编辑';
-  const perms = useQuery(['user-center/perm/list', 'menu', 'infinity'], () =>
-    list({ params: { limit: 0, isMenu: true } }),
-  );
+  const perms = useQuery({
+    queryKey: ['user-center/perm/list', 'menu', 'infinity'],
+
+    queryFn: () => list({ params: { limit: 0, isMenu: true } }),
+  });
   const iconOpt = Object.keys(icons).reduce(
     (acc: { value: string; label: ReactNode }[], k) =>
       isUpperCase(firstLetter(k)) && k !== 'IconProvider'
@@ -92,11 +94,9 @@ export default ({
       >
         <Input placeholder="请输入" disabled={inEdit} />
       </Item>
-
       <Item name="order" label="序号">
         <InputNumber placeholder="请输入" precision={0} />
       </Item>
-
       <Item
         name="isMenu"
         label="是否当作菜单使用？"
@@ -105,7 +105,6 @@ export default ({
       >
         <RGroup optionType="button" options={Options(MENU_TYPE_MAP).toOpt} disabled={inEdit} />
       </Item>
-
       <Item dependencies={[['isMenu'], ['isMicroApp']]} noStyle>
         {({ getFieldValue, setFieldsValue }) =>
           getFieldValue(['isMenu']) && (

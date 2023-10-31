@@ -26,9 +26,11 @@ export default ({
   onSuccess?: (...args: any) => void;
 }) => {
   const inEdit = modalProps?.title === '编辑';
-  const roles = useQuery(['user-center/role/list', 'infinity'], () =>
-      list({ params: { limit: 0 } }),
-    ),
+  const roles = useQuery({
+      queryKey: ['user-center/role/list', 'infinity'],
+
+      queryFn: () => list({ params: { limit: 0 } }),
+    }),
     rolesOpt = roles.data?.data?.map((r) => ({ label: r.name, value: r.id }));
 
   async function onSubmit() {

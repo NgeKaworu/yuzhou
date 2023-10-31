@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-04-16 23:02:26
+ * @LastEditTime: 2023-10-31 00:19:35
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -21,7 +21,6 @@ import {
   Input,
   Button,
   Menu,
-  Space,
   Modal,
   Form,
   Radio,
@@ -29,6 +28,8 @@ import {
   List,
   ListProps,
   theme,
+  FloatButton,
+  message,
 } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -38,7 +39,7 @@ import { Res } from 'edk/src/utils/http/type';
 
 import RecordItem from './components/RecordItem';
 
-import { Record } from '@/models/record';
+import { RECORD_MODE, Record } from '@/models/record';
 import classNames from 'classnames';
 import { prefixCls } from '@/theme';
 
@@ -48,20 +49,20 @@ const limit = 15;
 
 export default () => {
   const [sortForm] = Form.useForm();
-  const [inputForm] = Form.useForm();
+  const [inputForm] = Form.useForm<Record>();
   const history = useNavigate();
   const _location = useLocation();
   const _search = _location.search;
   const params = new URLSearchParams(_search);
   const selectedKeys = [params.get('type') || 'all'];
 
-  const [sortVisable, setSortVisable] = useState(false);
-  const [inputVisable, setInputVisable] = useState(false);
+  const [sortVisible, setSortVisible] = useState(false);
+  const [inputVisible, setInputVisible] = useState(false);
   const [inputType, setInputType] = useState<inputType>('新建');
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   // 编辑modal使用
-  const [curRecrod, setCurRecord] = useState<Record>();
+  const [curRecord, setCurRecord] = useState<Record>();
 
   // 【自定义】制造样式
   const { hashId } = theme.useToken();
@@ -73,13 +74,12 @@ export default () => {
 
   const queryClient = useQueryClient();
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery(
-    ['records-list', _search],
-    ({ pageParam = 0 }) => {
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ['records-list', _search],
+    queryFn: ({ pageParam = 0 }) => {
       const params: { [key: string]: string | number } = Object.fromEntries(
         new URLSearchParams(_search),
       );
-
       return restful.get<Res<Record[]>, Res<Record[]>>(
         `/flashcard/record/list`,
         {
@@ -92,87 +92,78 @@ export default () => {
         },
       );
     },
-    {
-      getNextPageParam: (lastPage, pages) => {
-        return lastPage?.data?.length === limit ? pages?.length : undefined;
-      },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage?.data?.length === limit ? pages?.length : undefined;
     },
-  );
+  });
 
   const dataSource = data?.pages,
     pages = dataSource?.reduce(
       (acc: any, cur: any) => acc.concat(cur?.data),
       [],
-    ) as any[],
+    ) as Record[],
     total = dataSource?.[dataSource?.length - 1]?.total || 0;
 
-  const creator = useMutation(
-    (data) => restful.post(`/flashcard/record/create`, data),
-    {
-      onSuccess() {
-        queryClient.invalidateQueries(['records-list']);
-        inputForm.resetFields();
-        setInputVisable(false);
-      },
+  const creator = useMutation({
+    mutationFn: (data: Record) =>
+      restful.post(`/flashcard/record/create`, data),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      inputForm.resetFields();
+      setInputVisible(false);
     },
-  );
+  });
 
-  const updater = useMutation(
-    (data?: { [key: string]: any }) =>
+  const updater = useMutation({
+    mutationFn: (data?: { [key: string]: any }) =>
       restful.patch(`/flashcard/record/update`, {
-        id: curRecrod?._id,
+        id: curRecord?._id,
         ...data,
       }),
-    {
-      onSuccess() {
-        queryClient.invalidateQueries(['records-list']);
-        inputForm.resetFields();
-        setInputVisable(false);
-      },
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      inputForm.resetFields();
+      setInputVisible(false);
     },
-  );
+  });
 
-  const deleter = useMutation(
-    (data?: string) => restful.delete(`/flashcard/record/remove/${data}`),
-    {
-      onSuccess() {
-        queryClient.invalidateQueries(['records-list']);
-      },
+  const remover = useMutation({
+    mutationFn: (data?: string) =>
+      restful.delete(`/flashcard/record/remove/${data}`),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['records-list'] });
     },
-  );
+  });
 
-  const reviewer = useMutation(
-    (ids: string[]) => restful.patch(`/flashcard/record/review`, { ids }),
-    {
-      onSuccess() {
-        queryClient.invalidateQueries(['records-list']);
-        queryClient.invalidateQueries(['review-list']);
-        history('/review/');
-      },
+  const reviewer = useMutation({
+    mutationFn: (ids: string[]) =>
+      restful.patch(`/flashcard/record/review`, { ids }),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      queryClient.invalidateQueries({ queryKey: ['review-list'] });
+      history('/review/');
     },
-  );
+  });
 
-  const randomReviewer = useMutation(
-    (data) => restful.patch(`/flashcard/record/random-review`, data),
-    {
-      onSuccess() {
-        queryClient.invalidateQueries(['records-list']);
-        queryClient.invalidateQueries(['review-list']);
-        history('/review/');
-      },
+  const randomReviewer = useMutation({
+    mutationFn: (data) =>
+      restful.patch(`/flashcard/record/random-review`, data),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      queryClient.invalidateQueries({ queryKey: ['review-list'] });
+      history('/review/');
     },
-  );
+  });
 
-  const allReviewer = useMutation(
-    (data) => restful.get(`/flashcard/record/review-all`),
-    {
-      onSuccess() {
-        queryClient.invalidateQueries(['records-list']);
-        queryClient.invalidateQueries(['review-list']);
-        history('/review/');
-      },
+  const allReviewer = useMutation({
+    mutationFn: (data) => restful.get(`/flashcard/record/review-all`),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      queryClient.invalidateQueries({ queryKey: ['review-list'] });
+      history('/review/');
     },
-  );
+  });
 
   function reviewHandler() {
     reviewer.mutate(selectedItems);
@@ -198,11 +189,11 @@ export default () => {
   };
 
   function showSortModal() {
-    setSortVisable(true);
+    setSortVisible(true);
   }
 
   function hideSortModal() {
-    setSortVisable(false);
+    setSortVisible(false);
   }
 
   function onSortSubmit() {
@@ -213,7 +204,7 @@ export default () => {
         pathname: _location.pathname,
         search: params.toString(),
       });
-      setSortVisable(false);
+      setSortVisible(false);
     });
   }
 
@@ -225,16 +216,17 @@ export default () => {
       search: params.toString(),
     });
     sortForm.resetFields();
-    setSortVisable(false);
+    setSortVisible(false);
   }
 
-  function showInpurModal(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+  function showInputModal(e: React.MouseEvent<HTMLElement, MouseEvent>) {
     setInputType(e.currentTarget.dataset.inputType as inputType);
-    setInputVisable(true);
+    setInputVisible(true);
+    inputForm.setFieldValue('tag', pages?.[0]?.tag);
   }
 
   function hideInputModal() {
-    setInputVisable(false);
+    setInputVisible(false);
   }
 
   function onInputSubmit() {
@@ -260,14 +252,14 @@ export default () => {
   }
 
   function onItemRemoveClick(id: string) {
-    deleter.mutate(id);
+    remover.mutate(id);
   }
 
   function onItemEditClick(record: Record) {
     inputForm.setFieldsValue(record);
     setCurRecord(record);
     setInputType('编辑');
-    setInputVisable(true);
+    setInputVisible(true);
   }
 
   function cancelAllSelect() {
@@ -286,9 +278,6 @@ export default () => {
           selected={selected}
           onClick={onItemClick}
           onEditClick={onItemEditClick}
-          onSyncClick={(e) => {
-            e.stopPropagation();
-          }}
           onRemoveClick={onItemRemoveClick}
         />
       </List.Item>
@@ -334,7 +323,7 @@ export default () => {
             排序
           </Button>
           <Modal
-            open={sortVisable}
+            open={sortVisible}
             title="排序"
             onCancel={hideSortModal}
             onOk={onSortSubmit}
@@ -389,63 +378,98 @@ export default () => {
           <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
         )}
       </main>
-      <footer>
-        <div className={classNames(`${prefixCls}-content-footer`, hashId)}>
-          <Space style={{ marginRight: '12px' }}>
-            {selectedItems.length}/{total}
-            <Button size="small" type="dashed" onClick={cancelAllSelect}>
-              取消选择
-            </Button>
-            {/* <Button
-          size='small' danger>删除所选</Button> */}
-          </Space>
-          <Space>
-            <Button
-              size="small"
-              type="primary"
-              disabled={!selectedItems.length}
-              onClick={reviewHandler}
-            >
-              复习所选
-            </Button>
-            <Button size="small" type="primary" onClick={randomReviewHandler}>
-              随机复习
-            </Button>
-            <Button size="small" type="primary" onClick={reviewAllHandler}>
-              复习全部
-            </Button>
-            <Button
-              size="small"
-              type="primary"
-              shape="circle"
-              icon={<PlusOutlined />}
-              onClick={showInpurModal}
-              data-input-type="新建"
-            />
-          </Space>
-        </div>
-      </footer>
+
+      <FloatButton.Group
+        shape="circle"
+        trigger="hover"
+        style={{ right: 12, bottom: 48 + 8 + 40 + 8 + 40 }}
+        icon={null}
+        closeIcon={null}
+        description={'批量操作'}
+        badge={{
+          count: `${selectedItems.length}/${total}`,
+          size: 'small',
+          offset: [20, 0],
+        }}
+      >
+        {/* <FloatButton description="删除所选" /> */}
+        <FloatButton description="随机复习" onClick={randomReviewHandler} />
+        <FloatButton description="取消选择" onClick={cancelAllSelect} />
+        <FloatButton onClick={reviewHandler} description="复习所选" />
+      </FloatButton.Group>
+
+      <FloatButton
+        style={{ right: 12, bottom: 48 + 8 + 40 }}
+        description="复习全部"
+        type="primary"
+        onClick={randomReviewHandler}
+      />
+
+      <FloatButton
+        style={{ right: 12, bottom: 48 }}
+        icon={<PlusOutlined />}
+        type="primary"
+        onClick={showInputModal}
+        data-input-type="新建"
+      />
+
       <Modal
         title={inputType}
-        open={inputVisable}
+        open={inputVisible}
         onCancel={hideInputModal}
         onOk={onInputSubmit}
       >
-        <Form form={inputForm} onFinish={onInputSubmit} layout="vertical">
+        <Form<Record>
+          form={inputForm}
+          onFinish={onInputSubmit}
+          layout="vertical"
+          initialValues={{ mode: RECORD_MODE.KEYWORD }}
+        >
           <Form.Item name="tag" label="标签">
             <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="mode"
+            label="模式"
+            rules={[{ required: true }]}
+            tooltip={
+              <>
+                全文背诵或
+                <br />
+                关键字填空
+              </>
+            }
+          >
+            <Radio.Group
+              optionType="button"
+              options={[
+                { value: RECORD_MODE.KEYWORD, label: '关键字' },
+                { value: RECORD_MODE.FULL, label: '全文' },
+              ]}
+            />
           </Form.Item>
 
           <Form.Item name="source" label="原文" rules={[{ required: true }]}>
             <Input.TextArea autoSize allowClear />
           </Form.Item>
-          <Form.Item
-            name="translation"
-            label="译文"
-            rules={[{ required: true }]}
+
+          <Form.Item<Record>
+            shouldUpdate={(pre, next) => pre.mode !== next.mode}
           >
-            <Input.TextArea autoSize allowClear />
+            {({ getFieldValue }) => (
+              <Form.Item
+                name="translation"
+                label={
+                  getFieldValue('mode') === RECORD_MODE.FULL ? '全文' : '关键字'
+                }
+                rules={[{ required: true }]}
+              >
+                <Input.TextArea autoSize allowClear />
+              </Form.Item>
+            )}
           </Form.Item>
+
           <Form.Item>
             <Button style={{ opacity: 0 }} htmlType="submit">
               提交

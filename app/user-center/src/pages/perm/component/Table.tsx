@@ -22,19 +22,18 @@ export default () => {
   const [keyword, setKeyword] = useState<Perm>();
   const [expandedRowKeys, onExpandedRowsChange] = useState<readonly Key[]>([]);
 
-  const perms = useQuery(
-      ['perm-list'],
-      () =>
+  const perms = useQuery({
+      queryKey: ['perm-list'],
+
+      queryFn: () =>
         list({
           params: {
             skip: 0,
             limit: 0,
           },
         }),
-      {
-        refetchOnWindowFocus: false,
-      },
-    ),
+      refetchOnWindowFocus: false,
+    }),
     dataSource = perm2Tree(
       perms.data?.data?.filter((p) => keyword?.isMenu === void 0 || p.isMenu === keyword?.isMenu),
     );

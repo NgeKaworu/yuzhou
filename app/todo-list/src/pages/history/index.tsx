@@ -42,9 +42,9 @@ export default () => {
 
   const queryClient = useQueryClient();
 
-  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    ['tasks-list', _search],
-    ({ pageParam = 0 }) => {
+  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ['tasks-list', _search],
+    queryFn: ({ pageParam = 0 }) => {
       const params: { [key: string]: string | number } = Object.fromEntries(
         new URLSearchParams(_search),
       );
@@ -59,25 +59,29 @@ export default () => {
         },
       });
     },
-    {
-      getNextPageParam: (lastPage, pages) => {
-        return lastPage?.data?.length === limit ? pages?.length : undefined;
-      },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage?.data?.length === limit ? pages?.length : undefined;
     },
-  );
+  });
 
   const d = data?.pages,
     pages = d?.reduce((acc, cur) => acc.concat(cur?.data), []);
-  const creator = useMutation((data: Task) => RESTful.post(`todo-list/v1/task/create`, data));
+  const creator = useMutation({
+    mutationFn: (data: Task) => RESTful.post(`todo-list/v1/task/create`, data),
+  });
 
-  const updater = useMutation((data?: { [key: string]: any }) =>
-    RESTful.patch(`todo-list/v1/task/update`, {
-      id: curRecord?.id,
-      ...data,
-    }),
-  );
+  const updater = useMutation({
+    mutationFn: (data?: { [key: string]: any }) =>
+      RESTful.patch(`todo-list/v1/task/update`, {
+        id: curRecord?.id,
+        ...data,
+      }),
+  });
 
-  const remover = useMutation((data?: string) => RESTful.delete(`todo-list/v1/task/${data}`));
+  const remover = useMutation({
+    mutationFn: (data?: string) => RESTful.delete(`todo-list/v1/task/${data}`),
+  });
 
   function showMore() {
     fetchNextPage();
@@ -86,7 +90,7 @@ export default () => {
   async function addTask(value: Task) {
     try {
       await creator.mutateAsync({ ...value, done: false });
-      queryClient.invalidateQueries(['tasks-list']);
+      queryClient.invalidateQueries({ queryKey: ['tasks-list'] });
       inputForm.resetFields();
       setInputVisible(false);
     } catch (e) {
@@ -130,7 +134,7 @@ export default () => {
     try {
       const values = await inputForm.validateFields();
       await updater.mutateAsync(values);
-      queryClient.invalidateQueries(['tasks-list']);
+      queryClient.invalidateQueries({ queryKey: ['tasks-list'] });
       inputForm.resetFields();
       setInputVisible(false);
     } catch (e) {
@@ -141,7 +145,7 @@ export default () => {
   async function removeHandler(id: string) {
     try {
       await remover.mutateAsync(id);
-      queryClient.invalidateQueries(['tasks-list']);
+      queryClient.invalidateQueries({ queryKey: ['tasks-list'] });
     } catch (e) {
       console.error(e);
     }
@@ -150,7 +154,7 @@ export default () => {
   async function itemChangeHandler(values: any) {
     try {
       await updater.mutateAsync(values);
-      queryClient.invalidateQueries(['tasks-list']);
+      queryClient.invalidateQueries({ queryKey: ['tasks-list'] });
     } catch (e) {
       console.error(e);
     }

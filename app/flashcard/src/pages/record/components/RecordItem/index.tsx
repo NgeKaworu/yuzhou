@@ -21,7 +21,6 @@ export interface RecordItemProps {
   onClick: (id: string) => void;
   onRemoveClick: (id: string) => void;
   onEditClick: (record: Record) => void;
-  onSyncClick: ButtonProps['onClick'];
   record: Record;
   selected: boolean;
 }
@@ -32,7 +31,6 @@ export default ({
   onClick,
   onRemoveClick,
   onEditClick,
-  onSyncClick,
   selected,
   record,
 }: RecordItemProps) => {
@@ -88,12 +86,6 @@ export default ({
         {translation}
       </div>
       <div className={classNames(`${prefixCls}-tools-bar`, hashId)}>
-        <Button
-          size="small"
-          type="text"
-          onClick={onSyncClick}
-          icon={<SyncOutlined />}
-        ></Button>
         <Button
           size="small"
           type="text"

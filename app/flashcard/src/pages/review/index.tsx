@@ -32,18 +32,22 @@ export default () => {
   const [curIdx, setCurIdx] = useState<number>(0);
   const queryClient = useQueryClient();
 
-  const { data } = useQuery(['review-list'], () => {
-    return restful.get<Res<RecordItem[]>, Res<RecordItem[]>>(
-      `/flashcard/record/list`,
-      {
-        notify: 'fail',
-        params: {
-          inReview: true,
-          skip: 0,
-          limit: 0,
+  const { data } = useQuery({
+    queryKey: ['review-list'],
+
+    queryFn: () => {
+      return restful.get<Res<RecordItem[]>, Res<RecordItem[]>>(
+        `/flashcard/record/list`,
+        {
+          notify: 'fail',
+          params: {
+            inReview: true,
+            skip: 0,
+            limit: 0,
+          },
         },
-      },
-    );
+      );
+    },
   });
 
   function findOneNearestNeedReview() {
@@ -70,22 +74,20 @@ export default () => {
     setSource(curRencord?.source);
   }, [curRencord?.source]);
 
-  const { isLoading, mutate } = useMutation(
-    (data: { [key: string]: any }) => {
+  const { isPending: isLoading, mutate } = useMutation({
+    mutationFn: (data: { [key: string]: any }) => {
       return restful.patch(`/flashcard/record/set-review-result`, data, {
         notify: 'fail',
       });
     },
-    {
-      onSuccess: async () => {
-        queryClient.invalidateQueries(['records-list']);
-        queryClient.invalidateQueries(['review-list']);
-        setFlag('normal');
-        setCurIdx(0);
-        form.resetFields();
-      },
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      queryClient.invalidateQueries({ queryKey: ['review-list'] });
+      setFlag('normal');
+      setCurIdx(0);
+      form.resetFields();
     },
-  );
+  });
 
   const total = data?.total || 0;
   const hasNext = curIdx < total - 1;

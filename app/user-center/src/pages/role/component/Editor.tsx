@@ -30,9 +30,11 @@ export default ({
   onSuccess?: (...args: any) => void;
 }) => {
   const inEdit = modalProps?.title === '编辑';
-  const perms = useQuery(['user-center/perm/list', 'infinity'], () =>
-    list({ params: { limit: 0 } }),
-  );
+  const perms = useQuery({
+    queryKey: ['user-center/perm/list', 'infinity'],
+
+    queryFn: () => list({ params: { limit: 0 } }),
+  });
 
   async function onSubmit() {
     const value = await form?.validateFields();
