@@ -1,10 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, ReactNode, useEffect, useState } from 'react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
 import {
   Empty,
   Input,
-  Layout,
   Button,
   Space,
   Form,
@@ -16,7 +15,7 @@ import {
 
 const ua = navigator.userAgent?.toLowerCase();
 
-import { Record as RecordItem } from '@/models/record';
+import { RECORD_MODE, Record as RecordItem } from '@/models/record';
 import moment from 'dayjs';
 
 import reviewStyles from './index.less';
@@ -26,13 +25,19 @@ import classNames from 'classnames';
 import { prefixCls } from '@/theme';
 
 type ReviewType = 'normal' | 'success' | 'fail';
+
+const ignoreStr = `\\d的地得和与及；;：:、?？!！"“'‘·\``;
+const newlineStr = `\\s\\.,，。`;
+const ignore = new RegExp(`[${ignoreStr}${newlineStr}]+`);
+const newline = new RegExp(`[${newlineStr}]+`);
+
 export default () => {
   const [form] = Form.useForm();
   const [flag, setFlag] = useState<ReviewType>('normal');
   const [curIdx, setCurIdx] = useState<number>(0);
   const queryClient = useQueryClient();
 
-  const { data } = useQuery({
+  const reviewListQuerier = useQuery({
     queryKey: ['review-list'],
 
     queryFn: () => {
@@ -63,16 +68,28 @@ export default () => {
       .then((data: any) => data);
   }
 
-  const datas = data?.data,
-    curRencord: RecordItem = datas?.[curIdx]!;
+  const data = reviewListQuerier?.data?.data,
+    curRecord: RecordItem = data?.[curIdx]!,
+    keywordArr = curRecord?.translation?.split(newline),
+    keywordRegexp = new RegExp(keywordArr?.join('|'), 'g'),
+    keywordModeSourceSplitArr = curRecord?.source?.split(keywordRegexp),
+    positionArr =
+      RECORD_MODE.KEYWORD === curRecord?.mode
+        ? Array.from(curRecord?.source?.matchAll(keywordRegexp))
+        : [];
+
+  console.log('keywordArr', keywordArr);
+  console.log('keywordRegexp', keywordRegexp);
+  console.log('keywordModeSourceSplitArr', keywordModeSourceSplitArr);
+  console.log('positionArr', positionArr);
 
   const [source, setSource] = useState<React.ReactNode>('');
 
   const { hashId } = theme.useToken();
 
   useEffect(() => {
-    setSource(curRencord?.source);
-  }, [curRencord?.source]);
+    setSource(curRecord?.source);
+  }, [curRecord?.source]);
 
   const { isPending: isLoading, mutate } = useMutation({
     mutationFn: (data: { [key: string]: any }) => {
@@ -89,7 +106,7 @@ export default () => {
     },
   });
 
-  const total = data?.total || 0;
+  const total = reviewListQuerier?.data?.total || 0;
   const hasNext = curIdx < total - 1;
 
   function onNext() {
@@ -97,10 +114,10 @@ export default () => {
   }
 
   function onRemember() {
-    const id = curRencord?._id;
+    const id = curRecord?._id;
     const now = moment();
-    const cooldownAt = moment(curRencord?.cooldownAt);
-    const exp = curRencord?.exp;
+    const cooldownAt = moment(curRecord?.cooldownAt);
+    const exp = curRecord?.exp;
 
     const data: { [key: string]: any } = {
       id,
@@ -168,9 +185,9 @@ export default () => {
   }
 
   function onForget() {
-    const id = curRencord?._id;
+    const id = curRecord?._id;
     const now = moment();
-    let exp = curRencord?.exp;
+    let exp = curRecord?.exp;
     // 经验降一级
     if (exp !== 0) {
       exp -= 10;
@@ -276,13 +293,50 @@ export default () => {
     setFlag('normal');
   }
 
-  function submitHandler() {
-    form.validateFields().then((values) => {
-      const ignoreStr = `\\d的地得和与及；;：:、?？!！"“'‘·\``;
-      const newlineStr = `\\s\\.,，。`;
-      const ignore = new RegExp(`[${ignoreStr}${newlineStr}]`);
-      const newline = new RegExp(`[${newlineStr}]`);
+  async function submitHandler() {
+    const values = await form.validateFields();
 
+    if (RECORD_MODE.KEYWORD === curRecord.mode) {
+      const answerArr: Array<string> = values?.answer;
+      if (
+        answerArr?.every(
+          (i: string, idx: number) => i === positionArr[idx]?.[0],
+        )
+      ) {
+        setFlag('success');
+        setSource(curRecord.source);
+      } else {
+        const answer: Array<ReactNode> = [
+          <Fragment key={keywordModeSourceSplitArr?.[0]}>
+            {keywordModeSourceSplitArr?.[0]}
+          </Fragment>,
+        ];
+
+        answerArr?.forEach((i, idx) => {
+          if (i === positionArr[idx][0]) {
+            answer.push(<Fragment key={`${i}${idx}`}>{i}</Fragment>);
+          } else {
+            answer.push(
+              <span
+                key={`${positionArr[idx][0]}${idx}`}
+                style={{ background: 'lightcoral' }}
+              >
+                {positionArr[idx][0]}
+              </span>,
+            );
+          }
+          answer.push(
+            <Fragment key={keywordModeSourceSplitArr?.[idx + 1]}>
+              {keywordModeSourceSplitArr?.[idx + 1]}
+            </Fragment>,
+          );
+        });
+        setFlag('fail');
+        setSource(answer);
+      }
+    }
+
+    if (RECORD_MODE.FULL === curRecord.mode) {
       function ignoreHOF(s: string) {
         return s
           .split('')
@@ -291,7 +345,7 @@ export default () => {
       }
 
       const answer: string = values.answer,
-        actual = curRencord?.source;
+        actual = curRecord?.source;
       if (ignoreHOF(answer) === ignoreHOF(actual)) {
         setFlag('success');
         setSource(actual);
@@ -299,10 +353,7 @@ export default () => {
         // 组合法
         function combination() {
           const dAnswerDict = answer
-            ?.split('')
-            ?.map((i) => (i.match(newline) ? '\n' : i))
-            .join('')
-            ?.split('\n')
+            ?.split(newline)
             ?.reduce((arr: Record<string, number>[], cur) => {
               return arr.concat(
                 cur.split('').reduce((acc: Record<string, number>, cur) => {
@@ -339,10 +390,7 @@ export default () => {
           }
 
           const dActualDict = actual
-            ?.split('')
-            ?.map((i) => (i.match(newline) ? '\n' : i))
-            .join('')
-            ?.split('\n')
+            ?.split(newline)
             ?.reduce((arr: Record<string, number>[], cur) => {
               return arr.concat(
                 cur.split('').reduce((acc: Record<string, number>, cur) => {
@@ -466,7 +514,7 @@ export default () => {
         );
         setFlag('fail');
       }
-    });
+    }
   }
 
   function onHotKey({ key, metaKey, ctrlKey, altKey }: React.KeyboardEvent) {
@@ -490,6 +538,8 @@ export default () => {
     }
   }
 
+  console.log('curRecord', curRecord);
+
   return (
     <Form form={form} onFinish={submitHandler} onReset={reset}>
       <section>
@@ -507,32 +557,70 @@ export default () => {
           </div>
         </header>
         <main className={classNames(`${prefixCls}-content`, hashId)}>
-          {datas?.length ? (
+          {data?.length ? (
             <div className={reviewStyles['form']}>
-              <Form.Item className={reviewStyles['form-item']}>
-                <div>译文： </div>
-                {curRencord?.translation}
-              </Form.Item>
-              <Divider />
-              <div>默写区： </div>
-              <Form.Item
-                className={reviewStyles['form-item']}
-                name="answer"
-                rules={[{ required: true, message: '请把内容默写于此' }]}
-              >
-                <Input.TextArea
-                  autoFocus
-                  onKeyDown={onHotKey}
-                  autoSize={{ minRows: 8 }}
-                  placeholder="请把内容默写于此"
-                  allowClear
-                />
-              </Form.Item>
-              <Divider />
-              <Form.Item className={reviewStyles['form-item']}>
-                <div>原文： </div>
-                {flag !== 'normal' ? source : <Skeleton />}
-              </Form.Item>
+              {RECORD_MODE.KEYWORD === curRecord?.mode && (
+                <>
+                  <strong>请在下面填入正确关键字： </strong>
+                  <Form.Item className={reviewStyles['form-item']}>
+                    {keywordModeSourceSplitArr?.map((i, idx) => {
+                      return keywordModeSourceSplitArr?.length - 1 > idx ? (
+                        <Fragment key={curRecord + i}>
+                          {i}
+                          <Form.Item
+                            name={['answer', idx]}
+                            noStyle
+                            rules={[{ required: true, message: '不能为空' }]}
+                          >
+                            <Input
+                              style={{ display: 'inline-block', width: '80px' }}
+                              onKeyDown={onHotKey}
+                            />
+                          </Form.Item>
+                        </Fragment>
+                      ) : (
+                        i
+                      );
+                    })}
+                  </Form.Item>
+
+                  <Divider />
+                  <div>原文： </div>
+                  <Form.Item className={reviewStyles['form-item']}>
+                    {flag !== 'normal' ? source : <Skeleton />}
+                  </Form.Item>
+                </>
+              )}
+
+              {RECORD_MODE.FULL === curRecord?.mode && (
+                <>
+                  <strong>译文： </strong>
+                  <Form.Item className={reviewStyles['form-item']}>
+                    {curRecord?.translation}
+                  </Form.Item>
+                  <Divider />
+                  <strong>默写区： </strong>
+                  <Form.Item
+                    className={reviewStyles['form-item']}
+                    style={{ textIndent: 0 }}
+                    name="answer"
+                    rules={[{ required: true, message: '请把内容默写于此' }]}
+                  >
+                    <Input.TextArea
+                      autoFocus
+                      onKeyDown={onHotKey}
+                      autoSize={{ minRows: 8 }}
+                      placeholder="请把内容默写于此"
+                      allowClear
+                    />
+                  </Form.Item>
+                  <Divider />
+                  <strong>原文： </strong>
+                  <Form.Item className={reviewStyles['form-item']}>
+                    {flag !== 'normal' ? source : <Skeleton />}
+                  </Form.Item>
+                </>
+              )}
             </div>
           ) : (
             <Empty className={classNames(`${prefixCls}-empty`, hashId)} />

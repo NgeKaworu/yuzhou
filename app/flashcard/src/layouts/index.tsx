@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-19 01:00:59
+ * @LastEditTime: 2023-10-31 11:20:49
  * @FilePath: /yuzhou/app/flashcard/src/layouts/index.tsx
  * @Description:
  *
@@ -132,7 +132,11 @@ const genStyle = (token: DerivativeToken): CSSInterpolation => ({
   },
   [`.${prefixCls}-active`]: { color: token.colorPrimary, opacity: 1 },
 
-  [`.${prefixCls}-content`]: { minHeight: '100vh', paddingBottom: '72px' },
+  [`.${prefixCls}-content`]: {
+    minHeight: '100vh',
+    paddingBottom: '33vh',
+    background: 'rgb(240, 242, 245)',
+  },
   [`.${prefixCls}-header`]: {
     position: 'fixed',
     top: '0',

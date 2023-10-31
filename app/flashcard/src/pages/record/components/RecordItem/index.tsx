@@ -76,13 +76,27 @@ export default ({
           selected && classNames(`${prefixCls}-selected`, hashId),
         )}
       />
-      <div style={{ whiteSpace: 'pre-wrap' }} onClick={clickHandler}>
+      <div
+        style={{
+          textIndent: '24px',
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-all',
+        }}
+        onClick={clickHandler}
+      >
         {source}
       </div>
       <Divider orientation="right" plain>
         {tag}
       </Divider>
-      <div style={{ whiteSpace: 'pre-wrap' }} onClick={clickHandler}>
+      <div
+        style={{
+          textIndent: '24px',
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-all',
+        }}
+        onClick={clickHandler}
+      >
         {translation}
       </div>
       <div className={classNames(`${prefixCls}-tools-bar`, hashId)}>
@@ -116,6 +130,7 @@ const genStyle = (token: DerivativeToken): CSSInterpolation => ({
     height: '100%',
     width: '100%',
     padding: '12px',
+    overflow: 'hidden',
     overflowWrap: 'break-word',
     backgroundColor: '#fff',
     '&:hover .check': { visibility: 'visible' },
@@ -136,7 +151,7 @@ const genStyle = (token: DerivativeToken): CSSInterpolation => ({
     position: 'absolute',
     top: '0',
     left: '0',
-    width: '1px',
+    width: '4px',
     height: '100%',
     backgroundColor: token.colorPrimary,
     visibility: 'hidden',
