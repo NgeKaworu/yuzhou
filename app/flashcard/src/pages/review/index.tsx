@@ -70,11 +70,12 @@ export default () => {
 
   const data = reviewListQuerier?.data?.data,
     curRecord: RecordItem = data?.[curIdx]!,
+    mode = curRecord?.mode ?? RECORD_MODE.FULL,
     keywordArr = curRecord?.translation?.split(newline),
     keywordRegexp = new RegExp(keywordArr?.join('|'), 'g'),
     keywordModeSourceSplitArr = curRecord?.source?.split(keywordRegexp),
     positionArr =
-      RECORD_MODE.KEYWORD === curRecord?.mode
+      RECORD_MODE.KEYWORD === mode
         ? Array.from(curRecord?.source?.matchAll(keywordRegexp))
         : [];
 
@@ -554,7 +555,7 @@ export default () => {
         <main className={classNames(`${prefixCls}-content`, hashId)}>
           {data?.length ? (
             <div className={reviewStyles['form']}>
-              {RECORD_MODE.KEYWORD === curRecord?.mode && (
+              {RECORD_MODE.KEYWORD === mode && (
                 <>
                   <strong>请在下面填入正确关键字： </strong>
                   <Form.Item className={reviewStyles['form-item']}>
@@ -587,7 +588,7 @@ export default () => {
                 </>
               )}
 
-              {RECORD_MODE.FULL === curRecord?.mode && (
+              {RECORD_MODE.FULL === mode && (
                 <>
                   <strong>译文： </strong>
                   <Form.Item className={reviewStyles['form-item']}>
