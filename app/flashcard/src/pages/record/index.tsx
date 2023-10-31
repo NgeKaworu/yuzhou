@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-10-31 11:23:13
+ * @LastEditTime: 2023-10-31 22:15:02
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -222,6 +222,7 @@ export default () => {
   function showInputModal(e: React.MouseEvent<HTMLElement, MouseEvent>) {
     setInputType(e.currentTarget.dataset.inputType as inputType);
     setInputVisible(true);
+    inputForm.resetFields();
     inputForm.setFieldValue('tag', pages?.[0]?.tag);
   }
 

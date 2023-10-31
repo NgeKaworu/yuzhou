@@ -78,11 +78,6 @@ export default () => {
         ? Array.from(curRecord?.source?.matchAll(keywordRegexp))
         : [];
 
-  console.log('keywordArr', keywordArr);
-  console.log('keywordRegexp', keywordRegexp);
-  console.log('keywordModeSourceSplitArr', keywordModeSourceSplitArr);
-  console.log('positionArr', positionArr);
-
   const [source, setSource] = useState<React.ReactNode>('');
 
   const { hashId } = theme.useToken();
