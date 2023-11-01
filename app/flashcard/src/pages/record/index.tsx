@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-10-31 22:15:02
+ * @LastEditTime: 2023-11-01 08:32:00
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -407,7 +407,7 @@ export default () => {
         style={{ right: 12, bottom: 48 + 8 + 40 }}
         description="复习全部"
         type="primary"
-        onClick={randomReviewHandler}
+        onClick={reviewAllHandler}
       />
 
       <FloatButton
