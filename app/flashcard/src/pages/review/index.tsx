@@ -348,10 +348,9 @@ export default () => {
       } else {
         // 组合法
         function combination() {
-          const dAnswerDict = answer
-            ?.split(newline)
-            ?.reduce((arr: Record<string, number>[], cur) => {
-              return arr.concat(
+          const dAnswerDict = answer?.split(newline)?.reduce(
+            (arr: Record<string, number>[], cur) =>
+              arr.concat(
                 cur.split('').reduce((acc: Record<string, number>, cur) => {
                   if (cur.match(ignore)) return acc;
 
@@ -362,14 +361,15 @@ export default () => {
                   }
                   return acc;
                 }, {}),
-              );
-            }, []);
+              ),
+            [],
+          );
           let dDiff: Array<React.ReactNode> = [];
 
           for (let i = 0, n = 0; i < actual.length; i++) {
             const c = actual[i];
             let ele: React.ReactNode;
-            if (c.match(newline)) n++;
+            if (c.match(newline) && !actual[i + 1]?.match(newline)) n++;
             if (c.match(ignore)) {
               ele = c;
             } else if (dAnswerDict?.[n]?.[c] > 0) {
@@ -385,10 +385,9 @@ export default () => {
             dDiff = dDiff.concat(<Fragment key={i}>{ele}</Fragment>);
           }
 
-          const dActualDict = actual
-            ?.split(newline)
-            ?.reduce((arr: Record<string, number>[], cur) => {
-              return arr.concat(
+          const dActualDict = actual?.split(newline)?.reduce(
+            (arr: Record<string, number>[], cur) =>
+              arr.concat(
                 cur.split('').reduce((acc: Record<string, number>, cur) => {
                   if (cur.match(ignore)) return acc;
 
@@ -399,14 +398,15 @@ export default () => {
                   }
                   return acc;
                 }, {}),
-              );
-            }, []);
+              ),
+            [],
+          );
           let dAnswerDiff: Array<React.ReactNode> = [];
 
           for (let i = 0, n = 0; i < answer.length; i++) {
             const c = answer[i];
             let ele: React.ReactNode;
-            if (c.match(newline)) n++;
+            if (c.match(newline) && !answer[i + 1]?.match(newline)) n++;
             if (c.match(ignore)) {
               ele = c;
             } else if (dActualDict?.[n]?.[c] > 0) {
@@ -438,9 +438,14 @@ export default () => {
           const actualGroup = actual.split(newline);
           const answerGroup = answer.split(newline);
 
+          console.log(actualGroup, answerGroup);
+
           while (k < actual.length) {
             while (actual?.[k]?.match(ignore)) {
-              if (actual?.[k]?.match(newline)) {
+              if (
+                actual?.[k]?.match(newline) &&
+                !actual?.[k + 1]?.match(newline)
+              ) {
                 i++;
                 j = 0;
               }
@@ -471,7 +476,10 @@ export default () => {
 
           while (k < answer.length) {
             while (answer?.[k]?.match(ignore)) {
-              if (answer?.[k]?.match(newline)) {
+              if (
+                answer?.[k]?.match(newline) &&
+                !answer?.[k + 1]?.match(newline)
+              ) {
                 i++;
                 j = 0;
               }
@@ -533,8 +541,6 @@ export default () => {
       }
     }
   }
-
-  console.log('curRecord', curRecord);
 
   return (
     <Form form={form} onFinish={submitHandler} onReset={reset}>
