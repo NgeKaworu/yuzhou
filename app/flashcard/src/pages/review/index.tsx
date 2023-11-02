@@ -57,12 +57,15 @@ export default () => {
 
   function findOneNearestNeedReview() {
     return restful
-      .get(`/flashcard/record/list?sort=cooldownAt&orderby=-1`, {
+      .get(`/flashcard/record/list`, {
         notify: 'fail',
         params: {
           inReview: false,
           skip: 0,
           limit: 1,
+          sort: 'reviewAt',
+          orderby: -1,
+          type: 'cooling',
         },
       })
       .then((data: any) => data);
