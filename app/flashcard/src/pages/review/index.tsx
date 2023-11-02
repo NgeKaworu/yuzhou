@@ -211,10 +211,6 @@ export default () => {
 
           if (nextReviewTime !== undefined) {
             let nextTime = moment(nextReviewTime).diff(moment());
-            // 最短一小时
-            if (nextTime < 3600000) {
-              nextTime = 3600000;
-            }
             setTimeout(() => {
               registration.showNotification('复习提醒', {
                 body: '你有单词需要复习～',
