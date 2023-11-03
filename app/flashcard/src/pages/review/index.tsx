@@ -212,7 +212,7 @@ export default () => {
       if (result === 'granted') {
         navigator.serviceWorker.ready.then(async function (registration) {
           const nextReviewRecord = await findOneNearestNeedReview(),
-            nextReviewTime = nextReviewRecord?.data?.[0]?.reviewAt;
+            nextReviewTime = nextReviewRecord?.data?.[0]?.cooldownAt;
 
           if (nextReviewTime !== undefined) {
             let nextTime = moment(nextReviewTime).diff(moment());
