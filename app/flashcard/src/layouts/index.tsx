@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-10-31 11:20:49
+ * @LastEditTime: 2023-11-03 10:00:21
  * @FilePath: /yuzhou/app/flashcard/src/layouts/index.tsx
  * @Description:
  *
@@ -30,7 +30,7 @@ const menu = [
     title: '新词本',
     path: '/record/',
     icon: <FormOutlined />,
-    query: { type: 'enable' },
+    query: { type: 'enable', sort: 'createAt', orderby: -1 },
   },
   { title: '复习', path: '/review/', icon: <SyncOutlined /> },
 ];

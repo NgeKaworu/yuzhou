@@ -78,7 +78,7 @@ export default ({
       />
       <div
         style={{
-          textIndent: '24px',
+          textIndent: '2em',
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-all',
         }}
@@ -91,7 +91,7 @@ export default ({
       </Divider>
       <div
         style={{
-          textIndent: '24px',
+          textIndent: '2em',
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-all',
         }}

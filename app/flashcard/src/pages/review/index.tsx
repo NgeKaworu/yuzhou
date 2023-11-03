@@ -564,25 +564,26 @@ export default () => {
                 <>
                   <strong>请在下面填入正确关键字： </strong>
                   <Form.Item className={reviewStyles['form-item']}>
-                    {keywordModeSourceSplitArr?.map((i, idx) => {
-                      return keywordModeSourceSplitArr?.length - 1 > idx ? (
+                    {keywordModeSourceSplitArr?.map((i, idx) =>
+                      keywordModeSourceSplitArr?.length - 1 > idx ? (
                         <Fragment key={curRecord + i}>
                           {i}
-                          <Form.Item
-                            name={['answer', idx]}
-                            noStyle
-                            rules={[{ required: true, message: '不能为空' }]}
-                          >
+                          <Form.Item name={['answer', idx]} noStyle>
                             <Input
-                              style={{ display: 'inline-block', width: '80px' }}
+                              style={{
+                                display: 'inline-block',
+                                width: `calc(${
+                                  positionArr[idx]?.[0]?.length ?? 1
+                                }em + 2em)`,
+                              }}
                               onKeyDown={onHotKey}
                             />
                           </Form.Item>
                         </Fragment>
                       ) : (
                         i
-                      );
-                    })}
+                      ),
+                    )}
                   </Form.Item>
 
                   <Divider />

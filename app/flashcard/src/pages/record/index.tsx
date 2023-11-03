@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-11-01 08:32:00
+ * @LastEditTime: 2023-11-03 10:28:18
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -21,7 +21,6 @@ import {
   Input,
   Button,
   Menu,
-  Modal,
   Form,
   Radio,
   MenuProps,
@@ -29,7 +28,8 @@ import {
   ListProps,
   theme,
   FloatButton,
-  message,
+  Drawer,
+  Space,
 } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -74,29 +74,30 @@ export default () => {
 
   const queryClient = useQueryClient();
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ['records-list', _search],
-    queryFn: ({ pageParam = 0 }) => {
-      const params: { [key: string]: string | number } = Object.fromEntries(
-        new URLSearchParams(_search),
-      );
-      return restful.get<Res<Record[]>, Res<Record[]>>(
-        `/flashcard/record/list`,
-        {
-          notify: 'fail',
-          params: {
-            ...params,
-            skip: pageParam * limit,
-            limit,
+  const { data, fetchNextPage, hasNextPage, isFetching, refetch } =
+    useInfiniteQuery({
+      queryKey: ['records-list', _search],
+      queryFn: ({ pageParam = 0 }) => {
+        const params: { [key: string]: string | number } = Object.fromEntries(
+          new URLSearchParams(_search),
+        );
+        return restful.get<Res<Record[]>, Res<Record[]>>(
+          `/flashcard/record/list`,
+          {
+            notify: 'fail',
+            params: {
+              ...params,
+              skip: pageParam * limit,
+              limit,
+            },
           },
-        },
-      );
-    },
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => {
-      return lastPage?.data?.length === limit ? pages?.length : undefined;
-    },
-  });
+        );
+      },
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, pages) => {
+        return lastPage?.data?.length === limit ? pages?.length : undefined;
+      },
+    });
 
   const dataSource = data?.pages,
     pages = dataSource?.reduce(
@@ -109,7 +110,7 @@ export default () => {
     mutationFn: (data: Record) =>
       restful.post(`/flashcard/record/create`, data),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      refetch();
       inputForm.resetFields();
       setInputVisible(false);
     },
@@ -122,7 +123,7 @@ export default () => {
         ...data,
       }),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      refetch();
       inputForm.resetFields();
       setInputVisible(false);
     },
@@ -132,7 +133,7 @@ export default () => {
     mutationFn: (data?: string) =>
       restful.delete(`/flashcard/record/remove/${data}`),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      refetch();
     },
   });
 
@@ -140,7 +141,7 @@ export default () => {
     mutationFn: (ids: string[]) =>
       restful.patch(`/flashcard/record/review`, { ids }),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      refetch();
       queryClient.invalidateQueries({ queryKey: ['review-list'] });
       history('/review/');
     },
@@ -150,7 +151,7 @@ export default () => {
     mutationFn: (data) =>
       restful.patch(`/flashcard/record/random-review`, data),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      refetch();
       queryClient.invalidateQueries({ queryKey: ['review-list'] });
       history('/review/');
     },
@@ -159,7 +160,7 @@ export default () => {
   const allReviewer = useMutation({
     mutationFn: (data) => restful.get(`/flashcard/record/review-all`),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ['records-list'] });
+      refetch();
       queryClient.invalidateQueries({ queryKey: ['review-list'] });
       history('/review/');
     },
@@ -323,11 +324,19 @@ export default () => {
           <Button type="link" size="small" onClick={showSortModal}>
             排序
           </Button>
-          <Modal
+          <Drawer
             open={sortVisible}
             title="排序"
-            onCancel={hideSortModal}
-            onOk={onSortSubmit}
+            size="large"
+            onClose={hideSortModal}
+            extra={
+              <Space>
+                <Button onClick={hideSortModal}>取消</Button>
+                <Button onClick={onSortSubmit} type="primary">
+                  确定
+                </Button>
+              </Space>
+            }
           >
             <Form onFinish={onSortSubmit} form={sortForm}>
               <Form.Item
@@ -351,10 +360,8 @@ export default () => {
                   <Radio.Button value="-1">降序</Radio.Button>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item>
-                <Button style={{ opacity: 0 }} htmlType="submit">
-                  提交
-                </Button>
+              <Form.Item hidden>
+                <Button htmlType="submit">提交</Button>
               </Form.Item>
               <Form.Item>
                 <Button type="dashed" danger onClick={onSortCancel}>
@@ -362,7 +369,7 @@ export default () => {
                 </Button>
               </Form.Item>
             </Form>
-          </Modal>
+          </Drawer>
         </div>
       </header>
       <main className={classNames(`${prefixCls}-content`, hashId)}>
@@ -418,11 +425,20 @@ export default () => {
         data-input-type="新建"
       />
 
-      <Modal
+      <Drawer
         title={inputType}
         open={inputVisible}
-        onCancel={hideInputModal}
-        onOk={onInputSubmit}
+        onClose={hideInputModal}
+        placement="bottom"
+        size="large"
+        extra={
+          <Space>
+            <Button onClick={hideInputModal}>取消</Button>
+            <Button onClick={onInputSubmit} type="primary">
+              提交
+            </Button>
+          </Space>
+        }
       >
         <Form<Record>
           form={inputForm}
@@ -475,13 +491,11 @@ export default () => {
             )}
           </Form.Item>
 
-          <Form.Item>
-            <Button style={{ opacity: 0 }} htmlType="submit">
-              提交
-            </Button>
+          <Form.Item hidden>
+            <Button htmlType="submit">提交</Button>
           </Form.Item>
         </Form>
-      </Modal>
+      </Drawer>
     </section>
   );
 };
