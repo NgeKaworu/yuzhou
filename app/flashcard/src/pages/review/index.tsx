@@ -63,7 +63,7 @@ export default () => {
           inReview: false,
           skip: 0,
           limit: 1,
-          sort: 'reviewAt',
+          sort: 'cooldownAt',
           orderby: -1,
           type: 'cooling',
         },
