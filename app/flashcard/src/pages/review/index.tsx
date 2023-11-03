@@ -64,7 +64,7 @@ export default () => {
           skip: 0,
           limit: 1,
           sort: 'cooldownAt',
-          orderby: -1,
+          orderby: 1,
           type: 'cooling',
         },
       })
