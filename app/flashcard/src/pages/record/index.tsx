@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-11-03 10:28:18
+ * @LastEditTime: 2023-11-03 11:19:52
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -327,8 +327,8 @@ export default () => {
           <Drawer
             open={sortVisible}
             title="排序"
-            size="large"
             onClose={hideSortModal}
+            width={"80vw"}
             extra={
               <Space>
                 <Button onClick={hideSortModal}>取消</Button>
@@ -430,7 +430,7 @@ export default () => {
         open={inputVisible}
         onClose={hideInputModal}
         placement="bottom"
-        size="large"
+        height={"80vh"}
         extra={
           <Space>
             <Button onClick={hideInputModal}>取消</Button>
