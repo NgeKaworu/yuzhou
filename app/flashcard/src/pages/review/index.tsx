@@ -74,7 +74,9 @@ export default () => {
   const data = reviewListQuerier?.data?.data,
     curRecord: RecordItem = data?.[curIdx]!,
     mode = curRecord?.mode ?? RECORD_MODE.FULL,
-    keywordArr = curRecord?.translation?.split(newline),
+    keywordArr = curRecord?.translation
+      ?.split(newline)
+      ?.sort((a, b) => b?.length - a?.length),
     keywordRegexp = new RegExp(keywordArr?.join('|'), 'g'),
     keywordModeSourceSplitArr = curRecord?.source?.split(keywordRegexp),
     positionArr =
@@ -570,6 +572,7 @@ export default () => {
                           {i}
                           <Form.Item name={['answer', idx]} noStyle>
                             <Input
+                              autoFocus={idx === 0}
                               style={{
                                 display: 'inline-block',
                                 width: `calc(${

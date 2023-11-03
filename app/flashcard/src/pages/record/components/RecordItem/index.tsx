@@ -19,6 +19,7 @@ import classNames from 'classnames';
 const prefixCls = defaultPrefixCls + '-record-item';
 export interface RecordItemProps {
   onClick: (id: string) => void;
+  onDoubleClick?: (id: string) => void;
   onRemoveClick: (id: string) => void;
   onEditClick: (record: Record) => void;
   record: Record;
@@ -29,6 +30,7 @@ const { useToken } = theme;
 
 export default ({
   onClick,
+  onDoubleClick,
   onRemoveClick,
   onEditClick,
   selected,
@@ -38,6 +40,11 @@ export default ({
   function clickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation();
     onClick(_id);
+  }
+
+  function doubleClickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.stopPropagation();
+    onDoubleClick?.(_id);
   }
   const editClickHandler: ButtonProps['onClick'] = (e) => {
     e.stopPropagation();
@@ -65,6 +72,7 @@ export default ({
     <div
       className={classNames(`${prefixCls}-record-card`, hashId)}
       onClick={clickHandler}
+      onDoubleClick={doubleClickHandler}
     >
       <div
         className={classNames(`${prefixCls}-progress`, hashId)}

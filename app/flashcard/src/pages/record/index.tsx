@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-11-03 11:19:52
+ * @LastEditTime: 2023-11-03 11:48:02
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -279,6 +279,7 @@ export default () => {
           record={record}
           selected={selected}
           onClick={onItemClick}
+          onDoubleClick={(id) => reviewer.mutate([id])}
           onEditClick={onItemEditClick}
           onRemoveClick={onItemRemoveClick}
         />
@@ -328,7 +329,7 @@ export default () => {
             open={sortVisible}
             title="排序"
             onClose={hideSortModal}
-            width={"80vw"}
+            width={'80vw'}
             extra={
               <Space>
                 <Button onClick={hideSortModal}>取消</Button>
@@ -430,7 +431,7 @@ export default () => {
         open={inputVisible}
         onClose={hideInputModal}
         placement="bottom"
-        height={"80vh"}
+        height={'80vh'}
         extra={
           <Space>
             <Button onClick={hideInputModal}>取消</Button>
