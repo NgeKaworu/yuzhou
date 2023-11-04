@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-11-04 13:12:53
+ * @LastEditTime: 2023-11-04 17:50:50
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -113,7 +113,7 @@ export default () => {
       restful.post(`/flashcard/record/create`, data),
     onSuccess() {
       refetch();
-      inputForm.resetFields();
+      inputForm.resetFields(['source', 'translation']);
     },
   });
 
@@ -327,7 +327,7 @@ export default () => {
         (ua?.includes('windows') && altKey) ||
         (ua?.includes('mac') && ctrlKey)
       ) {
-        inputForm.resetFields();
+        inputForm.resetFields(['source', 'translation']);
       }
     }
   }
