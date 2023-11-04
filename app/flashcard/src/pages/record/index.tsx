@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-11-03 11:48:02
+ * @LastEditTime: 2023-11-04 13:12:53
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -46,6 +46,8 @@ import { prefixCls } from '@/theme';
 type inputType = '' | '新建' | '编辑';
 
 const limit = 15;
+
+const ua = navigator.userAgent?.toLowerCase();
 
 export default () => {
   const [sortForm] = Form.useForm();
@@ -112,7 +114,6 @@ export default () => {
     onSuccess() {
       refetch();
       inputForm.resetFields();
-      setInputVisible(false);
     },
   });
 
@@ -311,6 +312,25 @@ export default () => {
     { key: 'all', label: '全部' },
   ];
 
+  function onHotKey({ key, metaKey, ctrlKey, altKey }: React.KeyboardEvent) {
+    if (key === 'Enter') {
+      if (
+        (ua?.includes('windows') && ctrlKey) ||
+        (ua?.includes('mac') && metaKey)
+      ) {
+        onInputSubmit();
+      }
+    }
+
+    if (key === 'r') {
+      if (
+        (ua?.includes('windows') && altKey) ||
+        (ua?.includes('mac') && ctrlKey)
+      ) {
+        inputForm.resetFields();
+      }
+    }
+  }
   return (
     <section>
       <header style={{ height: 24 }}>
@@ -473,7 +493,7 @@ export default () => {
           </Form.Item>
 
           <Form.Item name="source" label="原文" rules={[{ required: true }]}>
-            <Input.TextArea autoSize allowClear />
+            <Input.TextArea autoSize allowClear onKeyDown={onHotKey} />
           </Form.Item>
 
           <Form.Item<Record>
@@ -487,7 +507,7 @@ export default () => {
                 }
                 rules={[{ required: true }]}
               >
-                <Input.TextArea autoSize allowClear />
+                <Input.TextArea autoSize allowClear onKeyDown={onHotKey} />
               </Form.Item>
             )}
           </Form.Item>
