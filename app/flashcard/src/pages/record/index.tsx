@@ -30,6 +30,7 @@ import {
   FloatButton,
   Drawer,
   Space,
+  Spin,
 } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -455,67 +456,85 @@ export default () => {
         extra={
           <Space>
             <Button onClick={hideInputModal}>取消</Button>
-            <Button onClick={onInputSubmit} type="primary">
+            <Button
+              onClick={onInputSubmit}
+              type="primary"
+              loading={creator?.isPending || updater?.isPending}
+            >
               提交
             </Button>
           </Space>
         }
       >
-        <Form<Record>
-          form={inputForm}
-          onFinish={onInputSubmit}
-          layout="vertical"
-          initialValues={{ mode: RECORD_MODE.KEYWORD }}
-        >
-          <Form.Item name="tag" label="标签">
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="mode"
-            label="模式"
-            rules={[{ required: true }]}
-            tooltip={
-              <>
-                全文背诵或
-                <br />
-                关键字填空
-              </>
-            }
+        <Spin spinning={creator?.isPending || updater?.isPending}>
+          <Form<Record>
+            form={inputForm}
+            onFinish={onInputSubmit}
+            layout="vertical"
+            initialValues={{ mode: RECORD_MODE.KEYWORD }}
           >
-            <Radio.Group
-              optionType="button"
-              options={[
-                { value: RECORD_MODE.KEYWORD, label: '关键字' },
-                { value: RECORD_MODE.FULL, label: '全文' },
-              ]}
-            />
-          </Form.Item>
+            <Form.Item name="tag" label="标签">
+              <Input />
+            </Form.Item>
 
-          <Form.Item name="source" label="原文" rules={[{ required: true }]}>
-            <Input.TextArea autoSize allowClear onKeyDown={onHotKey} />
-          </Form.Item>
+            <Form.Item
+              name="mode"
+              label="模式"
+              rules={[{ required: true }]}
+              tooltip={
+                <>
+                  全文背诵或
+                  <br />
+                  关键字填空
+                </>
+              }
+            >
+              <Radio.Group
+                optionType="button"
+                options={[
+                  { value: RECORD_MODE.KEYWORD, label: '关键字' },
+                  { value: RECORD_MODE.FULL, label: '全文' },
+                ]}
+              />
+            </Form.Item>
 
-          <Form.Item<Record>
-            shouldUpdate={(pre, next) => pre.mode !== next.mode}
-          >
-            {({ getFieldValue }) => (
-              <Form.Item
-                name="translation"
-                label={
-                  getFieldValue('mode') === RECORD_MODE.FULL ? '全文' : '关键字'
-                }
-                rules={[{ required: true }]}
+            <Form.Item name="source" label="原文" rules={[{ required: true }]}>
+              <Input.TextArea
+                autoSize
+                autoFocus
+                allowClear
+                onKeyDown={onHotKey}
+              />
+            </Form.Item>
+
+            <Form.Item<Record>
+              shouldUpdate={(pre, next) => pre.mode !== next.mode}
+            >
+              {({ getFieldValue }) => (
+                <Form.Item
+                  name="translation"
+                  label={
+                    getFieldValue('mode') === RECORD_MODE.FULL
+                      ? '全文'
+                      : '关键字'
+                  }
+                  rules={[{ required: true }]}
+                >
+                  <Input.TextArea autoSize allowClear onKeyDown={onHotKey} />
+                </Form.Item>
+              )}
+            </Form.Item>
+
+            <Form.Item hidden>
+              <Button
+                htmlType="submit"
+                loading={creator?.isPending || updater?.isPending}
               >
-                <Input.TextArea autoSize allowClear onKeyDown={onHotKey} />
-              </Form.Item>
-            )}
-          </Form.Item>
-
-          <Form.Item hidden>
-            <Button htmlType="submit">提交</Button>
-          </Form.Item>
-        </Form>
+                提交
+              </Button>
+            </Form.Item>
+          </Form>
+        </Spin>
       </Drawer>
     </section>
   );
