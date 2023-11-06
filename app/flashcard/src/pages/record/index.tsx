@@ -1,36 +1,36 @@
 /*
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
- * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-11-04 17:50:50
- * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
+ * @LastEditors: NgeKaworu NgeKaworu@163.com
+ * @LastEditTime: 2023-11-06 21:01:19
+ * @FilePath: \yuzhou\app\flashcard\src\pages\record\index.tsx
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import {
   useInfiniteQuery,
-  useQueryClient,
   useMutation,
+  useQueryClient,
 } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
-  Empty,
-  Input,
   Button,
-  Menu,
+  Drawer,
+  Empty,
+  FloatButton,
   Form,
-  Radio,
-  MenuProps,
+  Input,
   List,
   ListProps,
-  theme,
-  FloatButton,
-  Drawer,
+  Menu,
+  MenuProps,
+  Radio,
   Space,
   Spin,
+  theme,
 } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -41,8 +41,8 @@ import { Res } from 'edk/src/utils/http/type';
 import RecordItem from './components/RecordItem';
 
 import { RECORD_MODE, Record } from '@/models/record';
-import classNames from 'classnames';
 import { prefixCls } from '@/theme';
+import classNames from 'classnames';
 
 type inputType = '' | '新建' | '编辑';
 
@@ -227,25 +227,29 @@ export default () => {
     setInputVisible(true);
     inputForm.resetFields();
     inputForm.setFieldValue('tag', pages?.[0]?.tag);
+    const pre = localStorage.getItem('flashcard:record:input:form');
+    if (pre) {
+      inputForm.setFieldsValue(JSON.parse(pre));
+    }
   }
 
   function hideInputModal() {
     setInputVisible(false);
   }
 
-  function onInputSubmit() {
-    inputForm.validateFields().then((values) => {
-      switch (inputType) {
-        case '新建':
-          creator.mutate(values);
-          break;
-        case '编辑':
-          updater.mutate(values);
-          break;
-        default:
-          console.error('invalidate type:', inputType);
-      }
-    });
+  async function onInputSubmit() {
+    const values = await inputForm.validateFields();
+    switch (inputType) {
+      case '新建':
+        await creator.mutateAsync(values);
+        break;
+      case '编辑':
+        await updater.mutateAsync(values);
+        break;
+      default:
+        console.error('invalidate type:', inputType);
+    }
+    localStorage.removeItem('flashcard:record:input:form');
   }
 
   function onItemClick(id: string) {
@@ -472,6 +476,12 @@ export default () => {
             onFinish={onInputSubmit}
             layout="vertical"
             initialValues={{ mode: RECORD_MODE.KEYWORD }}
+            onValuesChange={(_, data) =>
+              localStorage?.setItem(
+                'flashcard:record:input:form',
+                JSON.stringify(data),
+              )
+            }
           >
             <Form.Item name="tag" label="标签">
               <Input />

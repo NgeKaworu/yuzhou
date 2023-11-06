@@ -92,6 +92,13 @@ export default () => {
     setSource(curRecord?.source);
   }, [curRecord?.source]);
 
+  useEffect(() => {
+    const pre = localStorage.getItem('flashcard:review:form');
+    if (pre) {
+      form.setFieldsValue(JSON.parse(pre));
+    }
+  }, []);
+
   const { isPending: isLoading, mutate } = useMutation({
     mutationFn: (data: { [key: string]: any }) => {
       return restful.patch(`/flashcard/record/set-review-result`, data, {
@@ -104,6 +111,7 @@ export default () => {
       setFlag('normal');
       setCurIdx(0);
       form.resetFields();
+      localStorage.removeItem('flashcard:review:form');
     },
   });
 
@@ -544,7 +552,14 @@ export default () => {
   }
 
   return (
-    <Form form={form} onFinish={submitHandler} onReset={reset}>
+    <Form
+      form={form}
+      onFinish={submitHandler}
+      onReset={reset}
+      onValuesChange={(_, data) => {
+        localStorage.setItem('flashcard:review:form', JSON.stringify(data));
+      }}
+    >
       <section>
         <header style={{ height: 24 }}>
           <div className={classNames(`${prefixCls}-header`, hashId)}>
