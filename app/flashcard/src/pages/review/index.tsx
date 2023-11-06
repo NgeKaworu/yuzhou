@@ -71,13 +71,17 @@ export default () => {
       .then((data: any) => data);
   }
 
+  function escapeRegExp(str: string) {
+    return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  }
+
   const data = reviewListQuerier?.data?.data,
     curRecord: RecordItem = data?.[curIdx]!,
     mode = curRecord?.mode ?? RECORD_MODE.FULL,
     keywordArr = curRecord?.translation
       ?.split(newline)
       ?.sort((a, b) => b?.length - a?.length),
-    keywordRegexp = new RegExp(keywordArr?.join('|'), 'g'),
+    keywordRegexp = new RegExp(keywordArr?.map(escapeRegExp)?.join('|'), 'g'),
     keywordModeSourceSplitArr = curRecord?.source?.split(keywordRegexp),
     positionArr =
       RECORD_MODE.KEYWORD === mode
@@ -305,7 +309,7 @@ export default () => {
       const answerArr: Array<string> = values?.answer;
       if (
         answerArr?.every(
-          (i: string, idx: number) => i === positionArr[idx]?.[0],
+          (i: string, idx: number) => i === positionArr?.[idx]?.[0],
         )
       ) {
         setFlag('success');
@@ -318,15 +322,15 @@ export default () => {
         ];
 
         answerArr?.forEach((i, idx) => {
-          if (i === positionArr[idx][0]) {
+          if (i === positionArr?.[idx]?.[0]) {
             answer.push(<Fragment key={`${i}${idx}`}>{i}</Fragment>);
           } else {
             answer.push(
               <span
-                key={`${positionArr[idx][0]}${idx}`}
+                key={`${positionArr?.[idx]?.[0]}${idx}`}
                 style={{ background: 'lightcoral' }}
               >
-                {positionArr[idx][0]}
+                {positionArr?.[idx]?.[0]}
               </span>,
             );
           }
