@@ -447,8 +447,6 @@ export default () => {
           const actualGroup = actual.split(newline);
           const answerGroup = answer.split(newline);
 
-          console.log(actualGroup, answerGroup);
-
           while (k < actual.length) {
             while (actual?.[k]?.match(ignore)) {
               if (
