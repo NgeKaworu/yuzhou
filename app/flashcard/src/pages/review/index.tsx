@@ -26,8 +26,8 @@ import { prefixCls } from '@/theme';
 
 type ReviewType = 'normal' | 'success' | 'fail';
 
-const ignoreStr = `的地得和与及`;
-const newlineStr = `\\d\\s\\.,，。；;：:、?？!！"“'‘·\``;
+const ignoreStr = `\\d的地得和与及`;
+const newlineStr = `\\s\\.,，。；;：:、?？!！"“'‘·\``;
 const ignore = new RegExp(`[${ignoreStr}${newlineStr}]+`);
 const newline = new RegExp(`[${newlineStr}]+`);
 
