@@ -26,8 +26,8 @@ import { prefixCls } from '@/theme';
 
 type ReviewType = 'normal' | 'success' | 'fail';
 
-const ignoreStr = `\\d的地得和与及；;：:、?？!！"“'‘·\``;
-const newlineStr = `\\s\\.,，。`;
+const ignoreStr = `\\d的地得和与及`;
+const newlineStr = `\\s\\.,，。；;：:、?？!！"“'‘·\``;
 const ignore = new RegExp(`[${ignoreStr}${newlineStr}]+`);
 const newline = new RegExp(`[${newlineStr}]+`);
 
@@ -71,13 +71,17 @@ export default () => {
       .then((data: any) => data);
   }
 
+  function escapeRegExp(str: string) {
+    return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  }
+
   const data = reviewListQuerier?.data?.data,
     curRecord: RecordItem = data?.[curIdx]!,
     mode = curRecord?.mode ?? RECORD_MODE.FULL,
     keywordArr = curRecord?.translation
       ?.split(newline)
       ?.sort((a, b) => b?.length - a?.length),
-    keywordRegexp = new RegExp(keywordArr?.join('|'), 'g'),
+    keywordRegexp = new RegExp(keywordArr?.map(escapeRegExp)?.join('|'), 'g'),
     keywordModeSourceSplitArr = curRecord?.source?.split(keywordRegexp),
     positionArr =
       RECORD_MODE.KEYWORD === mode
@@ -92,6 +96,13 @@ export default () => {
     setSource(curRecord?.source);
   }, [curRecord?.source]);
 
+  useEffect(() => {
+    const pre = localStorage.getItem('flashcard:review:form');
+    if (pre) {
+      form.setFieldsValue(JSON.parse(pre));
+    }
+  }, []);
+
   const { isPending: isLoading, mutate } = useMutation({
     mutationFn: (data: { [key: string]: any }) => {
       return restful.patch(`/flashcard/record/set-review-result`, data, {
@@ -104,6 +115,7 @@ export default () => {
       setFlag('normal');
       setCurIdx(0);
       form.resetFields();
+      localStorage.removeItem('flashcard:review:form');
     },
   });
 
@@ -297,7 +309,7 @@ export default () => {
       const answerArr: Array<string> = values?.answer;
       if (
         answerArr?.every(
-          (i: string, idx: number) => i === positionArr[idx]?.[0],
+          (i: string, idx: number) => i === positionArr?.[idx]?.[0],
         )
       ) {
         setFlag('success');
@@ -310,15 +322,15 @@ export default () => {
         ];
 
         answerArr?.forEach((i, idx) => {
-          if (i === positionArr[idx][0]) {
+          if (i === positionArr?.[idx]?.[0]) {
             answer.push(<Fragment key={`${i}${idx}`}>{i}</Fragment>);
           } else {
             answer.push(
               <span
-                key={`${positionArr[idx][0]}${idx}`}
+                key={`${positionArr?.[idx]?.[0]}${idx}`}
                 style={{ background: 'lightcoral' }}
               >
-                {positionArr[idx][0]}
+                {positionArr?.[idx]?.[0]}
               </span>,
             );
           }
@@ -439,8 +451,6 @@ export default () => {
           const actualGroup = actual.split(newline);
           const answerGroup = answer.split(newline);
 
-          console.log(actualGroup, answerGroup);
-
           while (k < actual.length) {
             while (actual?.[k]?.match(ignore)) {
               if (
@@ -544,7 +554,14 @@ export default () => {
   }
 
   return (
-    <Form form={form} onFinish={submitHandler} onReset={reset}>
+    <Form
+      form={form}
+      onFinish={submitHandler}
+      onReset={reset}
+      onValuesChange={(_, data) => {
+        localStorage.setItem('flashcard:review:form', JSON.stringify(data));
+      }}
+    >
       <section>
         <header style={{ height: 24 }}>
           <div className={classNames(`${prefixCls}-header`, hashId)}>
