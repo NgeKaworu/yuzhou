@@ -1,9 +1,9 @@
 /*
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
- * @LastEditors: NgeKaworu NgeKaworu@163.com
- * @LastEditTime: 2023-11-06 21:01:19
- * @FilePath: \yuzhou\app\flashcard\src\pages\record\index.tsx
+ * @LastEditors: fuRan NgeKaworu@gmail.com
+ * @LastEditTime: 2023-11-27 22:30:08
+ * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
@@ -28,6 +28,7 @@ import {
   Menu,
   MenuProps,
   Radio,
+  Slider,
   Space,
   Spin,
   theme,
@@ -533,6 +534,10 @@ export default () => {
                   <Input.TextArea autoSize allowClear onKeyDown={onHotKey} />
                 </Form.Item>
               )}
+            </Form.Item>
+
+            <Form.Item<Record> name="exp" label="熟练度">
+              <Slider step={10} dots marks={{ 0: '陌生', 100: '记得' }} />
             </Form.Item>
 
             <Form.Item hidden>
