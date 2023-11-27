@@ -582,7 +582,7 @@ export default () => {
               {RECORD_MODE.KEYWORD === mode && (
                 <>
                   <strong>请在下面填入正确关键字： </strong>
-                  <strong>{curRecord?.tag}</strong>
+                  <strong style={{ fontSize: 30 }}>{curRecord?.tag}</strong>
                   <Form.Item className={reviewStyles['form-item']}>
                     {keywordModeSourceSplitArr?.map((i, idx) =>
                       keywordModeSourceSplitArr?.length - 1 > idx ? (
