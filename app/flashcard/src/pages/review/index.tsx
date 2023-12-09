@@ -31,6 +31,8 @@ const newlineStr = `\\s\\.,，。；;：:、?？!！"“'‘·\``;
 const ignore = new RegExp(`[${ignoreStr}${newlineStr}]+`);
 const newline = new RegExp(`[${newlineStr}]+`);
 
+const Ebbinghaus = [5, 25, 690, 720, 1440, 2880, 4320, 11520];
+
 export default () => {
   const [form] = Form.useForm();
   const [flag, setFlag] = useState<ReviewType>('normal');
@@ -143,45 +145,23 @@ export default () => {
       // 艾宾浩斯遗忘曲线
       switch (exp) {
         case 0:
-          data.cooldownAt = now.add(5, 'minutes');
-          data.exp = exp + 10;
-          break;
         case 10:
-          data.cooldownAt = now.add(25, 'minutes');
-          data.exp = exp + 10;
-          break;
         case 20:
-          data.cooldownAt = now.add(11.5, 'hours');
-          data.exp = exp + 10;
-          break;
         case 30:
-          data.cooldownAt = now.add(12, 'hours');
-          data.exp = exp + 10;
-          break;
         case 40:
-          data.cooldownAt = now.add(1, 'day');
-          data.exp = exp + 10;
-          break;
         case 50:
-          data.cooldownAt = now.add(2, 'days');
+        case 60: {
+          data.cooldownAt = now.add(Ebbinghaus[exp / 10], 'minutes');
           data.exp = exp + 10;
           break;
-        case 60:
-          data.cooldownAt = now.add(3, 'days');
-          data.exp = exp + 10;
-          break;
+        }
         case 70:
-          data.cooldownAt = now.add(8, 'days');
-          data.exp = exp + 10;
-          break;
         case 80:
-          data.cooldownAt = now.add(15, 'days');
-          data.exp = exp + 10;
-          break;
-        case 90:
+        case 90: {
           data.cooldownAt = now.add(1, 'hours');
-          data.exp = exp + 10;
+          data.exp = 100;
           break;
+        }
         case 100:
           data.cooldownAt = now.add(1, 'hours');
           break;
