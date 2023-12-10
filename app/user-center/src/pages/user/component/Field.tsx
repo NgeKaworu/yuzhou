@@ -31,13 +31,14 @@ export const Email = ({ disabled, checkout }: FieldProps) => {
       rules={[
         { required: true, message: '请输入邮箱' },
         {
-          validator: (_, email) =>
+          validator: (_, email: string) =>
             checkout && email
-              ? validateKey({ params: { email }, notify: false })
+              ? validateKey({ params: { email: email.toLowerCase() }, notify: false })
               : Promise.resolve(),
         },
         { type: 'email', message: '请检查邮箱格式' },
       ]}
+      normalize={(v) => v?.toLowerCase?.()}
     >
       <AutoComplete
         options={mail}
@@ -70,7 +71,7 @@ export const Captcha = () => {
   }
 
   return (
-    (<Item dependencies={[['email']]} noStyle>
+    <Item dependencies={[['email']]} noStyle>
       {(form) => (
         <Item
           rules={[
@@ -107,7 +108,7 @@ export const Captcha = () => {
           />
         </Item>
       )}
-    </Item>)
+    </Item>
   );
 };
 
