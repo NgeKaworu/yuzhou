@@ -31,7 +31,7 @@ const newlineStr = `\\s\\.,，。；;：:、?？!！"“'‘·\``;
 const ignore = new RegExp(`[${ignoreStr}${newlineStr}]+`);
 const newline = new RegExp(`[${newlineStr}]+`);
 
-const Ebbinghaus = [5, 25, 690, 720, 1440, 2880, 4320, 11520];
+const Ebbinghaus = [5, 25, 690, 720, 1440, 2880, 4320, 11520, 10080];
 
 export default () => {
   const [form] = Form.useForm();
@@ -150,21 +150,19 @@ export default () => {
         case 30:
         case 40:
         case 50:
-        case 60: {
+        case 60:
+        case 70:
+        case 80: {
           data.cooldownAt = now.add(Ebbinghaus[exp / 10], 'minutes');
           data.exp = exp + 10;
           break;
         }
-        case 70:
-        case 80:
-        case 90: {
-          data.cooldownAt = now.add(7, 'days');
-          data.exp = exp + 10;
-          break;
-        }
-        case 100:
+        case 90:
+        case 100: {
+          data.exp = 100;
           data.cooldownAt = now.add(1, 'hours');
           break;
+        }
         default:
           console.error('invalidate exp type: ', exp);
           break;
