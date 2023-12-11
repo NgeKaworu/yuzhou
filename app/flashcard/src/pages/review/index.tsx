@@ -158,8 +158,8 @@ export default () => {
         case 70:
         case 80:
         case 90: {
-          data.cooldownAt = now.add(1, 'hours');
-          data.exp = 100;
+          data.cooldownAt = now.add(7, 'days');
+          data.exp = exp + 10;
           break;
         }
         case 100:
