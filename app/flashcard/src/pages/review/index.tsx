@@ -564,10 +564,11 @@ export default () => {
                   <Form.Item className={reviewStyles['form-item']}>
                     {keywordModeSourceSplitArr?.map((i, idx) =>
                       keywordModeSourceSplitArr?.length - 1 > idx ? (
-                        <Fragment key={curRecord + i}>
+                        <Fragment key={`${curRecord?._id} + ${i}`}>
                           {i}
                           <Form.Item name={['answer', idx]} noStyle>
                             <Input
+                              size="small"
                               autoFocus={idx === 0}
                               style={{
                                 display: 'inline-block',
