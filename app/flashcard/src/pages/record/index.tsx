@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-11-27 22:30:08
+ * @LastEditTime: 2024-10-24 17:07:48
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -150,16 +150,6 @@ export default () => {
     },
   });
 
-  const randomReviewer = useMutation({
-    mutationFn: (data) =>
-      restful.patch(`/flashcard/record/random-review`, data),
-    onSuccess() {
-      refetch();
-      queryClient.invalidateQueries({ queryKey: ['review-list'] });
-      history('/review/');
-    },
-  });
-
   const allReviewer = useMutation({
     mutationFn: (data) => restful.get(`/flashcard/record/review-all`),
     onSuccess() {
@@ -171,9 +161,6 @@ export default () => {
 
   function reviewHandler() {
     reviewer.mutate(selectedItems);
-  }
-  function randomReviewHandler() {
-    randomReviewer.mutate();
   }
 
   function reviewAllHandler() {
@@ -432,7 +419,6 @@ export default () => {
         }}
       >
         {/* <FloatButton description="删除所选" /> */}
-        <FloatButton description="随机复习" onClick={randomReviewHandler} />
         <FloatButton description="取消选择" onClick={cancelAllSelect} />
         <FloatButton onClick={reviewHandler} description="复习所选" />
       </FloatButton.Group>

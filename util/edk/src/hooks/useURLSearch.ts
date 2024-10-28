@@ -8,7 +8,7 @@
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
  */
-import moment from 'dayjs';
+import dayjs from 'dayjs';
 import Scope from '../';
 const { useLayoutEffect } = Scope.react;
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -21,15 +21,15 @@ interface Param<T extends any = any> {
 }
 
 const _reviver: Param['reviver'] = (_, v) => {
-  //  moment 处理 ISO 8601 -> moment
+  //  dayjs 处理 ISO 8601 -> dayjs
   if (/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+/.test(v)) {
-    return moment(v);
+    return dayjs(v);
   }
   return v;
 };
 
 const _replacer: Param['replacer'] = (_, v) => {
-  if (moment.isDayjs(v)) {
+  if (dayjs.isDayjs(v)) {
     return v?.toISOString();
   }
   return v;

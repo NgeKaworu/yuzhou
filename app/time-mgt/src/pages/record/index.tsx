@@ -10,7 +10,7 @@ import type { TagSchema } from '@/components/TagMgt/models';
 
 import { nsFormat } from '@/utils/goTime';
 
-import moment from 'dayjs';
+import dayjs from 'dayjs';
 
 import useTagList from '@/components/TagMgt/hooks/useTagList';
 import { add, update, page } from './services';
@@ -104,7 +104,7 @@ export default () => {
           record.id === curId && classNames(`${prefixCls}-active`, hashId),
         )}
       >
-        <h3 style={{ color: '#333' }}>{moment(record.createAt).format('YYYY-MM-DD HH:mm:ss')}</h3>
+        <h3 style={{ color: '#333' }}>{dayjs(record.createAt).format('YYYY-MM-DD HH:mm:ss')}</h3>
         <div className={classNames(`${prefixCls}-content`, hashId)}>
           <div className={classNames(`${prefixCls}-main`, hashId)}>{record.event}</div>
           <div className={classNames(`${prefixCls}-extra`, hashId)}>

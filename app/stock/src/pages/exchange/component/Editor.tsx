@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-02-04 16:14:33
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-10-30 22:38:01
+ * @LastEditTime: 2024-10-28 11:59:41
  * @FilePath: /yuzhou/app/stock/src/pages/exchange/component/Editor.tsx
  * @Description:
  *
@@ -23,7 +23,7 @@ import ModalForm from 'edk/src/components/ModalForm';
 import type useModalForm from 'edk/src/components/ModalForm/useModalForm';
 
 import { update, create } from '@/api/exchange';
-import moment from 'dayjs';
+import dayjs from 'dayjs';
 import Format from 'edk/src/decorators/Format';
 import { IOC } from 'edk/src/decorators/hoc';
 import { compose } from 'edk/src/decorators/utils';
@@ -118,7 +118,7 @@ export default ({
       formProps={{
         onFinish: onSubmit,
         initialValues: {
-          createAt: moment(),
+          createAt: dayjs(),
           currentDividend: 0,
         },
         ...formProps,
@@ -179,7 +179,7 @@ export default ({
         {compose<any>(
           IOC([
             Format<any>({
-              input: moment,
+              input: dayjs,
             }),
           ]),
         )(<DatePicker placeholder="请选择" showTime />)}

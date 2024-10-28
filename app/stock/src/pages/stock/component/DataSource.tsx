@@ -14,7 +14,7 @@ import { SyncOutlined } from '@ant-design/icons';
 import SearchForm from 'edk/src/components/SearchForm';
 import { restful } from 'edk/src/utils/http';
 import { WithSuccess } from 'edk/src/Interface/Container';
-import moment from 'dayjs';
+import dayjs from 'dayjs';
 
 const { Item } = Form;
 const { RangePicker } = DatePicker;
@@ -23,9 +23,9 @@ export default ({ onSuccess }: WithSuccess<{}>) => {
   const [loading, setLoading] = useState(false);
 
   const rangePresets: TimeRangePickerProps['presets'] = [
-    { label: '上季度', value: [moment().add(-3, 'month'), moment()] },
-    { label: '上半年', value: [moment().add(-6, 'month'), moment()] },
-    { label: '上一年', value: [moment().add(-12, 'month'), moment()] },
+    { label: '上季度', value: [dayjs().add(-3, 'month'), dayjs()] },
+    { label: '上半年', value: [dayjs().add(-6, 'month'), dayjs()] },
+    { label: '上一年', value: [dayjs().add(-12, 'month'), dayjs()] },
   ];
 
   async function onFinish(value: any) {

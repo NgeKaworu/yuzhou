@@ -22,8 +22,6 @@ export default defineConfig({
   sass: false,
   hash: true,
   runtimePublicPath: true,
-  externals: { moment: 'moment' },
-  scripts: ['https://lib.baomitu.com/moment.js/latest/moment.min.js'],
   analyze: {
     analyzerMode: 'server',
     analyzerPort: 8888,

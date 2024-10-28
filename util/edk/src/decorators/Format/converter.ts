@@ -39,9 +39,9 @@ export const uploadEvent2strArr: FormItemProps['normalize'] = (value) =>
   value?.map((v: any) => v?.response ?? v) ?? value;
 
 /** date */
-import moment from 'dayjs';
-export const moment2str = (v: any) => v?.format('YYYY-MM-DD HH:mm:ss') ?? v;
-export const str2moment = (v: any) => (v ? moment(v) : undefined);
+import dayjs from 'dayjs';
+export const dayjs2str = (v: any) => v?.format('YYYY-MM-DD HH:mm:ss') ?? v;
+export const str2dayjs = (v: any) => (v ? dayjs(v) : undefined);
 
 export const encodeB64URI = (v: string) =>
   typeof v === 'string' ? window.btoa(encodeURIComponent(v)) : v;

@@ -9,7 +9,7 @@ import type { TagSchema } from '@/components/TagMgt/models';
 
 import { nsFormat } from '@/utils/goTime';
 
-import moment from 'dayjs';
+import dayjs from 'dayjs';
 import useTagList from '@/components/TagMgt/hooks/useTagList';
 import useStatisticList from './hooks/useStatisticList';
 
@@ -88,7 +88,7 @@ export default () => {
         onFinish={submit}
         form={form}
         initialValues={{
-          dateRange: [moment().startOf('day'), moment().endOf('day')],
+          dateRange: [dayjs().startOf('day'), dayjs().endOf('day')],
         }}
       >
         <div
@@ -123,24 +123,24 @@ export default () => {
                 allowClear
                 showTime={{ format: 'HH:mm' }}
                 presets={[
-                  { label: '今天', value: [moment().startOf('day'), moment().endOf('day')] },
+                  { label: '今天', value: [dayjs().startOf('day'), dayjs().endOf('day')] },
                   {
                     label: '昨天',
                     value: [
-                      moment().add(-1, 'day').startOf('day'),
-                      moment().add(-1, 'day').endOf('day'),
+                      dayjs().add(-1, 'day').startOf('day'),
+                      dayjs().add(-1, 'day').endOf('day'),
                     ],
                   },
-                  { label: '本周', value: [moment().startOf('week'), moment().endOf('week')] },
+                  { label: '本周', value: [dayjs().startOf('week'), dayjs().endOf('week')] },
                   {
                     label: '上周',
                     value: [
-                      moment().add(-1, 'week').startOf('week'),
-                      moment().add(-1, 'week').endOf('week'),
+                      dayjs().add(-1, 'week').startOf('week'),
+                      dayjs().add(-1, 'week').endOf('week'),
                     ],
                   },
-                  { label: '本月', value: [moment().startOf('month'), moment().endOf('month')] },
-                  { label: '今年', value: [moment().startOf('year'), moment().endOf('year')] },
+                  { label: '本月', value: [dayjs().startOf('month'), dayjs().endOf('month')] },
+                  { label: '今年', value: [dayjs().startOf('year'), dayjs().endOf('year')] },
                 ]}
               />
             </Form.Item>

@@ -16,7 +16,7 @@ import {
 const ua = navigator.userAgent?.toLowerCase();
 
 import { RECORD_MODE, Record as RecordItem } from '@/models/record';
-import moment from 'dayjs';
+import dayjs from 'dayjs';
 
 import reviewStyles from './index.less';
 import { restful } from 'edk/src/utils/http';
@@ -130,8 +130,8 @@ export default () => {
 
   function onRemember() {
     const id = curRecord?._id;
-    const now = moment();
-    const cooldownAt = moment(curRecord?.cooldownAt);
+    const now = dayjs();
+    const cooldownAt = dayjs(curRecord?.cooldownAt);
     const exp = curRecord?.exp;
 
     const data: { [key: string]: any } = {
@@ -177,7 +177,7 @@ export default () => {
 
   function onForget() {
     const id = curRecord?._id;
-    const now = moment();
+    const now = dayjs();
     let exp = curRecord?.exp;
     // 经验降一级
     if (exp !== 0) {
@@ -205,7 +205,7 @@ export default () => {
             nextReviewTime = nextReviewRecord?.data?.[0]?.cooldownAt;
 
           if (nextReviewTime !== undefined) {
-            let nextTime = moment(nextReviewTime).diff(moment());
+            let nextTime = dayjs(nextReviewTime).diff(dayjs());
             setTimeout(() => {
               registration.showNotification('复习提醒', {
                 body: '你有单词需要复习～',

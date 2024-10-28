@@ -10,7 +10,7 @@
  */
 import reverseSplitJoin from '../../struct/string/reverseSplitJoin';
 import type { TableColumnProps } from 'antd';
-import moment from 'dayjs';
+import dayjs from 'dayjs';
 import type { ValueType } from '../type';
 
 const dataFormat = 'YYYY-MM-DD';
@@ -20,18 +20,18 @@ export function _valueTypeRegister<RecordType>(
   valueType: ValueType,
 ): TableColumnProps<RecordType>['render'] {
   const register: Partial<Record<ValueType, TableColumnProps<RecordType>['render']>> = {
-    date: (v) => moment(v)?.format(dataFormat),
-    dateTime: (v) => moment(v)?.format(`${dataFormat} ${timeFormat}`),
-    time: (v) => moment(v)?.format(`${timeFormat}`),
+    date: (v) => dayjs(v)?.format(dataFormat),
+    dateTime: (v) => dayjs(v)?.format(`${dataFormat} ${timeFormat}`),
+    time: (v) => dayjs(v)?.format(`${timeFormat}`),
     dateRange: (vv: string) =>
       vv
         ?.split?.(',')
-        ?.map((v) => moment(v)?.format(`${timeFormat}`))
+        ?.map((v) => dayjs(v)?.format(`${timeFormat}`))
         ?.join(','),
     dateTimeRange: (vv: string) =>
       vv
         ?.split?.(',')
-        ?.map((v) => moment(v)?.format(`${dataFormat} ${timeFormat}`))
+        ?.map((v) => dayjs(v)?.format(`${dataFormat} ${timeFormat}`))
         ?.join(','),
     digit: (v) => reverseSplitJoin({ num: v, split: ',', limit: 3 }),
   };
