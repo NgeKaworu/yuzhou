@@ -8,18 +8,23 @@ import {
   ButtonProps,
   PopconfirmProps,
 } from 'antd';
-import { DeleteOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons';
+import {
+  CaretRightOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
 
 import type { Record } from '@/models/record';
 import { prefixCls as defaultPrefixCls } from '@/theme';
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
 import { DerivativeToken } from 'antd/es/theme/internal';
-import classNames from 'classnames';
+import clsx from 'clsx';
+import dayjs from 'dayjs';
 
 const prefixCls = defaultPrefixCls + '-record-item';
 export interface RecordItemProps {
-  onClick: (id: string) => void;
-  onDoubleClick?: (id: string) => void;
+  onClick: () => void;
+  onReviewClick?: (id: string) => void;
   onRemoveClick: (id: string) => void;
   onEditClick: (record: Record) => void;
   record: Record;
@@ -30,21 +35,17 @@ const { useToken } = theme;
 
 export default ({
   onClick,
-  onDoubleClick,
+  onReviewClick,
   onRemoveClick,
   onEditClick,
   selected,
   record,
 }: RecordItemProps) => {
-  const { _id, source, translation, exp: percent, tag } = record;
-  function clickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    e.stopPropagation();
-    onClick(_id);
-  }
+  const { _id, source, translation, exp: percent, tag, cooldownAt } = record;
 
-  function doubleClickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function reviewClickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation();
-    onDoubleClick?.(_id);
+    onReviewClick?.(_id);
   }
   const editClickHandler: ButtonProps['onClick'] = (e) => {
     e.stopPropagation();
@@ -70,18 +71,17 @@ export default ({
 
   return wrapSSR(
     <div
-      className={classNames(`${prefixCls}-record-card`, hashId)}
-      onClick={clickHandler}
-      onDoubleClick={doubleClickHandler}
+      className={clsx(`${prefixCls}-record-card`, hashId)}
+      onClick={onClick}
     >
       <div
-        className={classNames(`${prefixCls}-progress`, hashId)}
+        className={clsx(`${prefixCls}-progress`, hashId)}
         style={{ width: `${percent}%` }}
       />
       <div
-        className={classNames(
-          classNames(`${prefixCls}-check`, hashId),
-          selected && classNames(`${prefixCls}-selected`, hashId),
+        className={clsx(
+          clsx(`${prefixCls}-check`, hashId),
+          selected && clsx(`${prefixCls}-selected`, hashId),
         )}
       />
       <div
@@ -90,12 +90,14 @@ export default ({
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-all',
         }}
-        onClick={clickHandler}
+        onClick={onClick}
       >
         {source}
       </div>
-      <Divider orientation="right" plain>
-        {tag}
+      <Divider orientation="right" plain variant="dashed">
+        【{tag}】{' '}
+        {cooldownAt &&
+          `下次复习时间于：${dayjs(cooldownAt).format('YYYY-MM-DD HH:mm:ss')}`}
       </Divider>
       <div
         style={{
@@ -103,11 +105,17 @@ export default ({
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-all',
         }}
-        onClick={clickHandler}
+        onClick={onClick}
       >
         {translation}
       </div>
-      <div className={classNames(`${prefixCls}-tools-bar`, hashId)}>
+      <div className={clsx(`${prefixCls}-tools-bar`, hashId)}>
+        <Button
+          size="small"
+          type="text"
+          onClick={reviewClickHandler}
+          icon={<CaretRightOutlined />}
+        ></Button>
         <Button
           size="small"
           type="text"

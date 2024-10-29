@@ -12,7 +12,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { App, ConfigProvider, theme } from 'antd';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 import { FormOutlined, PieChartOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
@@ -60,17 +60,17 @@ function Main() {
   return (
     <App>
       {wrapSSR(
-        <section className={classNames(`${prefixCls}-bottom-fix-panel`, hashId)}>
-          <main className={classNames(`${prefixCls}-fill-scroll-part`, hashId)}>
+        <section className={clsx(`${prefixCls}-bottom-fix-panel`, hashId)}>
+          <main className={clsx(`${prefixCls}-fill-scroll-part`, hashId)}>
             <Outlet />
           </main>
 
-          <footer className={classNames(`${prefixCls}-bottom-menu`, hashId)}>
+          <footer className={clsx(`${prefixCls}-bottom-menu`, hashId)}>
             {menu.map((i) => (
               <div
-                className={classNames(
-                  classNames(`${prefixCls}-menu-item`, hashId),
-                  i.path.includes(pathname) && classNames(`${prefixCls}-active`, hashId),
+                className={clsx(
+                  clsx(`${prefixCls}-menu-item`, hashId),
+                  i.path.includes(pathname) && clsx(`${prefixCls}-active`, hashId),
                 )}
                 key={i.path}
                 onClick={() => navigate(i.path)}

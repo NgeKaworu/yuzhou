@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2024-10-24 17:07:48
+ * @LastEditTime: 2024-10-29 15:40:33
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
   Button,
+  DatePicker,
   Drawer,
   Empty,
   FloatButton,
@@ -31,10 +32,15 @@ import {
   Slider,
   Space,
   Spin,
+  Switch,
   theme,
 } from 'antd';
 
-import { PlusOutlined } from '@ant-design/icons';
+import {
+  CloseOutlined,
+  EllipsisOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 
 import { restful } from 'edk/src/utils/http';
 import { Res } from 'edk/src/utils/http/type';
@@ -43,7 +49,9 @@ import RecordItem from './components/RecordItem';
 
 import { RECORD_MODE, Record } from '@/models/record';
 import { prefixCls } from '@/theme';
-import classNames from 'classnames';
+import clsx from 'clsx';
+import dayjs from 'dayjs';
+import style from './index.module.less';
 
 type inputType = '' | '新建' | '编辑';
 
@@ -54,6 +62,7 @@ const ua = navigator.userAgent?.toLowerCase();
 export default () => {
   const [sortForm] = Form.useForm();
   const [inputForm] = Form.useForm<Record>();
+  const [multiEditForm] = Form.useForm();
   const history = useNavigate();
   const _location = useLocation();
   const _search = _location.search;
@@ -63,7 +72,11 @@ export default () => {
   const [sortVisible, setSortVisible] = useState(false);
   const [inputVisible, setInputVisible] = useState(false);
   const [inputType, setInputType] = useState<inputType>('新建');
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<Map<string, Record>>(
+    new Map(),
+  );
+
+  const [multiEditorVisible, setMultiEditorVisible] = useState(false);
 
   // 编辑modal使用
   const [curRecord, setCurRecord] = useState<Record>();
@@ -132,6 +145,19 @@ export default () => {
     },
   });
 
+  const multiUpdater = useMutation({
+    mutationFn: (data?: { [key: string]: any }) =>
+      restful.patch(`/flashcard/record/multi-update`, {
+        ids: Array.from(selectedItems.keys()),
+        ...data,
+      }),
+    onSuccess() {
+      refetch();
+      multiEditForm.resetFields();
+      setMultiEditorVisible(false);
+    },
+  });
+
   const remover = useMutation({
     mutationFn: (data?: string) =>
       restful.delete(`/flashcard/record/remove/${data}`),
@@ -160,7 +186,7 @@ export default () => {
   });
 
   function reviewHandler() {
-    reviewer.mutate(selectedItems);
+    reviewer.mutate([...selectedItems.keys()]);
   }
 
   function reviewAllHandler() {
@@ -177,6 +203,7 @@ export default () => {
       pathname: _location.pathname,
       search: params.toString(),
     });
+    cancelAllSelect();
   };
 
   function showSortModal() {
@@ -221,8 +248,17 @@ export default () => {
     }
   }
 
+  function showMultiEditor() {
+    setMultiEditorVisible(true);
+    multiEditForm.resetFields();
+  }
+
   function hideInputModal() {
     setInputVisible(false);
+  }
+
+  function hideTimerContainer() {
+    setMultiEditorVisible(false);
   }
 
   async function onInputSubmit() {
@@ -240,10 +276,22 @@ export default () => {
     localStorage.removeItem('flashcard:record:input:form');
   }
 
-  function onItemClick(id: string) {
+  async function onMultiEditorSubmit() {
+    const values = await multiEditForm.validateFields();
+    await multiUpdater.mutateAsync(values);
+  }
+
+  function onItemClick(record: Record) {
     setSelectedItems((s) => {
-      const checked = s.some((i) => i === id);
-      return checked ? s.filter((i) => i !== id) : s.concat(id);
+      const tmp = new Map(s);
+      const id = record._id;
+      const checked = s.has(id);
+      if (checked) {
+        tmp.delete(id);
+      } else {
+        tmp.set(id, record);
+      }
+      return tmp;
     });
   }
 
@@ -252,28 +300,31 @@ export default () => {
   }
 
   function onItemEditClick(record: Record) {
-    inputForm.setFieldsValue(record);
+    inputForm.setFieldsValue({
+      ...record,
+      cooldownAt: record.cooldownAt && dayjs(record.cooldownAt),
+    });
     setCurRecord(record);
     setInputType('编辑');
     setInputVisible(true);
   }
 
   function cancelAllSelect() {
-    setSelectedItems([]);
+    setSelectedItems(new Map());
   }
   const loadMoreItems = () =>
     isFetching ? Promise.resolve() : fetchNextPage();
 
   // Render an item or a loading indicator.
   const renderItem: ListProps<Record>['renderItem'] = (record) => {
-    const selected = selectedItems.some((s) => s === record?._id);
+    const selected = selectedItems.has(record?._id);
     return (
       <List.Item key={record?._id} style={{ padding: `8px 6px` }}>
         <RecordItem
           record={record}
           selected={selected}
-          onClick={onItemClick}
-          onDoubleClick={(id) => reviewer.mutate([id])}
+          onClick={() => onItemClick(record)}
+          onReviewClick={(id) => reviewer.mutate([id])}
           onEditClick={onItemEditClick}
           onRemoveClick={onItemRemoveClick}
         />
@@ -299,6 +350,7 @@ export default () => {
   ) : null;
 
   const items: MenuProps['items'] = [
+    { key: 'store', label: '单词库' },
     { key: 'enable', label: '可复习' },
     { key: 'cooling', label: '冷却中' },
     { key: 'done', label: '己完成' },
@@ -327,9 +379,9 @@ export default () => {
   return (
     <section>
       <header style={{ height: 24 }}>
-        <div className={classNames(`${prefixCls}-header`, hashId)}>
+        <div className={clsx(`${prefixCls}-header`, hashId)}>
           <Menu
-            className={classNames(`${prefixCls}-menu`, hashId)}
+            className={clsx(`${prefixCls}-menu`, hashId)}
             mode="horizontal"
             onSelect={onMenuSelect}
             selectedKeys={selectedKeys}
@@ -386,7 +438,7 @@ export default () => {
           </Drawer>
         </div>
       </header>
-      <main className={classNames(`${prefixCls}-content`, hashId)}>
+      <main className={clsx(`${prefixCls}-content`, hashId)}>
         {pages?.length ? (
           <List
             size="small"
@@ -397,7 +449,7 @@ export default () => {
             loadMore={loadMore}
           />
         ) : (
-          <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
+          <Empty className={clsx(`${prefixCls}-empty`, hashId)} />
         )}
       </main>
 
@@ -409,18 +461,25 @@ export default () => {
         shape="circle"
         trigger="hover"
         style={{ right: 12, bottom: 48 + 8 + 40 + 8 + 40 }}
-        icon={null}
-        closeIcon={null}
-        description={'批量操作'}
+        icon={<EllipsisOutlined />}
+        // closeIcon={null}
+        // description={'批量操作'}
         badge={{
-          count: `${selectedItems.length}/${total}`,
+          count: `${selectedItems.size}/${total}`,
           size: 'small',
           offset: [20, 0],
         }}
       >
-        {/* <FloatButton description="删除所选" /> */}
-        <FloatButton description="取消选择" onClick={cancelAllSelect} />
-        <FloatButton onClick={reviewHandler} description="复习所选" />
+        {selectedItems.size ? (
+          <>
+            {/* <FloatButton description="删除所选" /> */}
+            <FloatButton description="取消选择" onClick={cancelAllSelect} />
+            <FloatButton onClick={reviewHandler} description="复习所选" />
+            <FloatButton onClick={showMultiEditor} description="批量修改" />
+          </>
+        ) : (
+          <></>
+        )}
       </FloatButton.Group>
 
       <FloatButton
@@ -472,6 +531,10 @@ export default () => {
           >
             <Form.Item name="tag" label="标签">
               <Input />
+            </Form.Item>
+
+            <Form.Item name="cooldownAt" label="下次复习时间">
+              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
             </Form.Item>
 
             <Form.Item
@@ -535,6 +598,81 @@ export default () => {
               </Button>
             </Form.Item>
           </Form>
+        </Spin>
+      </Drawer>
+
+      <Drawer
+        title="批量编辑"
+        open={multiEditorVisible}
+        onClose={hideTimerContainer}
+        placement="bottom"
+        height={'80vh'}
+        extra={
+          <Space>
+            <Button onClick={hideTimerContainer}>取消</Button>
+            <Button
+              onClick={onMultiEditorSubmit}
+              type="primary"
+              loading={multiUpdater?.isPending}
+            >
+              提交
+            </Button>
+          </Space>
+        }
+      >
+        <Spin spinning={multiUpdater?.isPending}>
+          <Form<Record>
+            form={multiEditForm}
+            onFinish={onMultiEditorSubmit}
+            layout="vertical"
+          >
+            <Form.Item name="tag" label="标签">
+              <Input />
+            </Form.Item>
+
+            <Form.Item name="cooldownAt" label="下次复习时间">
+              <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+            </Form.Item>
+
+            <Form.Item
+              name="mode"
+              label="模式"
+              tooltip={
+                <>
+                  全文背诵或
+                  <br />
+                  关键字填空
+                </>
+              }
+            >
+              <Radio.Group
+                optionType="button"
+                options={[
+                  { value: RECORD_MODE.KEYWORD, label: '关键字' },
+                  { value: RECORD_MODE.FULL, label: '全文' },
+                ]}
+              />
+            </Form.Item>
+
+            <Form.Item<Record> name="exp" label="熟练度">
+              <Slider step={10} dots marks={{ 0: '陌生', 100: '记得' }} />
+            </Form.Item>
+
+            <Form.Item hidden>
+              <Button htmlType="submit" loading={multiUpdater?.isPending}>
+                提交
+              </Button>
+            </Form.Item>
+          </Form>
+          影响记录数：{selectedItems.size}
+          {Array.from(selectedItems.values())?.map((record) => (
+            <div key={record._id} className={clsx(style.flex)}>
+              {record.source}{' '}
+              {selectedItems.size > 1 && (
+                <CloseOutlined onClick={() => onItemClick(record)} />
+              )}
+            </div>
+          ))}
         </Spin>
       </Drawer>
     </section>

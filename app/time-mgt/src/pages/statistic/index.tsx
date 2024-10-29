@@ -14,7 +14,7 @@ import useTagList from '@/components/TagMgt/hooks/useTagList';
 import useStatisticList from './hooks/useStatisticList';
 
 import styles from './index.less';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { prefixCls } from '@/theme';
 
 const { useToken } = theme;
@@ -39,11 +39,11 @@ export default () => {
   }
 
   return (
-    <div className={classNames(`${prefixCls}-bottom-fix-panel`, hashId)}>
+    <div className={clsx(`${prefixCls}-bottom-fix-panel`, hashId)}>
       <section
         className={[
           styles['fill-scroll-part'],
-          classNames(`${prefixCls}-fill-scroll-part`, hashId),
+          clsx(`${prefixCls}-fill-scroll-part`, hashId),
         ].join(' ')}
       >
         <Spin spinning={loading} wrapperClassName={styles['cus-spin']}>
@@ -55,7 +55,7 @@ export default () => {
 
               return (
                 <div
-                  className={classNames(`${prefixCls}-record-item`, hashId)}
+                  className={clsx(`${prefixCls}-record-item`, hashId)}
                   key={record.id}
                   style={{
                     background: `linear-gradient(to right, ${color} 0% ${ratio}%, #fff ${ratio}% 100%)`,
@@ -66,12 +66,12 @@ export default () => {
                   </h3>
                   <div
                     style={{ color }}
-                    className={[classNames(`${prefixCls}-content`, hashId), styles.filter].join(
+                    className={[clsx(`${prefixCls}-content`, hashId), styles.filter].join(
                       ' ',
                     )}
                   >
-                    <div className={classNames(`${prefixCls}-main`, hashId)}>{ratio}%</div>
-                    <div className={classNames(`${prefixCls}-extra`, hashId)}>
+                    <div className={clsx(`${prefixCls}-main`, hashId)}>{ratio}%</div>
+                    <div className={clsx(`${prefixCls}-extra`, hashId)}>
                       {nsFormat(record.deration)}
                     </div>
                   </div>
@@ -79,7 +79,7 @@ export default () => {
               );
             })
           ) : (
-            <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
+            <Empty className={clsx(`${prefixCls}-empty`, hashId)} />
           )}
         </Spin>
       </section>
@@ -92,7 +92,7 @@ export default () => {
         }}
       >
         <div
-          className={classNames(`${prefixCls}-bottom-fix-panel`, hashId)}
+          className={clsx(`${prefixCls}-bottom-fix-panel`, hashId)}
           style={{
             height: '25vh',
             borderTop: '1px solid rgba(233,233,233, 05)',
@@ -100,7 +100,7 @@ export default () => {
           }}
         >
           <section
-            className={classNames(`${prefixCls}-fill-scroll-part`, hashId)}
+            className={clsx(`${prefixCls}-fill-scroll-part`, hashId)}
             style={{
               padding: '0 0 6px 6px',
             }}

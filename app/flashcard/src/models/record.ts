@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-10-31 00:02:37
+ * @LastEditTime: 2024-10-29 12:00:01
  * @FilePath: /yuzhou/app/flashcard/src/models/record.ts
  * @Description:
  *
@@ -15,7 +15,7 @@ export const enum RECORD_MODE {
 }
 export interface Record {
   _id: string;
-  cooldownAt: Date;
+  cooldownAt?: Date;
   createAt: Date;
   exp: number;
   inReview: boolean;

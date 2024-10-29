@@ -18,7 +18,7 @@ import Perm from '@/model/Perm';
 import { useState, createElement } from 'react';
 import styles from './index.less';
 import prem2Tree from './util/perm2Tree';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 export default () => {
   const [drawer, setDrawer] = useState<DrawerProps>({
@@ -66,7 +66,7 @@ export default () => {
         <Menu mode="inline" selectedKeys={[pathname]} items={renderMenu()} />
       </Drawer>
       <div
-        className={classNames(styles.icon, drawer.open && styles['icon-open'])}
+        className={clsx(styles.icon, drawer.open && styles['icon-open'])}
         onClick={trigger}
       >
         <Avatar className={styles.avatar} shape="square" src={require('@/assets/img/ran.png')} />

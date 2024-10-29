@@ -17,7 +17,7 @@ import { add, update, page } from './services';
 
 import isValidValue from 'edk/src/utils/isValidValue';
 
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { prefixCls } from '@/theme';
 
 const { useToken } = theme;
@@ -99,15 +99,15 @@ export default () => {
       <div
         key={record.id}
         onClick={() => checked(record)}
-        className={classNames(
-          classNames(`${prefixCls}-record-item`, hashId),
-          record.id === curId && classNames(`${prefixCls}-active`, hashId),
+        className={clsx(
+          clsx(`${prefixCls}-record-item`, hashId),
+          record.id === curId && clsx(`${prefixCls}-active`, hashId),
         )}
       >
         <h3 style={{ color: '#333' }}>{dayjs(record.createAt).format('YYYY-MM-DD HH:mm:ss')}</h3>
-        <div className={classNames(`${prefixCls}-content`, hashId)}>
-          <div className={classNames(`${prefixCls}-main`, hashId)}>{record.event}</div>
-          <div className={classNames(`${prefixCls}-extra`, hashId)}>
+        <div className={clsx(`${prefixCls}-content`, hashId)}>
+          <div className={clsx(`${prefixCls}-main`, hashId)}>{record.event}</div>
+          <div className={clsx(`${prefixCls}-extra`, hashId)}>
             {nsFormat(record.deration)}
           </div>
         </div>
@@ -140,7 +140,7 @@ export default () => {
   ) : null;
 
   return (
-    <div className={classNames(`${prefixCls}-bottom-fix-panel`, hashId)}>
+    <div className={clsx(`${prefixCls}-bottom-fix-panel`, hashId)}>
       <div style={{ flex: 1, overflowY: 'scroll' }}>
         {pages?.length ? (
           <List
@@ -151,13 +151,13 @@ export default () => {
             loadMore={loadMore}
           />
         ) : (
-          <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
+          <Empty className={clsx(`${prefixCls}-empty`, hashId)} />
         )}
       </div>
 
       <Form onFinish={submit} form={form}>
         <div
-          className={classNames(`${prefixCls}-bottom-fix-panel`, hashId)}
+          className={clsx(`${prefixCls}-bottom-fix-panel`, hashId)}
           style={{
             height: '25vh',
             borderTop: '1px solid rgba(233,233,233, 05)',
@@ -165,7 +165,7 @@ export default () => {
           }}
         >
           <section
-            className={classNames(`${prefixCls}-fill-scroll-part`, hashId)}
+            className={clsx(`${prefixCls}-fill-scroll-part`, hashId)}
             style={{
               padding: '0 0 6px 6px',
             }}

@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-18 23:00:41
+ * @LastEditTime: 2024-10-28 11:14:04
  * @FilePath: /yuzhou/app/flashcard/.umirc.ts
  * @Description:
  *
@@ -27,8 +27,8 @@ export default defineConfig({
   publicPath: '/micro/flashcard/',
   proxy: {
     '/api/flashcard': {
-      target: 'https://api.furan.xyz/flashcard',
-      // target: 'http://localhost:8030',
+      // target: 'https://api.furan.xyz/flashcard',
+      target: 'http://localhost:8030',
       changeOrigin: true,
       pathRewrite: {
         '/api/flashcard': '',

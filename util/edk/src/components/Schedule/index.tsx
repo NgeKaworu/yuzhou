@@ -6,7 +6,7 @@ import trimEndWith from '../../struct/string/trimEndWith';
 import arr from '../../struct/array/arr';
 import { DerivativeToken, useStyleRegister } from 'antd/es/theme/internal';
 import { CSSInterpolation } from '@ant-design/cssinjs';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 const { useState } = Scope.react;
 const { Tooltip, Typography, theme } = Scope.antd;
@@ -113,7 +113,7 @@ export default function ({
 
   return wrapSSR(
     <Marquee onRange={onRange} sticky={{ offsetX: colWidth, offsetY: colHeight }}>
-      <table className={classNames(`${prefixCls}-table`)}>
+      <table className={clsx(`${prefixCls}-table`)}>
         <caption>
           {picked.some((pick) => pick.includes(true)) ? (
             <div>
@@ -190,7 +190,7 @@ export default function ({
               {hours.map((_, halfHour) => (
                 <td
                   key={`day-${day}-${halfHour}`}
-                  className={classNames(picked[day][halfHour] === true && `${prefixCls}'-picked'`)}
+                  className={clsx(picked[day][halfHour] === true && `${prefixCls}'-picked'`)}
                 >
                   <Tooltip
                     overlay={`${rowHeads[day]} ${time(halfHour)} - ${time(halfHour + 1)}`}

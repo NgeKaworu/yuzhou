@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import reviewStyles from './index.less';
 import { restful } from 'edk/src/utils/http';
 import { Res } from 'edk/src/utils/http/type';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { prefixCls } from '@/theme';
 
 type ReviewType = 'normal' | 'success' | 'fail';
@@ -131,7 +131,9 @@ export default () => {
   function onRemember() {
     const id = curRecord?._id;
     const now = dayjs();
-    const cooldownAt = dayjs(curRecord?.cooldownAt);
+    const cooldownAt = curRecord?.cooldownAt
+      ? dayjs(curRecord?.cooldownAt)
+      : dayjs();
     const exp = curRecord?.exp;
 
     const data: { [key: string]: any } = {
@@ -141,7 +143,7 @@ export default () => {
     };
 
     // 过了冷却才能涨经验
-    if (now.isAfter(cooldownAt)) {
+    if (!curRecord?.cooldownAt || now.isAfter(cooldownAt)) {
       // 艾宾浩斯遗忘曲线
       switch (exp) {
         case 0:
@@ -210,7 +212,7 @@ export default () => {
               registration.showNotification('复习提醒', {
                 body: '你有单词需要复习～',
                 // icon: '../images/touch/chrome-touch-icon-192x192.png', // icon
-                vibrate: [200, 100, 200, 100, 200, 100, 200], // 抖动
+                // vibrate: [200, 100, 200, 100, 200, 100, 200], // 抖动
                 tag: 'review-notify', // 唯一ID
               });
             }, nextTime);
@@ -542,7 +544,7 @@ export default () => {
     >
       <section>
         <header style={{ height: 24 }}>
-          <div className={classNames(`${prefixCls}-header`, hashId)}>
+          <div className={clsx(`${prefixCls}-header`, hashId)}>
             {renderTitle()}
             <Form.Item noStyle name="isPermutation" valuePropName="checked">
               <Switch
@@ -554,7 +556,7 @@ export default () => {
             </Form.Item>
           </div>
         </header>
-        <main className={classNames(`${prefixCls}-content`, hashId)}>
+        <main className={clsx(`${prefixCls}-content`, hashId)}>
           {data?.length ? (
             <div className={reviewStyles['form']}>
               {RECORD_MODE.KEYWORD === mode && (
@@ -625,11 +627,11 @@ export default () => {
               )}
             </div>
           ) : (
-            <Empty className={classNames(`${prefixCls}-empty`, hashId)} />
+            <Empty className={clsx(`${prefixCls}-empty`, hashId)} />
           )}
         </main>
         <footer>
-          <div className={classNames(`${prefixCls}-content-footer`, hashId)}>
+          <div className={clsx(`${prefixCls}-content-footer`, hashId)}>
             <Space style={{ marginRight: '12px', whiteSpace: 'pre-wrap' }}>
               余{total}
             </Space>

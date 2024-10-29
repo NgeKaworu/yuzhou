@@ -18,7 +18,7 @@ import defaultTheme, { prefixCls } from '@/theme';
 
 import { FormOutlined, SyncOutlined } from '@ant-design/icons';
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 import zhCN from 'antd/es/locale/zh_CN';
 import { DerivativeToken } from 'antd/es/theme/internal';
@@ -71,20 +71,20 @@ function Main() {
   }
   return wrapSSR(
     <section
-      className={classNames(`${prefixCls}-layout`, hashId)}
+      className={clsx(`${prefixCls}-layout`, hashId)}
       id="scroll-root"
     >
       <main>
         <Outlet />
       </main>
       <footer>
-        <div className={classNames(`${prefixCls}-footer`, hashId)}>
+        <div className={clsx(`${prefixCls}-footer`, hashId)}>
           {menu.map((i) => (
             <div
-              className={classNames(
-                classNames(`${prefixCls}-menu-item`, hashId),
+              className={clsx(
+                clsx(`${prefixCls}-menu-item`, hashId),
                 i.path.includes(pathname) &&
-                  classNames(`${prefixCls}-active`, hashId),
+                  clsx(`${prefixCls}-active`, hashId),
               )}
               key={i.path}
               data-path={i.path}

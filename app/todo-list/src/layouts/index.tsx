@@ -5,7 +5,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { App, ConfigProvider, Layout, theme } from 'antd';
 
 import { FormOutlined, SyncOutlined } from '@ant-design/icons';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 const { Content, Footer } = Layout;
 
@@ -62,16 +62,16 @@ function Main() {
 
   return wrapSSR(
     <App>
-      <Layout className={classNames(`${prefixCls}-layout`, hashId)}>
-        <Content className={classNames(`${prefixCls}-content`, hashId)}>
+      <Layout className={clsx(`${prefixCls}-layout`, hashId)}>
+        <Content className={clsx(`${prefixCls}-content`, hashId)}>
           <Outlet />
         </Content>
-        <Footer className={classNames(`${prefixCls}-footer-menu`, hashId)}>
+        <Footer className={clsx(`${prefixCls}-footer-menu`, hashId)}>
           {menu.map((i) => (
             <div
-              className={classNames(
-                classNames(`${prefixCls}-menu-item`, hashId),
-                i.path.includes(pathname) && classNames(`${prefixCls}-active`, hashId),
+              className={clsx(
+                clsx(`${prefixCls}-menu-item`, hashId),
+                i.path.includes(pathname) && clsx(`${prefixCls}-active`, hashId),
               )}
               key={i.path}
               data-path={i.path}

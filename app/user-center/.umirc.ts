@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-13 23:05:58
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-18 13:25:03
+ * @LastEditTime: 2024-10-28 11:14:25
  * @FilePath: /yuzhou/app/user-center/.umirc.ts
  * @Description:
  *
@@ -27,8 +27,8 @@ export default defineConfig({
   routes,
   proxy: {
     '/api/user-center': {
-      // target: 'http://localhost:8020',
-      target: 'https://api.furan.xyz/user-center',
+      target: 'http://localhost:8020',
+      // target: 'https://api.furan.xyz/user-center',
       changeOrigin: true,
       pathRewrite: {
         '/api/user-center': '',
