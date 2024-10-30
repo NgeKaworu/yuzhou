@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-13 23:05:58
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-03-14 00:16:30
+ * @LastEditTime: 2024-10-30 10:49:20
  * @FilePath: /yuzhou/app/user-center/src/layouts/index.tsx
  * @Description:
  *
@@ -10,7 +10,7 @@
  */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { App, ConfigProvider, Layout, theme } from 'antd';
+import { App, ConfigProvider, GlobalToken, Layout, theme } from 'antd';
 
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -20,7 +20,7 @@ import { Outlet } from 'react-router-dom';
 
 import defaultTheme, { prefixCls } from '@/theme';
 import { useStyleRegister, CSSInterpolation } from '@ant-design/cssinjs';
-import { DerivativeToken } from 'antd/es/theme/internal';
+
 import 'dayjs/locale/zh-cn';
 
 const { Content } = Layout;
@@ -59,4 +59,4 @@ function Main() {
   );
 }
 
-const genStyle = (token: DerivativeToken): CSSInterpolation => ({});
+const genStyle = (token: GlobalToken): CSSInterpolation => ({});

@@ -11,7 +11,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { App, ConfigProvider, theme } from 'antd';
+import { App, ConfigProvider, GlobalToken, theme } from 'antd';
 import clsx from 'clsx';
 
 import { FormOutlined, PieChartOutlined } from '@ant-design/icons';
@@ -22,7 +22,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import defaultTheme, { prefixCls } from '@/theme';
 
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
-import { DerivativeToken } from 'antd/es/theme/internal';
+
 import 'dayjs/locale/zh-cn';
 import React from 'react';
 
@@ -86,7 +86,7 @@ function Main() {
   );
 }
 
-const genStyle = (token: DerivativeToken): CSSInterpolation => ({
+const genStyle = (token: GlobalToken): CSSInterpolation => ({
   [`.${prefixCls}-bottom-fix-panel`]: {
     display: 'flex',
     flexDirection: 'column',

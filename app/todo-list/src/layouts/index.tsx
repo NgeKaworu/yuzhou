@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { App, ConfigProvider, Layout, theme } from 'antd';
+import { App, ConfigProvider, GlobalToken, Layout, theme } from 'antd';
 
 import { FormOutlined, SyncOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
@@ -14,7 +14,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import defaultTheme, { prefixCls } from '@/theme';
 
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
-import { DerivativeToken } from 'antd/es/theme/internal';
+
 import 'dayjs/locale/zh-cn';
 
 const queyClient = new QueryClient();
@@ -87,7 +87,7 @@ function Main() {
   );
 }
 
-const genStyle = (token: DerivativeToken): CSSInterpolation => ({
+const genStyle = (token: GlobalToken): CSSInterpolation => ({
   [`.${prefixCls}-layout`]: { height: '100%', minHeight: '100%' },
   [`.${prefixCls}-content`]: {
     display: 'flex',

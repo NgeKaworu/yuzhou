@@ -13,7 +13,7 @@ import { Outlet } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { ConfigProvider, Layout, theme } from 'antd';
+import { ConfigProvider, GlobalToken, Layout, theme } from 'antd';
 
 import zhCN from 'antd/es/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
@@ -22,7 +22,7 @@ import styles from './index.less';
 import React from 'react';
 
 import defaultTheme, { prefixCls } from '@/theme';
-import { DerivativeToken } from 'antd/es/theme/internal';
+
 
 import { useStyleRegister, CSSInterpolation } from '@ant-design/cssinjs';
 
@@ -61,4 +61,4 @@ function Main() {
   );
 }
 
-const genStyle = (token: DerivativeToken): CSSInterpolation => ({});
+const genStyle = (token: GlobalToken): CSSInterpolation => ({});

@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2023-11-03 10:00:21
+ * @LastEditTime: 2024-10-30 10:42:51
  * @FilePath: /yuzhou/app/flashcard/src/layouts/index.tsx
  * @Description:
  *
@@ -12,7 +12,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider, GlobalToken, theme } from 'antd';
 
 import defaultTheme, { prefixCls } from '@/theme';
 
@@ -21,7 +21,6 @@ import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
 import clsx from 'clsx';
 
 import zhCN from 'antd/es/locale/zh_CN';
-import { DerivativeToken } from 'antd/es/theme/internal';
 
 const queyClient = new QueryClient();
 
@@ -30,7 +29,7 @@ const menu = [
     title: '新词本',
     path: '/record/',
     icon: <FormOutlined />,
-    query: { type: 'enable', sort: 'createAt', orderby: -1 },
+    query: { type: 'enable', sort: 'createAt', orderby: '-1' },
   },
   { title: '复习', path: '/review/', icon: <SyncOutlined /> },
 ];
@@ -70,10 +69,7 @@ function Main() {
     });
   }
   return wrapSSR(
-    <section
-      className={clsx(`${prefixCls}-layout`, hashId)}
-      id="scroll-root"
-    >
+    <section className={clsx(`${prefixCls}-layout`, hashId)} id="scroll-root">
       <main>
         <Outlet />
       </main>
@@ -100,7 +96,7 @@ function Main() {
   );
 }
 
-const genStyle = (token: DerivativeToken): CSSInterpolation => ({
+const genStyle = (token: GlobalToken): CSSInterpolation => ({
   [`.${prefixCls}-layout`]: { background: '#eee' },
   [`.${prefixCls}-footer`]: {
     position: 'fixed',

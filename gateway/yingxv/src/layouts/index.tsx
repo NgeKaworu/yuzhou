@@ -19,7 +19,7 @@ import { Outlet } from 'react-router-dom';
 import defaultTheme, { prefixCls } from '@/theme';
 
 import { useStyleRegister, CSSInterpolation } from '@ant-design/cssinjs';
-import { DerivativeToken } from 'antd/es/theme/internal';
+
 import 'dayjs/locale/zh-cn';
 import React from 'react';
 
@@ -53,4 +53,4 @@ function Main() {
   );
 }
 
-const genStyle = (token: DerivativeToken): CSSInterpolation => ({});
+const genStyle = (token: GlobalToken): CSSInterpolation => ({});

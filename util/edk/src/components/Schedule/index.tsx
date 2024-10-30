@@ -4,9 +4,10 @@ import type { MarqueeProps } from '../Marquee';
 import Marquee from '../Marquee';
 import trimEndWith from '../../struct/string/trimEndWith';
 import arr from '../../struct/array/arr';
-import { DerivativeToken, useStyleRegister } from 'antd/es/theme/internal';
-import { CSSInterpolation } from '@ant-design/cssinjs';
+
+import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
 import clsx from 'clsx';
+import { GlobalToken } from 'antd';
 
 const { useState } = Scope.react;
 const { Tooltip, Typography, theme } = Scope.antd;
@@ -157,9 +158,7 @@ export default function ({
 
         <colgroup>
           <col />
-          {initValue[0]?.map((_, hour) => (
-            <col key={`hour-${hour}`} />
-          ))}
+          {initValue[0]?.map((_, hour) => <col key={`hour-${hour}`} />)}
         </colgroup>
 
         <thead>
@@ -208,7 +207,7 @@ export default function ({
   );
 }
 
-const genStyle = (prefixCls: string, token: DerivativeToken): CSSInterpolation => ({
+const genStyle = (prefixCls: string, token: GlobalToken): CSSInterpolation => ({
   [`.${prefixCls}-table`]: {
     userSelect: 'none',
     'table,\n  td,\n  th,\n  caption': { border: '1px solid #e0e0e0' },

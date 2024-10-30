@@ -1,4 +1,4 @@
-export type Key = string | number | symbol;
+export type Key = (string | number | symbol) & any;
 
 export default function getIn<V = any>(
   obj: Record<Key, V> | V[],

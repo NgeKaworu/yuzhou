@@ -7,6 +7,7 @@ import {
   theme,
   ButtonProps,
   PopconfirmProps,
+  GlobalToken,
 } from 'antd';
 import {
   CaretRightOutlined,
@@ -17,7 +18,7 @@ import {
 import type { Record } from '@/models/record';
 import { prefixCls as defaultPrefixCls } from '@/theme';
 import { CSSInterpolation, useStyleRegister } from '@ant-design/cssinjs';
-import { DerivativeToken } from 'antd/es/theme/internal';
+
 import clsx from 'clsx';
 import dayjs from 'dayjs';
 
@@ -140,7 +141,7 @@ export default ({
   );
 };
 
-const genStyle = (token: DerivativeToken): CSSInterpolation => ({
+const genStyle = (token: GlobalToken): CSSInterpolation => ({
   [`.${prefixCls}-record-card`]: {
     position: 'relative',
     height: '100%',
