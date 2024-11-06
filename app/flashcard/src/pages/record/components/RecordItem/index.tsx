@@ -13,6 +13,7 @@ import {
   CaretRightOutlined,
   DeleteOutlined,
   EditOutlined,
+  StopOutlined,
 } from '@ant-design/icons';
 
 import type { Record } from '@/models/record';
@@ -26,6 +27,7 @@ const prefixCls = defaultPrefixCls + '-record-item';
 export interface RecordItemProps {
   onClick: () => void;
   onReviewClick?: (id: string) => void;
+  onStopClick?: (id: string) => void;
   onRemoveClick: (id: string) => void;
   onEditClick: (record: Record) => void;
   record: Record;
@@ -37,6 +39,7 @@ const { useToken } = theme;
 export default ({
   onClick,
   onReviewClick,
+  onStopClick,
   onRemoveClick,
   onEditClick,
   selected,
@@ -47,6 +50,10 @@ export default ({
   function reviewClickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation();
     onReviewClick?.(_id);
+  }
+  function stopClickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.stopPropagation();
+    onStopClick?.(_id);
   }
   const editClickHandler: ButtonProps['onClick'] = (e) => {
     e.stopPropagation();
@@ -71,10 +78,7 @@ export default ({
   );
 
   return wrapSSR(
-    <div
-      className={clsx(`${prefixCls}-record-card`, hashId)}
-      onClick={onClick}
-    >
+    <div className={clsx(`${prefixCls}-record-card`, hashId)} onClick={onClick}>
       <div
         className={clsx(`${prefixCls}-progress`, hashId)}
         style={{ width: `${percent}%` }}
@@ -111,12 +115,21 @@ export default ({
         {translation}
       </div>
       <div className={clsx(`${prefixCls}-tools-bar`, hashId)}>
-        <Button
-          size="small"
-          type="text"
-          onClick={reviewClickHandler}
-          icon={<CaretRightOutlined />}
-        ></Button>
+        {record?.inReview ? (
+          <Button
+            size="small"
+            type="text"
+            onClick={stopClickHandler}
+            icon={<StopOutlined />}
+          />
+        ) : (
+          <Button
+            size="small"
+            type="text"
+            onClick={reviewClickHandler}
+            icon={<CaretRightOutlined />}
+          />
+        )}
         <Button
           size="small"
           type="text"

@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2024-10-29 15:40:33
+ * @LastEditTime: 2024-11-06 15:43:01
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -32,7 +32,6 @@ import {
   Slider,
   Space,
   Spin,
-  Switch,
   theme,
 } from 'antd';
 
@@ -176,6 +175,14 @@ export default () => {
     },
   });
 
+  const stopper = useMutation({
+    mutationFn: (ids: string[]) =>
+      restful.patch(`/flashcard/record/review/stop`, { ids }),
+    onSuccess() {
+      refetch();
+    },
+  });
+
   const allReviewer = useMutation({
     mutationFn: (data) => restful.get(`/flashcard/record/review-all`),
     onSuccess() {
@@ -187,6 +194,10 @@ export default () => {
 
   function reviewHandler() {
     reviewer.mutate([...selectedItems.keys()]);
+  }
+
+  function stopHandler() {
+    stopper.mutate([...selectedItems.keys()]);
   }
 
   function reviewAllHandler() {
@@ -325,6 +336,7 @@ export default () => {
           selected={selected}
           onClick={() => onItemClick(record)}
           onReviewClick={(id) => reviewer.mutate([id])}
+          onStopClick={(id) => stopper.mutate([id])}
           onEditClick={onItemEditClick}
           onRemoveClick={onItemRemoveClick}
         />
@@ -475,6 +487,7 @@ export default () => {
             {/* <FloatButton description="删除所选" /> */}
             <FloatButton description="取消选择" onClick={cancelAllSelect} />
             <FloatButton onClick={reviewHandler} description="复习所选" />
+            <FloatButton onClick={stopHandler} description="停止所选" />
             <FloatButton onClick={showMultiEditor} description="批量修改" />
           </>
         ) : (
@@ -650,6 +663,16 @@ export default () => {
                 options={[
                   { value: RECORD_MODE.KEYWORD, label: '关键字' },
                   { value: RECORD_MODE.FULL, label: '全文' },
+                ]}
+              />
+            </Form.Item>
+
+            <Form.Item name="inReview" label="正在复习">
+              <Radio.Group
+                optionType="button"
+                options={[
+                  { value: true, label: '是' },
+                  { value: false, label: '否' },
                 ]}
               />
             </Form.Item>
