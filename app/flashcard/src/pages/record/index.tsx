@@ -2,7 +2,7 @@
  * @Author: fuRan NgeKaworu@gmail.com
  * @Date: 2023-03-15 10:04:53
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2024-11-06 15:43:01
+ * @LastEditTime: 2024-11-07 14:31:59
  * @FilePath: /yuzhou/app/flashcard/src/pages/record/index.tsx
  * @Description:
  *
@@ -591,7 +591,6 @@ export default () => {
                       ? '全文'
                       : '关键字'
                   }
-                  rules={[{ required: true }]}
                 >
                   <Input.TextArea autoSize allowClear onKeyDown={onHotKey} />
                 </Form.Item>

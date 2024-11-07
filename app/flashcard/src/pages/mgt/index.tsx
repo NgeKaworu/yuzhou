@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-10-31 16:46:23
  * @LastEditors: fuRan NgeKaworu@gmail.com
- * @LastEditTime: 2024-11-06 15:48:42
+ * @LastEditTime: 2024-11-07 14:31:52
  * @FilePath: /yuzhou/app/flashcard/src/pages/mgt/index.tsx
  */
 import { RECORD_MODE, Record } from '@/models/record';
@@ -38,7 +38,7 @@ import clsx from 'clsx';
 import dayjs, { Dayjs } from 'dayjs';
 import { restful } from 'edk/src/utils/http';
 import { Res } from 'edk/src/utils/http/type';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /*
@@ -110,7 +110,12 @@ export interface SearchRecord {
 }
 
 export default () => {
+  const [deadline, setDeadline] = useState<Dayjs>(
+      dayjs(localStorage.getItem('flashcard:record:deadline') ?? undefined),
+    ),
+    remain = deadline.diff(dayjs(), 'day');
   const [inputForm] = Form.useForm<Record>();
+  const [searchForm] = Form.useForm<SearchRecord>();
   const [multiEditForm] = Form.useForm();
   const history = useNavigate();
 
@@ -121,6 +126,24 @@ export default () => {
   const [sorter, setSorter] = useState<Sorter>();
 
   const [search, setSearch] = useState<SearchRecord>();
+
+  useEffect(() => {
+    const pre = localStorage.getItem('flashcard:record:mgt:search:form');
+    if (pre) {
+      const json = JSON.parse(pre);
+      const tmp = {
+        ...json,
+        createAt: json?.createAt?.map((t: string) => dayjs(t)),
+        cooldownAt: json?.cooldownAt?.map((t: string) => dayjs(t)),
+        reviewAt: json?.reviewAt?.map((t: string) => dayjs(t)),
+        updateAt: json?.updateAt?.map((t: string) => dayjs(t)),
+      };
+
+      searchForm.setFieldsValue(tmp);
+
+      setSearch(tmp);
+    }
+  }, []);
 
   const [inputVisible, setInputVisible] = useState(false);
   const [inputType, setInputType] = useState<inputType>('新建');
@@ -154,7 +177,8 @@ export default () => {
         );
       },
     }),
-    refetch = querier.refetch;
+    refetch = querier.refetch,
+    total = querier.data?.total ?? 0;
 
   const columns: TableProps<Record>['columns'] = [
     {
@@ -464,18 +488,43 @@ export default () => {
     }
   }
 
+  function onDeadlineChange(date: Dayjs) {
+    localStorage.setItem('flashcard:record:deadline', date?.format());
+    setDeadline(date);
+  }
+
   return (
     <>
       <Card>
         <Space direction="vertical" style={{ display: 'flex' }} size="large">
-          <Card>
+          <Card
+            title={
+              <>
+                截止日期：
+                <DatePicker value={deadline} onChange={onDeadlineChange} />
+                ，距离截日还剩：{remain} 天；当前条件下，词条数为：{total}条。
+                按目前计划，每天需复习
+                {Math.ceil(total / remain)}条。
+              </>
+            }
+          >
             <Form<SearchRecord>
+              form={searchForm}
               onFinish={setSearch}
               layout="inline"
               initialValues={{ planing: false, finished: false }}
               labelCol={{ span: 6 }}
               wrapperCol={{
                 span: 18,
+              }}
+              onValuesChange={(_, data) => {
+                localStorage?.setItem(
+                  'flashcard:record:mgt:search:form',
+                  JSON.stringify(data),
+                );
+              }}
+              onReset={() => {
+                localStorage.removeItem('flashcard:record:mgt:search:form');
               }}
             >
               <Row wrap gutter={[16, 16]}>
@@ -700,7 +749,7 @@ export default () => {
               loading={querier.isLoading || querier.isFetching}
               pagination={{
                 ...pagination,
-                total: querier?.data?.total,
+                total,
                 showTotal: (total) => `共 ${total} 条`,
                 showSizeChanger: true,
               }}
@@ -789,7 +838,6 @@ export default () => {
                       ? '全文'
                       : '关键字'
                   }
-                  rules={[{ required: true }]}
                 >
                   <Input.TextArea autoSize allowClear onKeyDown={onHotKey} />
                 </Form.Item>
